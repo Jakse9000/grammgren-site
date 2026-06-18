@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jacob Gramm Gren — Danish language teacher | Interactive portfolio</title>
+<meta name="description" content="Jacob Gramm Gren — Danish language teacher (Dansk som andetsprog), writer and endurance runner. 7+ years experience. Trilingual (Danish, English, Spanish). Relocating Denmark to Costa Rica 2026. Available for language-teaching roles, onsite or remote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:100%; height:100%; background:#0a1413; overflow:hidden; font-family:'IBM Plex Mono',monospace; -webkit-font-smoothing:antialiased; }
+  body { touch-action:none; -webkit-user-select:none; user-select:none; }
+  #game-container { position:absolute; top:0; left:0; background:#11201d; transform-origin:top left; box-shadow:0 24px 70px rgba(0,0,0,.55); border-radius:4px; overflow:hidden; }
+  #title-bar { background:#0d1a18; padding:9px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #234a44; }
+  #title-bar .tt { font-family:'Fraunces',serif; font-size:15px; font-weight:600; color:#f4d06a; letter-spacing:.01em; }
+  #title-bar a { font-size:11px; color:#3fb8a8; text-decoration:none; letter-spacing:.02em; }
+  #title-bar a:hover { color:#7fe0d3; }
+  #tb-actions { display:flex; align-items:center; gap:13px; }
+  #hire { font-size:11px; color:#11201d !important; background:#f4d06a; padding:5px 11px; border-radius:999px; font-weight:600; letter-spacing:.02em; }
+  #hire:hover { background:#ffe08a; color:#11201d !important; }
+  #snd { background:none; border:1px solid #234a44; color:#3fb8a8; font-size:13px; padding:3px 8px; border-radius:7px; cursor:pointer; line-height:1.2; }
+  #snd:hover { color:#7fe0d3; border-color:#3fb8a8; }
+  .sr-only { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  #rc { display:block; width:100%; image-rendering:pixelated; cursor:none; background:#11201d; }
+  #db { display:none; position:absolute; bottom:54px; left:14px; right:14px; background:#0d1a18; border:1px solid #f4d06a; border-radius:8px; padding:14px 18px; z-index:10; box-shadow:0 10px 30px rgba(0,0,0,.45); }
+  #dn { font-family:'Press Start 2P',monospace; font-size:11px; color:#f4d06a; margin-bottom:9px; }
+  #dt { font-size:13.5px; color:#e7ece0; line-height:1.7; min-height:38px; }
+  #dh { font-family:'Press Start 2P',monospace; font-size:7px; color:#4d6a64; text-align:right; margin-top:8px; }
+  #hud { display:flex; justify-content:space-between; padding:9px 16px; background:#0d1a18; font-size:11px; color:#8fa8a2; border-top:1px solid #234a44; align-items:center; gap:10px; }
+  #loc { color:#f4d06a; font-weight:500; }
+  #sec { color:#3fb8a8; }
+  #hud .ctrl { color:#5d7a74; }
+  #mbc { display:none; position:fixed; left:0; right:0; bottom:0; z-index:40; justify-content:space-between; align-items:flex-end; padding:16px 20px calc(16px + env(safe-area-inset-bottom)); pointer-events:none; }
+  #mbc > * { pointer-events:auto; }
+  #dpad { display:grid; grid-template-columns:repeat(3,52px); grid-template-rows:repeat(3,52px); gap:7px; }
+  #dpad button { font-family:'IBM Plex Mono',monospace; font-size:20px; background:rgba(22,48,43,.86); color:#e7ece0; border:1px solid #2c5a52; border-radius:11px; cursor:pointer; }
+  #dpad button:active { background:#1e4840; border-color:#3fb8a8; }
+  #mu{grid-column:2;grid-row:1;} #ml{grid-column:1;grid-row:2;} #mr{grid-column:3;grid-row:2;} #md{grid-column:2;grid-row:3;}
+  #mt { width:96px; height:96px; border-radius:50%; background:rgba(244,208,106,.94); color:#11201d; border:none; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; letter-spacing:.02em; cursor:pointer; }
+  #mt:active { background:#ffe08a; }
+  #so { position:absolute; inset:0; background:linear-gradient(160deg,#0d1a18 0%,#11201d 55%,#0c2a26 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:13px; z-index:20; padding:26px; text-align:center; }
+  #so .kicker { font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:#3fb8a8; }
+  #so h2 { font-family:'Fraunces',serif; font-size:clamp(30px,6vw,48px); font-weight:600; color:#f4d06a; line-height:1.04; }
+  #so p:not(.kicker) { font-size:13px; color:#b9c8c3; line-height:2.05; max-width:460px; }
+  #so .hi { color:#f4d06a; }
+  #so .sec { color:#7fe0d3; }
+  #sp { font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:14px; background:#f4d06a; color:#11201d; border:none; padding:15px 34px; cursor:pointer; border-radius:999px; transition:transform .15s, background .2s; margin-top:8px; }
+  #sp:hover { background:#ffe08a; transform:translateY(-1px); }
+  #footer { background:#0d1a18; padding:8px 16px; font-size:9px; color:#5d7a74; text-align:center; border-top:1px solid #1a302c; line-height:1.7; }
+  #footer a { color:#3fb8a8; text-decoration:none; }
+  #footer a:hover { color:#7fe0d3; }
+  #win { position:absolute; top:18px; left:50%; transform:translateX(-50%) translateY(-14px); opacity:0; pointer-events:none; background:#f4d06a; color:#11201d; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:12px; padding:11px 20px; border-radius:999px; z-index:30; transition:opacity .45s ease, transform .45s ease; box-shadow:0 10px 30px rgba(0,0,0,.45); white-space:nowrap; }
+  #win.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  @media (hover:none) and (pointer:coarse){ #mbc{display:flex;} #hud .ctrl{display:none;} }
+  #so p.tri { font-family:'IBM Plex Mono',monospace; font-size:14px; letter-spacing:.08em; color:#7fe0d3; max-width:none; margin-top:-2px; }
+  #so p.tri b { color:#f4d06a; font-weight:600; }
+</style>
+</head>
+<body>
+<section class="sr-only" aria-label="About Jacob Gramm Gren">
+  <h1>Jacob Gramm Gren — Danish language teacher, writer and endurance runner</h1>
+  <p>Jacob Gramm Gren is a Danish language teacher specialising in Dansk som andetsprog (Danish as a second language), with 7+ years of experience teaching adult learners. He currently works as a language consultant (sprogkonsulent) at UCplus Dansk and is relocating from Denmark to Costa Rica in 2026, where he is available for language-teaching roles — onsite or remote.</p>
+  <h2>Experience</h2>
+  <ul>
+    <li>Language teacher / consultant (sprogkonsulent), UCplus Dansk — Danish as a second language, adult learners.</li>
+    <li>Elected staff representative (tillidsrepraesentant) for colleagues.</li>
+    <li>Previously taught at Scenekunsthojskolen Snoghoj, a Danish residential college for the performing arts.</li>
+    <li>7+ years designing and refreshing curricula and exam-aligned classroom materials.</li>
+  </ul>
+  <h2>Education</h2>
+  <ul><li>University of Southern Denmark (SDU) — Dansk som Andetsprog (Danish as a Second Language), 2024–2026.</li></ul>
+  <h2>Languages</h2>
+  <p>Danish (native), English (fluent), Spanish (working proficiency, improving).</p>
+  <h2>Beyond the classroom</h2>
+  <p>Endurance runner (Silkeborg Atletik Klub, SAK 77), heavy metal vinyl collector, and an aspiring author of language-education books and learning materials.</p>
+  <h2>Contact</h2>
+  <p>Portfolio and writing: <a href="https://grammgren.dk">grammgren.dk</a>. To discuss a teaching role, use the “Hire Jacob” link on this page.</p>
+  <p>This page is an interactive pixel-art portfolio. The game requires a keyboard (or the on-screen controls on mobile); this text summary is provided so the same information is available without playing.</p>
+</section>
+<div id="game-container">
+  <div id="title-bar">
+    <span class="tt">Jacob’s World</span>
+    <div id="tb-actions">
+      <button id="snd" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+      <a id="hire" href="https://grammgren.dk/kontakt" target="_blank" rel="noopener">✉ Hire Jacob</a>
+      <a href="https://grammgren.dk" target="_blank" rel="noopener">grammgren.dk ↗</a>
+    </div>
+  </div>
+  <canvas id="rc" width="560" height="340"></canvas>
+  <div id="db"><div id="dn"></div><div id="dt"></div><div id="dh">▼ SPACE / TALK to continue</div></div>
+  <div id="hud">
+    <div id="loc">JACOB'S TOWN</div>
+    <div class="ctrl">ARROWS / WASD · SPACE interact</div>
+    <div id="sec">🔍 0/10 secrets</div>
+  </div>
+  <div id="so">
+    <p class="kicker">An interactive portfolio</p>
+    <h2>Jacob’s World</h2>
+    <p class="tri"><b>Velkommen</b> · Welcome · ¡Bienvenido!</p>
+    <p>A little pixel world where everyone knows Jacob.<br><br>
+    Walk to a door and press <span class="hi">SPACE</span> (or <span class="hi">TALK</span> on mobile) to step inside.<br>
+    Find the <span class="hi">✈ airplane</span> and fly to Costa Rica.<br>
+    Talk to people, and poke at anything that glows.<br>
+    Hunt down all <span class="sec">10 hidden secrets</span>.</p>
+    <button id="sp">▶ Enter the world</button>
+  </div>
+  <div id="win">✨ All 10 secrets found — ¡pura vida!</div>
+  <div id="footer">
+    Made with ♥ for <a href="https://grammgren.dk" target="_blank">grammgren.dk</a>
+    &nbsp;·&nbsp; Jacob Gramm Gren &nbsp;·&nbsp; Language teacher · Runner · Metal head · Author-in-progress &nbsp;·&nbsp; Denmark → Costa Rica 2026
+  </div>
+</div>
+  <div id="mbc">
+    <div id="dpad">
+      <button id="mu" aria-label="Move up">▲</button>
+      <button id="ml" aria-label="Move left">◀</button>
+      <button id="md" aria-label="Move down">▼</button>
+      <button id="mr" aria-label="Move right">▶</button>
+    </div>
+    <button id="mt">TALK</button>
+  </div>
+
+<script>
+const CV=document.getElementById('rc'),X=CV.getContext('2d');
+const W=840,H=510;CV.width=W;CV.height=H;
+
+// Scale the entire game container to fill the window
+const GAME_W=840; // native canvas width
+function scaleGame(){
+  const container=document.getElementById('game-container');
+  // Set container to native width first so we can measure it
+  container.style.width=GAME_W+'px';
+  const titleH=document.getElementById('title-bar').offsetHeight;
+  const hudH=document.getElementById('hud').offsetHeight;
+  const footerH=document.getElementById('footer').offsetHeight;
+  const extraH=titleH+hudH+footerH;
+  const totalNativeH=H+extraH;
+  // Scale to fit window, preserving aspect ratio
+  const scaleX=window.innerWidth/GAME_W;
+  const scaleY=window.innerHeight/totalNativeH;
+  const scale=Math.min(scaleX,scaleY);
+  container.style.transform=`scale(${scale})`;
+  // Centre it
+  const scaledW=GAME_W*scale;
+  const scaledH=totalNativeH*scale;
+  container.style.left=((window.innerWidth-scaledW)/2)+'px';
+  container.style.top=((window.innerHeight-scaledH)/2)+'px';
+}
+window.addEventListener('resize',scaleGame);
+window.addEventListener('load',scaleGame);
+setTimeout(scaleGame,100);
+const WW=840,WH=580;
+const ROOM_FT=50,ROOM_FB=510;
+let camX=0,camY=0;
+const dBox=document.getElementById('db'),dName=document.getElementById('dn'),dText=document.getElementById('dt'),locEl=document.getElementById('loc'),secEl=document.getElementById('sec');
+const keys={};
+let audioMuted=false;
+let dlgOpen=false,dlgNpc=null,dlgIdx=0,typFull='',typPos=0,typTmr=null;
+let scene='town',fadeA=0,fading=false,fadeTgt='town',fadeDir=1,gameOn=false,secretsFound=0;
+const P={x:220,y:210,w:14,h:18,dir:0,vx:0,vy:0};
+
+const BLDS=[
+  {id:'school',  x:10, y:10, w:155,h:125,roofC:'#1a7a3a',wallC:'#c8a450',label:'DANISH SCHOOL',dX:74,dY:115,dW:18,wXs:[26,112],doorZone:{x:60,y:96,w:46,h:42}},
+  {id:'gym',     x:10, y:205,w:155,h:125,roofC:'#1a3a6a',wallC:'#4a6a8e',label:"JACOB'S GYM",  dX:74,dY:310,dW:18,wXs:[26,112],doorZone:{x:60,y:291,w:46,h:42}},
+  {id:'townhall',x:675,y:10, w:155,h:125,roofC:'#7a0000',wallC:'#c8a020',label:'TOWN HALL',    dX:740,dY:115,dW:18,wXs:[690,762],doorZone:{x:726,y:96,w:46,h:42}},
+  {id:'club',    x:675,y:205,w:155,h:125,roofC:'#0a3a5a',wallC:'#1a6a3a',label:'RUNNING CLUB', dX:740,dY:310,dW:18,wXs:[690,762],doorZone:{x:726,y:291,w:46,h:42}},
+  {id:'vinyl',   x:10, y:415,w:155,h:100,roofC:'#3a003a',wallC:'#5a2a5a',label:'RECORD SHOP',  dX:66, dY:495,dW:18,wXs:[26,110], doorZone:{x:52,y:476,w:46,h:42}},
+  {id:'cafe',    x:675,y:415,w:155,h:100,roofC:'#5a3000',wallC:'#8a5020',label:'HYGGE CAFÉ',   dX:730,dY:495,dW:18,wXs:[686,762],doorZone:{x:716,y:476,w:46,h:42}},
+];
+const LAKE={x:290,y:10,w:220,h:72},BRIDGE={x:380,y:60,w:60,h:24};
+const FOUNTAIN={x:409,y:271,w:22,h:22};
+const STALL_B=[{x:285,y:164,w:46,h:48},{x:505,y:164,w:46,h:48},{x:285,y:404,w:46,h:48},{x:505,y:404,w:46,h:48}];
+const BENCH_B=[{x:225,y:250,w:52,h:14},{x:560,y:250,w:52,h:14},{x:225,y:318,w:52,h:14},{x:560,y:318,w:52,h:14}];
+const TREES=[{x:175,y:14},{x:200,y:14},{x:618,y:14},{x:645,y:14},{x:175,y:390},{x:200,y:390},{x:618,y:390},{x:645,y:390},{x:14,y:155},{x:14,y:348},{x:806,y:155},{x:806,y:348},{x:395,y:445}];
+const LAMPS=[{x:178,y:156},{x:648,y:156},{x:178,y:336},{x:648,y:336},{x:305,y:156},{x:518,y:156},{x:305,y:416},{x:518,y:416},{x:178,y:256},{x:648,y:256}];
+const FLOWERS=[{x:200,y:172},{x:220,y:416},{x:596,y:172},{x:588,y:416},{x:350,y:172},{x:470,y:172},{x:350,y:430},{x:470,y:430}];
+const STALLS=[{x:285,y:164,w:46,h:36,col:'#cc3333',label:'SMØRREBRØD'},{x:505,y:164,w:46,h:36,col:'#3355cc',label:'BØGER'},{x:285,y:404,w:46,h:36,col:'#33aa33',label:'KAFFE'},{x:505,y:404,w:46,h:36,col:'#cc7700',label:'VINYL'}];
+const BOATS=[{x:315,y:22,w:38,h:14},{x:375,y:38,w:30,h:12}];
+const FP={x:422,y:12};
+const EGGS=[
+  {id:'vinyl',     x:195,y:360,found:false,icon:'🎵',name:'Mystery Crate',lines:["*You pry open the dusty crate...*","200+ heavy metal vinyls. Alphabetised.","Cannibal Corpse next to Candlemass.","Jacob's note: 'DO NOT unsort. I mean it.'","🤘 Secret found: The Vinyl Hoard!"]},
+  {id:'board',     x:620,y:180,found:false,icon:'🎲',name:'Dusty Box',lines:["*The box rattles as you nudge it*","Catan. Arkham Horror. Twilight Imperium.","Sticky note: 'TI takes 8 hrs. Worth it.' — Jacob","🎲 Secret found: The Board Game Stash!"]},
+  {id:'passport',  x:620,y:360,found:false,icon:'✈️',name:'Worn Backpack',lines:["*A very well-travelled backpack*","Stickers: Spain, Argentina, Costa Rica, Denmark...","Both flags on the zip. 🇩🇰🇨🇷","✈️ Secret found: The Travel Backpack!"]},
+  {id:'recipe',    x:195,y:180,found:false,icon:'🍳',name:'Grease-Stained Notebook',lines:["*A grease-stained notebook*","Recipes. In three languages.","'Smørrebrød variations' — 12 pages.","'DO NOT share the rye bread recipe' — underlined twice.","🍳 Secret found: The Secret Recipe Book!"]},
+  {id:'guitar',    x:460,y:390,found:false,icon:'🎸',name:'Guitar Case',lines:["*A battered guitar case by the fountain*","Setlist: all Black Sabbath, all the time.","A Costa Rican flag sticker on the case. 🇨🇷","🎸 Secret found: The Secret Guitar!"]},
+  {id:'slotskroen',x:340,y:180,found:false,icon:'🍺',name:'Old Name Badge',lines:["*A faded name badge: SLOTSKROEN*","Before teaching, Jacob worked at this castle inn.","From serving guests to teaching them Danish. Full circle.","🍺 Secret found: The Slotskroen Badge!"]},
+  {id:'manuscript', x:530,y:390,found:false,icon:'📖',name:'Loose Manuscript Pages',lines:["*Pages flutter in the breeze...*","Chapter 1: 'Why grammar should feel like a game.'","Chapter 5: 'How to make Æ, Ø and Å unforgettable.'","A Post-it: 'For every student who said it was impossible.'","📖 Secret found: The Manuscript!"]},
+];
+const OPEN={x:185,y:155,w:470,h:260};
+
+// ── AIRPLANE ─────────────────────────────────────────────────────────────────
+const AIRPLANE={x:370,y:480,w:80,h:36,zone:{x:350,y:458,w:120,h:60}};
+
+// ── SAN JOSÉ WORLD ───────────────────────────────────────────────────────────
+const CRW=840,CRH=640;
+const CR_BLDS=[
+  // Top row
+  {id:'sj_family', x:10,  y:10,  w:175,h:135,roofC:'#cc3300',wallC:'#f0c060',label:"FAMILIA'S HOUSE",dX:82, dY:125,dW:20,wXs:[28,125],doorZone:{x:68,y:104,w:56,h:44}},
+  {id:'sj_choco',  x:660, y:10,  w:175,h:135,roofC:'#4a1a00',wallC:'#8b4513',label:'CAFÉ BRITT',     dX:738,dY:125,dW:20,wXs:[678,772],doorZone:{x:724,y:104,w:56,h:44}},
+  // Bottom row
+  {id:'sj_mercado',x:10,  y:430, w:175,h:135,roofC:'#226600',wallC:'#338800',label:'MERCADO CENTRAL',dX:82, dY:535,dW:20,wXs:[28,125],doorZone:{x:68,y:514,w:56,h:44}},
+  {id:'sj_theater',x:660, y:430, w:175,h:135,roofC:'#6600aa',wallC:'#c8a0e0',label:'TEATRO NACIONAL',dX:738,dY:535,dW:20,wXs:[678,772],doorZone:{x:724,y:514,w:56,h:44}},
+];
+// San José has urban trees + some palms
+const CR_TREES=[
+  {x:190,y:14},{x:625,y:14},{x:14,y:150,palm:true},{x:806,y:150,palm:true},
+  {x:14,y:310,palm:true},{x:806,y:310,palm:true},{x:190,y:380},{x:625,y:380},
+  {x:350,y:14},{x:450,y:14},{x:350,y:380},{x:450,y:380},
+];
+// No ocean in San José — replace with a park / central plaza
+const SJ_PLAZA={x:300,y:200,w:240,h:180}; // Parque Central area
+const SJ_FOUNTAIN={x:405,y:278,w:30,h:30};
+// Bus stops
+const SJ_BUSES=[{x:220,y:180,w:50,h:24},{x:555,y:180,w:50,h:24}];
+// Return airplane
+const CR_AIRPORT={x:345,y:560,w:80,h:36,zone:{x:325,y:538,w:120,h:60}};
+const CR_FLOWERS=[{x:200,y:172},{x:224,y:408},{x:582,y:172},{x:604,y:408},{x:344,y:164},{x:460,y:164}];
+// Puerto Viejo hint: a travel agency / ticket booth in the plaza
+const PV_BOOTH={x:348,y:204,w:56,h:34,zone:{x:336,y:196,w:80,h:52}};
+
+// ── SAN JOSÉ TRAFFIC ─────────────────────────────────────────────────────────
+// Roads: horizontal at y≈161 (top) and y≈443 (bottom), vertical at x≈203 (left) and x≈633 (right)
+// Cars move very slowly — this is San José after all
+const SJ_CARS=[
+  // Top horizontal road — moving right (lane y≈155)
+  {x:60,  y:155, dx:0.28, dy:0, col:'#cc2200', col2:'#881100', w:26,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:260, y:155, dx:0.22, dy:0, col:'#2244aa', col2:'#112266', w:22,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:460, y:155, dx:0.31, dy:0, col:'#228833', col2:'#114422', w:28,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:700, y:155, dx:0.19, dy:0, col:'#aa8800', col2:'#664400', w:24,h:12, honkT:0, honkDur:0, lane:'h'},
+  // Top horizontal road — moving left (lane y≈167)
+  {x:750, y:167, dx:-0.25, dy:0, col:'#cc6600', col2:'#883300', w:26,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:550, y:167, dx:-0.20, dy:0, col:'#666688', col2:'#333355', w:22,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:300, y:167, dx:-0.33, dy:0, col:'#993300', col2:'#551100', w:24,h:12, honkT:0, honkDur:0, lane:'h'},
+  // Bottom horizontal road — moving right (lane y≈437)
+  {x:100, y:437, dx:0.24, dy:0, col:'#336699', col2:'#112244', w:26,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:380, y:437, dx:0.29, dy:0, col:'#aa3300', col2:'#661100', w:24,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:620, y:437, dx:0.21, dy:0, col:'#558833', col2:'#224411', w:28,h:12, honkT:0, honkDur:0, lane:'h'},
+  // Bottom horizontal road — moving left (lane y≈449)
+  {x:680, y:449, dx:-0.27, dy:0, col:'#884422', col2:'#442211', w:22,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:400, y:449, dx:-0.22, dy:0, col:'#226688', col2:'#113344', w:26,h:12, honkT:0, honkDur:0, lane:'h'},
+  {x:180, y:449, dx:-0.31, dy:0, col:'#996622', col2:'#553311', w:24,h:12, honkT:0, honkDur:0, lane:'h'},
+  // Left vertical road — moving down (lane x≈197)
+  {x:197, y:50,  dx:0, dy:0.26, col:'#cc3366', col2:'#881133', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  {x:197, y:250, dx:0, dy:0.20, col:'#448822', col2:'#224411', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  {x:197, y:430, dx:0, dy:0.30, col:'#224488', col2:'#112244', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  // Left vertical road — moving up (lane x≈209)
+  {x:209, y:570, dx:0, dy:-0.24, col:'#aa6600', col2:'#663300', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  {x:209, y:380, dx:0, dy:-0.28, col:'#cc2255', col2:'#881133', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  {x:209, y:180, dx:0, dy:-0.22, col:'#557733', col2:'#334422', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  // Right vertical road — moving down (lane x≈627)
+  {x:627, y:80,  dx:0, dy:0.25, col:'#993322', col2:'#551111', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  {x:627, y:300, dx:0, dy:0.19, col:'#446688', col2:'#223344', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  // Right vertical road — moving up (lane x≈639)
+  {x:639, y:560, dx:0, dy:-0.23, col:'#887722', col2:'#554411', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+  {x:639, y:360, dx:0, dy:-0.30, col:'#cc4400', col2:'#882200', w:12,h:22, honkT:0, honkDur:0, lane:'v'},
+];
+// Web Audio for honking
+let _audioCtx=null;
+function getAudio(){if(!_audioCtx)_audioCtx=new(window.AudioContext||window.webkitAudioContext)();return _audioCtx;}
+function honk(freq=420,dur=0.18,vol=0.12){
+  if(audioMuted)return;
+  try{
+    const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.frequency.value=freq;o.type='square';
+    g.gain.setValueAtTime(vol,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+dur);
+    o.start();o.stop(ctx.currentTime+dur);
+  }catch(e){}
+}
+function updateSJCars(ts){
+  for(const c of SJ_CARS){
+    // Wrap around world edges
+    if(c.dx>0&&c.x>CRW+20)c.x=-c.w-10;
+    if(c.dx<0&&c.x<-c.w-10)c.x=CRW+20;
+    if(c.dy>0&&c.y>CRH+20)c.y=-c.h-10;
+    if(c.dy<0&&c.y<-c.h-10)c.y=CRH+20;
+    c.x+=c.dx;c.y+=c.dy;
+    // Random honk scheduling
+    if(c.honkDur>0){c.honkDur--;} 
+    else if(c.honkT>0){c.honkT--;}
+    else{
+      // Random chance to honk — ~every 6-18 seconds at 60fps
+      if(Math.random()<0.00035){
+        c.honkT=Math.floor(Math.random()*200+80);
+        // Only play audio if this car is near the player
+        const cx=c.x-camX,cy=c.y-camY;
+        if(cx>-60&&cx<W+60&&cy>-60&&cy<H+60){
+          const freq=380+Math.random()*160;
+          const double=Math.random()<0.4;
+          honk(freq,0.15,0.09);
+          if(double)setTimeout(()=>honk(freq*1.05,0.12,0.07),200);
+          c.honkDur=double?24:12;
+        }
+      }
+    }
+  }
+}
+function dCar(c,ts){
+  const isHonking=c.honkDur>0;
+  const blink=isHonking&&Math.floor(ts*0.04)%2===0;
+  // Shadow
+  X.fillStyle='rgba(0,0,0,0.22)';X.fillRect(c.x+2,c.y+3,c.w,c.h);
+  // Body
+  X.fillStyle=c.col;X.fillRect(c.x,c.y,c.w,c.h);
+  // Roof / cabin highlight
+  if(c.lane==='h'){
+    X.fillStyle=c.col2;X.fillRect(c.x+4,c.y+2,c.w-8,c.h-6);
+    X.fillStyle='rgba(180,220,255,0.5)';X.fillRect(c.x+5,c.y+3,c.w-10,4);// windshield
+    // Headlights / taillights
+    X.fillStyle=c.dx>0?'#ffee88':'#ff2200';X.fillRect(c.x+(c.dx>0?c.w-3:0),c.y+2,3,3);
+    X.fillStyle=c.dx>0?'#ff2200':'#ffee88';X.fillRect(c.x+(c.dx>0?0:c.w-3),c.y+2,3,3);
+    // Wheels
+    X.fillStyle='#1a1a1a';X.fillRect(c.x+2,c.y-2,4,3);X.fillRect(c.x+c.w-6,c.y-2,4,3);
+    X.fillRect(c.x+2,c.y+c.h-1,4,3);X.fillRect(c.x+c.w-6,c.y+c.h-1,4,3);
+  }else{
+    X.fillStyle=c.col2;X.fillRect(c.x+2,c.y+4,c.w-6,c.h-8);
+    X.fillStyle='rgba(180,220,255,0.5)';X.fillRect(c.x+3,c.y+5,4,c.h-10);
+    X.fillStyle=c.dy>0?'#ffee88':'#ff2200';X.fillRect(c.x+2,c.y+(c.dy>0?c.h-3:0),3,3);
+    X.fillStyle=c.dy>0?'#ff2200':'#ffee88';X.fillRect(c.x+2,c.y+(c.dy>0?0:c.h-3),3,3);
+    X.fillStyle='#1a1a1a';X.fillRect(c.x-2,c.y+2,3,4);X.fillRect(c.x+c.w-1,c.y+2,3,4);
+    X.fillRect(c.x-2,c.y+c.h-6,3,4);X.fillRect(c.x+c.w-1,c.y+c.h-6,3,4);
+  }
+  // Honk speech bubble
+  if(isHonking&&blink){
+    X.fillStyle='rgba(255,255,255,0.92)';X.fillRect(c.x-10,c.y-16,28,11);
+    X.fillStyle='#cc0000';X.font='5px "Press Start 2P"';X.textAlign='center';
+    X.fillText('¡PIII!',c.x+c.w/2-4,c.y-8);X.textAlign='left';
+    // Tiny triangle pointing down to car
+    X.fillStyle='rgba(255,255,255,0.92)';X.beginPath();X.moveTo(c.x+4,c.y-6);X.lineTo(c.x+10,c.y-6);X.lineTo(c.x+7,c.y-2);X.closePath();X.fill();
+  }
+}
+
+const CR_NPCS=[
+  {id:'abuela',  col:'#e67e22',skin:'#8B5E3C',name:'Abuela Rosario',x:250,y:220,tx:250,ty:220,spd:0.3,pt:120,
+   lines:["¡Bienvenido a San José, Jacob!","This is where Maria grew up. Our home.","He learned to make gallo pinto on his second visit.","Now he makes it better than my nephew. Don't tell my nephew.","🇨🇷 Welcome to the family, danish boy."]},
+  {id:'tio',     col:'#2980b9',skin:'#7A4A2A',name:'Tío Rodrigo',  x:560,y:230,tx:560,ty:230,spd:0.5,pt:80,
+   lines:["Jacob! You made it back!","Every time he visits he brings Black Sabbath vinyls.","I didn't know what to think. Now I think: brilliant.","We watch football together. He cheers for Denmark. I forgive him.","¡Pura vida, hermano!"]},
+  {id:'maria_sj',col:'#e91e8c',skin:'#8B5E3C',heart:true,name:'Maria Del Mar',x:390,y:370,tx:390,ty:370,spd:0.4,pt:90,
+   lines:["¡Hola! Welcome to my city — San José!","Jacob loves it here. The food, the chaos, the warmth.","My family adopted him immediately. As expected.","He takes the bus like a local now. Almost.","Want to go to Puerto Viejo? Check the booth in the plaza! 🌴"]},
+  {id:'prima',   col:'#e74c3c',skin:'#8B5E3C',name:'Prima Valentina',x:300,y:250,tx:300,ty:250,spd:0.7,pt:60,
+   lines:["Oh! You must know Jacob!","He tried casado for the first time here. His reaction?","He went quiet. Then: 'This is the best thing I've ever eaten.'","He then asked for the recipe. In Spanish. Badly.","We still talk about it. ❤️"]},
+  {id:'vecino_sj',col:'#27ae60',skin:'#6B4226',name:'Don Gerardo',  x:470,y:255,tx:470,ty:255,spd:0.35,pt:110,
+   lines:["I have lived on this street for forty years.","That Danish fellow visits every year with Maria.","Always polite. Always running. Always with those headphones.","One morning I asked: 'What are you listening to?'","He showed me. Heavy metal. I was not prepared."]},
+];
+const CR_OPEN={x:190,y:150,w:460,h:360};
+const CR_EGGS=[
+  {id:'sj_coffee',  x:580,y:390,found:false,icon:'☕',name:'Tiny Coffee Cup',lines:["*A very small, very strong coffee...*","San José café culture is no joke.","Jacob drinks three of these a day when visiting.","He calls it 'espresso'. Ticos call it 'café chorreado'.","☕ Secret found: The Coffee Ritual!"]},
+  {id:'sj_gallo',   x:220,y:400,found:false,icon:'🍳',name:'Gallo Pinto Recipe',lines:["*A handwritten recipe card...*","Abuela Rosario's gallo pinto. In Spanish.","Jacob spent an entire afternoon copying this out.","His version uses Danish butter. Controversial. Delicious.","🍳 Secret found: The Secret Gallo Pinto!"]},
+  {id:'pv_brochure', x:360,y:210,found:false,icon:'🌴',name:'Puerto Viejo Brochure',lines:["*A sun-faded travel brochure*","PUERTO VIEJO DE TALAMANCA","Caribbean coast. Chocolate. Waves. Pure jungle.","'We go every trip', Maria says. 'Jacob cries a little.'","Jacob: 'I do not cry.' (He cries a little.)","🌴 Secret found: The Puerto Viejo Dream!"]},
+];
+const WNPCS=[
+  {id:'freya',col:'#ff5722',name:'Student Freya',x:240,y:215,tx:240,ty:215,spd:0.5,pt:120,lines:["Hej! Jacob taught me Danish for two years.","I went from zero to holding a job interview — in Danish!","He has this way of making grammar feel like a game.","My favourite trick: he acts out every sentence. Every. One.","10/10. No notes. Hire him immediately. 🇩🇰"]},
+  {id:'hanne',col:'#9c27b0',name:'Colleague Hanne',x:490,y:230,tx:490,ty:230,spd:0.4,pt:90,lines:["I've worked alongside Jacob at UCplus Dansk for years.","His lesson plans are ridiculously thorough.","Students actually look forward to Mondays because of him.","That's basically a superpower.","Also he always brings good coffee. Important."]},
+  {id:'klaus',col:'#e91e63',name:'Gym Bro Klaus',x:560,y:300,tx:560,ty:300,spd:0.7,pt:60,lines:["Okay so Jacob walks in, headphones on, Black Sabbath blasting.","Sets up his programme, doesn't waste a single minute.","Strength work first, then sometimes goes for a run AFTER.","After! A full strength session! Who does that?!","The answer is Jacob. Jacob does that."]},
+  {id:'mette',col:'#4caf50',name:'Runner Mette',x:460,y:370,tx:460,ty:370,spd:0.9,pt:50,lines:["I invited Jacob to our running club two years ago.","Big mistake for my self-esteem. Great for my fitness.","He runs long distances with this weird serene expression.","Like he's solving Danish grammar in his head mid-run.","He probably is. Honestly, respect. 🏃"]},
+  {id:'mayor',col:'#aa44cc',name:'Mayor Søren',x:340,y:330,tx:340,ty:330,spd:0.3,pt:150,lines:["Ah, a visitor! Welcome to Jacob's Town!","I am Mayor Søren, elected four times running.","Jacob is our most celebrated resident.","Speaks Danish, English AND Spanish. Teaches the first one.","We put him on a mural. He asked us to repaint it. We didn't."]},
+  {id:'bente',col:'#ff9800',name:'Coach Bente',x:580,y:240,tx:580,ty:240,spd:0.5,pt:100,lines:["I've coached a lot of athletes over the years.","Jacob's discipline is genuinely rare.","He sets a goal, builds a plan, and just... sticks to it.","No drama, no excuses. Just consistent, quiet progress.","That kind of person is gold. In the gym and the classroom."]},
+  {id:'prof', col:'#3399ff',name:'Prof. Nielsen',x:280,y:365,tx:280,ty:365,spd:0.35,pt:180,lines:["Jacob is mid-way through his SDU postgrad.","'Underviser i dansk som andetsprog for voksne' — 2024-2026.","He already has 7 years of teaching experience on top of this.","In class he asks the questions no one else thinks to ask.","The kind of student who makes you a better teacher."]},
+  {id:'cat', col:'#ff9800',name:'Mochi the Cat',x:370,y:285,tx:370,ty:285,spd:1.1,pt:40,isAnimal:true,lines:["Mrrrow.","I live here. Jacob feeds me sardines on Fridays.","He once sang Paranoid by Black Sabbath while cooking rice.","It was... actually fine? The rice was good too.","3.5 out of 5 stars. Would be fed by again."]},
+];
+function newTarget(n){n.tx=OPEN.x+30+Math.random()*(OPEN.w-60);n.ty=OPEN.y+30+Math.random()*(OPEN.h-60);n.pt=80+Math.random()*140;}
+
+function ov(ax,ay,aw,ah,bx,by,bw,bh){return ax<bx+bw&&ax+aw>bx&&ay<by+bh&&ay+ah>by;}
+function d2(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return dx*dx+dy*dy;}
+function townBlocked(px,py){
+  if(px<2||py<2||px+P.w>WW-2||py+P.h>WH-2)return true;
+  for(const b of BLDS)if(ov(px+1,py+1,P.w-2,P.h-2,b.x,b.y,b.w,b.h))return true;
+  if(ov(px+1,py+1,P.w-2,P.h-2,LAKE.x,LAKE.y,LAKE.w,LAKE.h))
+    if(!ov(px,py,P.w,P.h,BRIDGE.x,BRIDGE.y,BRIDGE.w,BRIDGE.h))return true;
+  if(ov(px+1,py+1,P.w-2,P.h-2,FOUNTAIN.x,FOUNTAIN.y,FOUNTAIN.w,FOUNTAIN.h))return true;
+  for(const r of STALL_B)if(ov(px+1,py+1,P.w-2,P.h-2,r.x,r.y,r.w,r.h))return true;
+  for(const r of BENCH_B)if(ov(px+1,py+1,P.w-2,P.h-2,r.x,r.y,r.w,r.h))return true;
+  return false;
+}
+function crBlocked(px,py){
+  if(px<2||py<2||px+P.w>CRW-2||py+P.h>CRH-2)return true;
+  for(const b of CR_BLDS)if(ov(px+1,py+1,P.w-2,P.h-2,b.x,b.y,b.w,b.h))return true;
+  if(ov(px+1,py+1,P.w-2,P.h-2,SJ_FOUNTAIN.x,SJ_FOUNTAIN.y,SJ_FOUNTAIN.w,SJ_FOUNTAIN.h))return true;
+  return false;
+}
+const IFB=340; // interior floor bottom — front wall starts here (rooms, not halls)
+function drawIntFrame(ts){
+  const s=INTERIORS[scene];
+  // ambient contact shadow where floor meets the near wall
+  const ao=X.createLinearGradient(0,IFB-26,0,IFB);
+  ao.addColorStop(0,'rgba(0,0,0,0)');ao.addColorStop(1,'rgba(0,0,0,0.30)');
+  X.fillStyle=ao;X.fillRect(0,IFB-26,W,26);
+  // near wall with gradient
+  const wall=X.createLinearGradient(0,IFB,0,H);
+  wall.addColorStop(0,'#2b2119');wall.addColorStop(1,'#1b140e');
+  X.fillStyle=wall;X.fillRect(0,IFB,W,H-IFB);
+  X.fillStyle='#3a2c1f';X.fillRect(0,IFB,W,4);
+  X.fillStyle='rgba(255,236,200,0.06)';X.fillRect(0,IFB+4,W,1);
+  X.strokeStyle='rgba(0,0,0,0.22)';X.lineWidth=1;
+  for(let wx=44;wx<W;wx+=88){X.beginPath();X.moveTo(wx,IFB+7);X.lineTo(wx,H-9);X.stroke();}
+  X.fillStyle='#14100a';X.fillRect(0,H-9,W,9); // baseboard
+  // exit doorway
+  const ex=s.eX,dw=54,dx=ex-dw/2,dtop=IFB-4;
+  X.fillStyle='#241812';X.fillRect(dx-4,dtop,dw+8,H-dtop);
+  X.fillStyle='#6b4a2a';X.fillRect(dx,dtop+3,dw,H-dtop-3);
+  X.fillStyle='#5a3f24';X.fillRect(dx+4,dtop+6,dw-8,H-dtop-6);
+  X.fillStyle='#caa86a';X.beginPath();X.arc(dx+dw-9,IFB+20,2.5,0,Math.PI*2);X.fill();
+  X.fillStyle='#33271a';X.fillRect(dx-6,dtop-6,dw+12,7); // mat
+  const near=Math.abs(P.x+P.w/2-ex)<48&&P.y+P.h>IFB-48;
+  const pulse=0.5+0.5*Math.sin(ts*0.006);
+  X.textAlign='center';
+  X.fillStyle=`rgba(244,208,106,${near?pulse:0.5})`;X.font='6px "Press Start 2P"';
+  X.fillText('EXIT',ex,dtop-6);
+  if(near){X.fillStyle=`rgba(244,208,106,${pulse})`;X.font='5px "Press Start 2P"';X.fillText('▼ SPACE / TALK',ex,dtop-18);}
+  X.textAlign='left';
+}
+function intBlocked(px,py,sid){
+  if(px<0||py<46||px+P.w>W||py+P.h>ROOM_FB)return true;
+  for(const o of INTERIORS[sid].obs)if(ov(px+1,py+1,P.w-2,P.h-2,o.x,o.y,o.w,o.h))return true;
+  return false;
+}
+function interact(){
+  if(dlgOpen){advDlg();return;}
+  if(scene==='town'){
+    for(const b of BLDS){if(!INTERIORS[b.id])continue;if(ov(P.x,P.y,P.w,P.h,b.doorZone.x,b.doorZone.y,b.doorZone.w,b.doorZone.h)){fadeStart(b.id);return;}}
+    if(ov(P.x,P.y,P.w,P.h,AIRPLANE.zone.x,AIRPLANE.zone.y,AIRPLANE.zone.w,AIRPLANE.zone.h)){fadeStart('costarica');return;}
+    for(const e of EGGS){if(e.found)continue;if(d2(P.x+P.w/2,P.y+P.h/2,e.x+9,e.y+9)<38*38){openDlg({...e,isEgg:true});return;}}
+    for(const n of WNPCS){if(d2(P.x+P.w/2,P.y+P.h/2,n.x+8,n.y+8)<36*36){openDlg(n);return;}}
+  }else if(scene==='costarica'){
+    for(const b of CR_BLDS){if(!INTERIORS[b.id])continue;if(ov(P.x,P.y,P.w,P.h,b.doorZone.x,b.doorZone.y,b.doorZone.w,b.doorZone.h)){fadeStart(b.id);return;}}
+    if(ov(P.x,P.y,P.w,P.h,CR_AIRPORT.zone.x,CR_AIRPORT.zone.y,CR_AIRPORT.zone.w,CR_AIRPORT.zone.h)){fadeStart('town');return;}
+    for(const e of CR_EGGS){if(e.found)continue;if(d2(P.x+P.w/2,P.y+P.h/2,e.x+9,e.y+9)<38*38){openDlg({...e,isEgg:true,isCREgg:true});return;}}
+    for(const n of CR_NPCS){if(d2(P.x+P.w/2,P.y+P.h/2,n.x+8,n.y+8)<36*36){openDlg(n);return;}}
+  }else{
+    const s=INTERIORS[scene];
+    if(Math.abs(P.x+P.w/2-s.eX)<34&&P.y+P.h>ROOM_FB-12){
+      fadeStart(SJ_IDS.has(scene)?'costarica':'town');return;
+    }
+    for(const n of s.npcs){if(d2(P.x+P.w/2,P.y+P.h/2,n.x+8,n.y+8)<36*36){openDlg(n);return;}}
+  }
+}
+function fadeStart(t){if(fading)return;fading=true;fadeDir=1;fadeTgt=t;fadeA=0;}
+const SJ_IDS=new Set(['sj_choco','sj_family','sj_mercado','sj_theater']);
+function fadeDone(){
+  const prevScene=scene;
+  scene=fadeTgt;
+  if(scene==='town'){P.x=220;P.y=210;P.dir=0;window._lastWorld='town';}
+  else if(scene==='costarica'){P.x=420;P.y=390;P.dir=0;window._lastWorld='costarica';}
+  else{const s=INTERIORS[scene];P.x=s.pS.x;P.y=s.pS.y;P.dir=0;}
+  fadeDir=-1;
+  if(scene==='town')locEl.textContent="JACOB'S TOWN";
+  else if(scene==='costarica')locEl.textContent='🇨🇷 SAN JOSÉ · Costa Rica';
+  else locEl.textContent=INTERIORS[scene].name;
+  updateCam();
+}
+function updateCam(){
+  if(scene==='costarica'){camX=Math.max(0,Math.min(P.x+P.w/2-W/2,CRW-W));camY=Math.max(0,Math.min(P.y+P.h/2-H/2,CRH-H));return;}
+  camX=Math.max(0,Math.min(P.x+P.w/2-W/2,WW-W));camY=Math.max(0,Math.min(P.y+P.h/2-H/2,WH-H));
+}
+function updateNpcs(ts){
+  if(scene==='town'){
+    for(const n of WNPCS){
+      if(n.pt>0){n.pt--;continue;}
+      const dx=n.tx-n.x,dy=n.ty-n.y,dd=Math.sqrt(dx*dx+dy*dy);
+      if(dd<4){newTarget(n);continue;}
+      const nx=n.x+dx/dd*n.spd,ny=n.y+dy/dd*n.spd;
+      if(nx>OPEN.x&&nx<OPEN.x+OPEN.w)n.x=nx;
+      if(ny>OPEN.y&&ny<OPEN.y+OPEN.h)n.y=ny;
+    }
+  } else if(scene==='costarica'){
+    updateSJCars(ts);
+    for(const n of CR_NPCS){
+      if(n.isAnimal||!n.spd)continue;
+      if(n.pt>0){n.pt--;continue;}
+      const dx=n.tx-n.x,dy=n.ty-n.y,dd=Math.sqrt(dx*dx+dy*dy);
+      if(dd<4){n.tx=CR_OPEN.x+30+Math.random()*(CR_OPEN.w-60);n.ty=CR_OPEN.y+30+Math.random()*(CR_OPEN.h-60);n.pt=80+Math.random()*140;continue;}
+      const nx=n.x+dx/dd*n.spd,ny=n.y+dy/dd*n.spd;
+      if(nx>CR_OPEN.x&&nx<CR_OPEN.x+CR_OPEN.w)n.x=nx;
+      if(ny>CR_OPEN.y&&ny<CR_OPEN.y+CR_OPEN.h)n.y=ny;
+    }
+  }
+}
+function openDlg(n){dlgNpc=n;dlgIdx=0;dlgOpen=true;dName.textContent=n.name;dBox.style.display='block';typeIt(n.lines[0]);}
+function typeIt(t){clearInterval(typTmr);typFull=t;typPos=0;dText.textContent='';typTmr=setInterval(()=>{if(typPos<typFull.length)dText.textContent+=typFull[typPos++];else clearInterval(typTmr);},24);}
+function advDlg(){
+  if(typPos<typFull.length){clearInterval(typTmr);dText.textContent=typFull;typPos=typFull.length;return;}
+  dlgIdx++;
+  if(dlgIdx>=dlgNpc.lines.length){
+    if(dlgNpc.isEgg){const e=EGGS.find(e=>e.id===dlgNpc.id);if(e&&!e.found){e.found=true;secretsFound++;secEl.textContent=`🔍 ${secretsFound}/10 secrets`;if(secretsFound===10)showWin();}}
+    if(dlgNpc.isCREgg){const e=CR_EGGS.find(e=>e.id===dlgNpc.id);if(e&&!e.found){e.found=true;secretsFound++;secEl.textContent=`🔍 ${secretsFound}/10 secrets`;if(secretsFound===10)showWin();}}
+    dlgOpen=false;dBox.style.display='none';dlgNpc=null;return;
+  }
+  typeIt(dlgNpc.lines[dlgIdx]);
+}
+function drawDanishFlag(fx,fy,fw,fh){X.fillStyle='#c60c30';X.fillRect(fx,fy,fw,fh);const bh=Math.max(2,Math.round(fh/3)),bw=Math.max(2,Math.round(fw/5)),vx=Math.round(fw*0.35);X.fillStyle='#ffffff';X.fillRect(fx,fy+Math.round(fh/2-bh/2),fw,bh);X.fillRect(fx+vx,fy,bw,fh);}
+function drawCRFlag(fx,fy,fw,fh){const s=fh/5,cols=['#002b7f','#ffffff','#ce1126','#ffffff','#002b7f'];for(let i=0;i<5;i++){X.fillStyle=cols[i];X.fillRect(fx,fy+i*s,fw,s+1);}}
+
+// ── FURNITURE RENDERERS ──────────────────────────────────────────────────────
+function fShadow(it){X.fillStyle='rgba(0,0,0,0.16)';X.fillRect(it.x+3,it.y+5,it.w,it.h);}
+function fCenter(cx,y,t,c,sz){X.fillStyle=c;X.font=sz+'px "Press Start 2P"';X.textAlign='center';X.fillText(t,cx,y);X.textAlign='left';}
+function f_counter(it){fShadow(it);X.fillStyle=it.c||'#8a5520';X.fillRect(it.x,it.y,it.w,it.h);X.fillStyle='rgba(255,255,255,0.10)';X.fillRect(it.x,it.y,it.w,4);X.fillStyle='rgba(0,0,0,0.22)';X.fillRect(it.x,it.y+it.h-6,it.w,6);if(it.title)fCenter(it.x+it.w/2,it.y+it.h/2+3,it.title,it.tc||'#fff2cc',5);}
+function f_board(it){fShadow(it);X.fillStyle=it.c||'#1e3d2a';X.fillRect(it.x,it.y,it.w,it.h);X.strokeStyle=it.frame||'#8a6a40';X.lineWidth=3;X.strokeRect(it.x,it.y,it.w,it.h);if(it.title)fCenter(it.x+it.w/2,it.y+16,it.title,it.tc||'#f4d06a',6);if(it.lines){X.fillStyle=it.lc||'rgba(255,255,255,0.85)';X.font='5px "Press Start 2P"';X.textAlign='center';it.lines.forEach((l,i)=>X.fillText(l,it.x+it.w/2,it.y+32+i*12));X.textAlign='left';}}
+function f_shelf(it){fShadow(it);X.fillStyle='#3a2a18';X.fillRect(it.x,it.y,it.w,it.h);const pal=it.pal||['#cc3333','#2244aa','#22882a','#884422','#662288','#cc8822'];const rows=Math.max(2,Math.floor(it.h/30)),rh=(it.h-6)/rows;for(let r=0;r<rows;r++){const ry=it.y+4+r*rh;X.fillStyle='rgba(0,0,0,0.35)';X.fillRect(it.x,ry+rh-3,it.w,3);const per=Math.max(1,Math.floor((it.w-8)/9));for(let b=0;b<per;b++){X.fillStyle=pal[(r*per+b)%pal.length];X.fillRect(it.x+4+b*9,ry,7,rh-5);X.fillStyle='rgba(255,255,255,0.12)';X.fillRect(it.x+4+b*9,ry,7,2);}}if(it.title)fCenter(it.x+it.w/2,it.y-4,it.title,it.tc||'#caa86a',4);}
+function f_desk(it){fShadow(it);X.fillStyle=it.c||'#8a5520';X.fillRect(it.x,it.y,it.w,it.h);X.fillStyle='rgba(255,255,255,0.08)';X.fillRect(it.x,it.y,it.w,3);X.fillStyle='#fffaf0';X.fillRect(it.x+10,it.y+6,32,it.h-12);X.fillStyle='rgba(0,0,0,0.12)';for(let i=0;i<3;i++)X.fillRect(it.x+12,it.y+9+i*5,28,1);X.fillStyle='#cc3333';X.fillRect(it.x+50,it.y+7,12,it.h-14);if(it.title)fCenter(it.x+it.w/2,it.y+it.h-5,it.title,it.tc||'#fff',4);}
+function f_table(it){fShadow(it);const cx=it.x+it.w/2,cy=it.y+it.h/2;X.fillStyle=it.c||'#9a6030';X.beginPath();X.ellipse(cx,cy,it.w/2,it.h/2,0,0,Math.PI*2);X.fill();X.fillStyle='rgba(255,255,255,0.09)';X.beginPath();X.ellipse(cx,cy-2,it.w/2-3,it.h/2-3,0,0,Math.PI*2);X.fill();X.fillStyle='#fffaf0';X.beginPath();X.arc(cx-6,cy,7,0,Math.PI*2);X.fill();X.fillStyle=it.plate||'#c87a3a';X.beginPath();X.arc(cx-6,cy,4,0,Math.PI*2);X.fill();X.fillStyle='#fffaf0';X.beginPath();X.arc(cx+10,cy+3,4,0,Math.PI*2);X.fill();if(it.flag==='dk')drawDanishFlag(cx+it.w/2-13,cy-3,10,6);if(it.flag==='cr')drawCRFlag(cx+it.w/2-13,cy-3,10,7);}
+function f_screen(it,ts){fShadow(it);X.fillStyle='#111122';X.fillRect(it.x,it.y,it.w,it.h);X.fillStyle='#1a1a3a';X.fillRect(it.x+5,it.y+5,it.w-10,it.h-18);X.fillStyle='rgba(70,70,120,0.5)';const off=Math.floor(ts*0.05)%10;for(let s=0;s<8;s++)X.fillRect(it.x+5+((s*12+off)%(it.w-10)),it.y+5,6,it.h-18);X.fillStyle=it.bar||'#cc4400';X.fillRect(it.x+6,it.y+it.h-11,it.w-12,7);fCenter(it.x+it.w/2,it.y+it.h-5,it.title||'RUN',it.tc||'#ffd07a',4);}
+function f_display(it){fShadow(it);X.fillStyle=it.c||'#101828';X.fillRect(it.x,it.y,it.w,it.h);X.strokeStyle=it.accent||'#2244aa';X.lineWidth=2;X.strokeRect(it.x,it.y,it.w,it.h);if(it.title)fCenter(it.x+it.w/2,it.y+15,it.title,it.tc||'#4488ff',5);if(it.lines){X.fillStyle=it.lc||'rgba(210,222,255,0.85)';X.font='4px "Press Start 2P"';X.textAlign='center';it.lines.forEach((l,i)=>X.fillText(l,it.x+it.w/2,it.y+28+i*10));X.textAlign='left';}}
+function f_plant(it){const cx=it.x+it.w/2;X.fillStyle='#5a3010';X.fillRect(cx-12,it.y+it.h-26,24,26);X.fillStyle='#7a4420';X.fillRect(cx-10,it.y+it.h-24,20,22);X.fillStyle='#1e5a14';X.beginPath();X.arc(cx,it.y+14,16,0,Math.PI*2);X.fill();X.fillStyle='#2d8022';X.beginPath();X.arc(cx-7,it.y+8,10,0,Math.PI*2);X.fill();X.fillStyle='#256b1a';X.beginPath();X.arc(cx+7,it.y+11,9,0,Math.PI*2);X.fill();}
+function f_cabinet(it){fShadow(it);X.fillStyle='#4a2e00';X.fillRect(it.x,it.y,it.w,it.h);X.strokeStyle='#8a6000';X.lineWidth=2;X.strokeRect(it.x,it.y,it.w,it.h);X.fillStyle='rgba(200,220,255,0.10)';X.fillRect(it.x+2,it.y+2,it.w-4,it.h-4);const tr=[['#f4d06a',it.h*0.55],['#c0c0c0',it.h*0.42],['#cd7f32',it.h*0.30]];tr.forEach((t,i)=>{const bh=t[1],tx=it.x+16+i*26;X.fillStyle=t[0];X.fillRect(tx,it.y+it.h-bh-10,16,bh);X.beginPath();X.arc(tx+8,it.y+it.h-bh-13,7,0,Math.PI*2);X.fill();});if(it.title){X.fillStyle='#f4d06a';X.font='4px "Press Start 2P"';X.textAlign='center';it.title.split('|').forEach((l,i)=>X.fillText(l,it.x+it.w-46,it.y+20+i*9));X.textAlign='left';}}
+function f_sofa(it){fShadow(it);X.fillStyle=it.c||'#cc4400';X.fillRect(it.x,it.y,it.w,it.h);X.fillStyle='rgba(255,255,255,0.12)';X.fillRect(it.x+4,it.y+4,it.w-8,it.h*0.45);X.fillStyle='rgba(0,0,0,0.18)';X.fillRect(it.x,it.y+it.h-6,it.w,6);X.fillStyle=it.c||'#cc4400';X.fillRect(it.x-6,it.y+4,8,it.h-4);X.fillRect(it.x+it.w-2,it.y+4,8,it.h-4);}
+function f_rug(it){X.fillStyle=it.c||'#7a3a3a';X.fillRect(it.x,it.y,it.w,it.h);X.strokeStyle=it.edge||'#a85a5a';X.lineWidth=4;X.strokeRect(it.x+3,it.y+3,it.w-6,it.h-6);X.strokeStyle='rgba(255,255,255,0.10)';X.lineWidth=1;X.strokeRect(it.x+9,it.y+9,it.w-18,it.h-18);}
+
+// ── ROOM RENDERER ────────────────────────────────────────────────────────────
+function drawRoom(r,ts){
+  const th=r.th;
+  X.fillStyle=th.f1;X.fillRect(0,ROOM_FT,W,ROOM_FB-ROOM_FT);
+  for(let fy=ROOM_FT;fy<ROOM_FB;fy+=24)for(let fx=0;fx<W;fx+=28){if((Math.floor(fy/24)+Math.floor(fx/28))%2===0){X.fillStyle=th.f2;X.fillRect(fx,fy,28,24);}}
+  // back wall
+  X.fillStyle=th.wt;X.fillRect(0,0,W,ROOM_FT);X.fillStyle='rgba(0,0,0,0.32)';X.fillRect(0,0,W,ROOM_FT);X.fillStyle=th.trim;X.fillRect(0,ROOM_FT-4,W,4);
+  // side wall shadows
+  X.fillStyle='rgba(0,0,0,0.12)';X.fillRect(0,ROOM_FT,9,ROOM_FB-ROOM_FT);X.fillRect(W-9,ROOM_FT,9,ROOM_FB-ROOM_FT);
+  // rugs first (floor layer)
+  for(const it of r.items)if(it.t==='rug')f_rug(it);
+  // furniture (sorted by y for light depth)
+  const furn=r.items.filter(it=>it.t!=='rug').slice().sort((a,b)=>a.y-b.y);
+  for(const it of furn){switch(it.t){
+    case 'counter':f_counter(it);break;case 'board':f_board(it);break;case 'shelf':f_shelf(it);break;
+    case 'desk':f_desk(it);break;case 'table':f_table(it);break;case 'screen':f_screen(it,ts);break;
+    case 'display':f_display(it);break;case 'plant':f_plant(it);break;case 'cabinet':f_cabinet(it);break;
+    case 'sofa':f_sofa(it);break;}}
+  drawFrontWall(r,ts);
+}
+function drawFrontWall(r,ts){
+  // floor runs to the screen edge; the exit is a doormat, not a wall band
+  const ex=r.eX,mw=84,mx=ex-mw/2,my=H-42,mh=34;
+  X.fillStyle='rgba(0,0,0,0.20)';X.fillRect(mx+3,my+4,mw,mh);
+  X.fillStyle=r.th.trim;X.fillRect(mx,my,mw,mh);
+  X.fillStyle='#1b140d';X.fillRect(mx+3,my+3,mw-6,mh-6);
+  X.strokeStyle='rgba(255,255,255,0.12)';X.lineWidth=1;X.strokeRect(mx+6,my+6,mw-12,mh-12);
+  const near=Math.abs(P.x+P.w/2-ex)<54&&P.y+P.h>H-74,pulse=0.55+0.45*Math.sin(ts*0.006);
+  X.textAlign='center';
+  X.fillStyle='rgba(244,208,106,'+(near?pulse:0.72)+')';X.font='6px "Press Start 2P"';X.fillText('EXIT',ex,my+14);
+  X.font='9px "Press Start 2P"';X.fillText('\u25bc',ex,my+27);
+  if(near){X.fillStyle='rgba(244,208,106,'+pulse+')';X.font='5px "Press Start 2P"';X.fillText('SPACE',ex,my-6);}
+  X.textAlign='left';
+}
+
+// ── ROOMS (data) ──
+const INTERIORS={
+  school:{name:'DANISH SCHOOL \u00b7 UCplus Dansk',eX:280,pS:{x:280,y:210},
+    th:{f1:'#e6d3a6',f2:'#dcc798',wt:'#b98e54',wf:'#7a5230',trim:'#c9a24a'},
+    items:[
+      {t:'board',x:40,y:58,w:430,h:82,c:'#1e3d2a',frame:'#8a6a40',title:'DANSK 101',tc:'#f4f0d0',lines:['Hej = Hello','Tak = Thank you','Hvad hedder du?']},
+      {t:'display',x:498,y:58,w:140,h:82,c:'#24482f',accent:'#cc9900',title:'\u00c6 \u00d8 \u00c5',tc:'#ffe08a',lines:['the danish trio','master these','sound like a local']},
+      {t:'display',x:668,y:58,w:148,h:82,c:'#102433',accent:'#4488cc',title:'DK \u00b7 CR',tc:'#8fd0ff',lines:['teaches danish','works abroad','onsite / remote']},
+      {t:'shelf',x:14,y:172,w:74,h:150,title:'GRAMMAR',pal:['#cc3333','#2244aa','#22882a','#884422','#662288','#cc8822','#116688']},
+      {t:'shelf',x:752,y:172,w:74,h:150,title:'READERS',pal:['#aa3344','#3355aa','#33aa55','#cc8833','#7744aa']},
+      {t:'desk',x:34,y:362,w:150,h:40,c:'#8a5520',title:'TEACHER'},
+      {t:'desk',x:656,y:362,w:150,h:40,c:'#b08040',title:'STUDENTS'},
+      {t:'rug',x:300,y:198,w:240,h:150,c:'#3a5a3a',edge:'#5f805f'},
+    ],
+    npcs:[
+      {id:'s1',x:196,y:240,col:'#ff5722',name:'Student Freya',lines:["Jacob taught me Danish from scratch.","Two years later I aced my PD3 exam.","His secret? He makes you laugh while you learn.","I still use his weird voice for every grammar rule.","Best. Teacher. Ever. \ud83c\udde9\ud83c\uddf0"]},
+      {id:'s2',x:556,y:240,col:'#9c27b0',name:'Colleague Hanne',lines:["I share a staffroom with Jacob.","He rewrites his lesson plans every semester. Every one.","'It should feel fresh for the students,' he says.","Meanwhile I've used mine since 2016.","Slightly annoying. Mostly inspiring."]},
+      {id:'ss',x:380,y:182,col:null,name:'Blackboard',isSign:true,lines:["\ud83d\udccb Jacob Gramm Gren","\ud83c\udde9\ud83c\uddf0 Danish Teacher \u2014 7+ years experience","\ud83d\udccd Sprogkonsulent @ UCplus Dansk","\ud83c\udfeb Prev: Scenekunsthojskolen Snoghoj","\ud83c\udf93 SDU \u2014 Dansk som Andetsprog 2024-26","\u270d\ufe0f Writing language learning books","\ud83c\udf0d Speaks English & Spanish fluently"]}
+    ]},
+  gym:{name:"JACOB'S GYM",eX:280,pS:{x:280,y:210},
+    th:{f1:'#1d1d1d',f2:'#242424',wt:'#141414',wf:'#1c1c1c',trim:'#cc2222'},
+    items:[
+      {t:'counter',x:40,y:58,w:200,h:42,c:'#3a3a3a',title:'WEIGHT RACK',tc:'#dddddd'},
+      {t:'display',x:300,y:58,w:200,h:66,c:'#0a0a0a',accent:'#cc2222',title:'NO DAYS OFF',tc:'#ff6666',lines:['strength then run','warmup \u00b7 cooldown','injuries: zero']},
+      {t:'display',x:560,y:58,w:256,h:66,c:'#0a1a0a',accent:'#228822',title:'\ud83c\udf31 PLANT POWER',tc:'#66dd66',lines:['lentils \u00b7 oats','beans \u00b7 greens','sunday meal-prep']},
+      {t:'screen',x:14,y:178,w:96,h:60,title:'TEMPO',bar:'#cc3300'},
+      {t:'screen',x:730,y:178,w:96,h:60,title:'10K RUN',bar:'#cc3300'},
+      {t:'counter',x:34,y:362,w:150,h:40,c:'#2c4a6e',title:'LOCKERS',tc:'#cfe6ff'},
+      {t:'counter',x:656,y:362,w:150,h:40,c:'#444444',title:'BENCH',tc:'#dddddd'},
+      {t:'rug',x:300,y:198,w:240,h:150,c:'#3a1414',edge:'#cc2222'},
+    ],
+    npcs:[
+      {id:'g1',x:196,y:248,col:'#e91e63',name:'Gym Bro Klaus',lines:["Dude showed up the day after a 10k run.","Did a full strength session. PR'd his deadlift.","I asked if he was tired. He said 'a little'.","A LITTLE. After a 10k and a deadlift PR.","This guy is not normal. Hire him anyway."]},
+      {id:'g2',x:556,y:248,col:'#ff9800',name:'Coach Bente',lines:["I track Jacob's progress quarterly.","Strength up, endurance up, injury count: zero.","He periodises properly. Warm-up, cooldown, everything.","Teachers who apply learning science to their own training.","That's self-awareness you can't teach."]},
+      {id:'g3',x:380,y:300,col:'#44cc44',name:'Nutritionist Pia',lines:["Jacob fuels like a pro athlete.","Mostly plant-based, but smart about it.","Lentils, oats, beans \u2014 solid protein base.","He preps on Sundays. Every. Single. Sunday.","Never skips the greens. Honestly inspirerende."]},
+      {id:'gs',x:250,y:165,col:null,name:'Training Board',isSign:true,lines:["\ud83c\udfcb Strength Training \u2014 structured programme","\ud83c\udfc3 Endurance Running \u2014 consistent long distances","\ud83c\udf31 Fuel: primarily plant-based","\ud83c\udfb5 Gym playlist: 100% heavy metal","\ud83d\udca1 'Show up. Even on Mondays.'"]}
+    ]},
+  townhall:{name:'TOWN HALL \u00b7 About Jacob',eX:280,pS:{x:280,y:210},
+    th:{f1:'#d4b870',f2:'#c8aa60',wt:'#8a5a00',wf:'#5a3c10',trim:'#c8a040'},
+    items:[
+      {t:'counter',x:300,y:58,w:240,h:48,c:'#8b6f47',title:'RECEPTION',tc:'#ffffff'},
+      {t:'display',x:40,y:58,w:200,h:64,c:'#1a1407',accent:'#c8a040',title:'\u2605 HIRE HIM \u2605',tc:'#f4d06a',lines:['most celebrated','resident of','jacobs town']},
+      {t:'display',x:600,y:58,w:216,h:64,c:'#101828',accent:'#2244aa',title:'grammgren.dk',tc:'#6aa8ff',lines:['travel \u00b7 language','costa rica diary','read the blog']},
+      {t:'shelf',x:14,y:172,w:74,h:150,title:'ARCHIVE',pal:['#8b0000','#00308f','#006400','#4b0082','#8b4513','#1a5276','#7d6608']},
+      {t:'shelf',x:752,y:172,w:74,h:150,title:'RECORDS',pal:['#7d2030','#203a7d','#207d3a','#7d6020','#5a2080']},
+      {t:'display',x:34,y:360,w:170,h:62,c:'#2a2210',accent:'#c8a040',title:'JACOB',tc:'#f4d06a',lines:['speaks 3 languages','teaches danish','runs marathons']},
+      {t:'display',x:636,y:360,w:170,h:62,c:'#152433',accent:'#4488cc',title:'DK \u2192 CR',tc:'#8fd0ff',lines:['denmark','to costa rica','2026']},
+      {t:'rug',x:300,y:200,w:240,h:148,c:'#5a4a2a',edge:'#8a7040'},
+    ],
+    npcs:[
+      {id:'t1',x:196,y:248,col:'#9c27b0',name:'Mayor Soren',lines:["Ah, you've made it to Town Hall!","I had Jacob's portrait commissioned for the entrance.","He said it was 'unnecessary'. We hung it anyway.","The seal on the wall says HIRE HIM. I had it minted.","This town literally runs on Jacob energy."]},
+      {id:'t2',x:556,y:248,col:'#3399ff',name:'Librarian Dorte',lines:["See the blog display? grammgren.dk.","Jacob writes about travel, language, life.","Costa Rica. Maria Del Mar. The whole adventure.","He has this gift \u2014 he writes like he teaches.","Warm, precise, and very, very Danish. Buy his books. Please."]},
+      {id:'ts',x:380,y:178,col:null,name:'Notice Board',isSign:true,lines:["\ud83d\udccc JACOB GRAMM GREN","\ud83d\udcbc Sprogkonsulent @ UCplus Dansk","\ud83c\udf93 SDU \u2014 Dansk som Andetsprog (2024-26)","\ud83c\udfc3 Endurance runner  \ud83c\udfcb Strength trainer","\ud83c\udfb5 Heavy metal vinyl collector (200+)","\u270d\ufe0f Aspiring author \u2014 language education books","\ud83d\udcec grammgren.dk"]}
+    ]},
+  club:{name:'RUNNING CLUB \u00b7 Loberhjornet',eX:280,pS:{x:280,y:210},
+    th:{f1:'#13301a',f2:'#0f2716',wt:'#0b1f10',wf:'#10240f',trim:'#ff8800'},
+    items:[
+      {t:'cabinet',x:300,y:58,w:200,h:92,title:'MOST|CONSISTENT|3 YEARS'},
+      {t:'counter',x:40,y:58,w:170,h:48,c:'#2c4a6e',title:'LOCKERS',tc:'#cfe6ff'},
+      {t:'display',x:560,y:58,w:256,h:66,c:'#0a1a0a',accent:'#00aa44',title:'\ud83c\udde8\ud83c\uddf7 CR RUN',tc:'#66dd99',lines:['puerto viejo','playa cocles','with Maria \ud83e\udde1']},
+      {t:'screen',x:14,y:178,w:96,h:60,title:'ROUTE 7',bar:'#ff7700'},
+      {t:'screen',x:730,y:178,w:96,h:60,title:'LONG RUN',bar:'#ff7700'},
+      {t:'counter',x:34,y:362,w:150,h:40,c:'#2a2a2a',title:'SHOE RACK',tc:'#dddddd'},
+      {t:'display',x:656,y:360,w:150,h:62,c:'#0a1a0a',accent:'#228822',title:'AWARDS',tc:'#66dd66',lines:['endurance king','eerie calm','too many \ud83e\udd47']},
+      {t:'rug',x:300,y:200,w:240,h:148,c:'#14331c',edge:'#ff8800'},
+    ],
+    npcs:[
+      {id:'r1',x:196,y:250,col:'#4caf50',name:'Runner Mette',lines:["Welcome to Loberhjornet!","Jacob joined two years ago and became the benchmark.","Everyone paces themselves against him now.","He doesn't know this. Please don't tell him.","His head is already the right size."]},
+      {id:'r2',x:556,y:250,col:'#ff88aa',skin:'#8B5E3C',heart:true,name:'Maria Del Mar',lines:["Hola! I'm Maria. Jacob's partner.","He ran every morning in Costa Rica too.","Puerto Viejo. 6am. Waves. Humidity.","I joined once. ONCE.","He writes about it better than he describes it. grammgren.dk. \ud83c\udde8\ud83c\uddf7"]},
+      {id:'rs',x:380,y:180,col:null,name:'Trophy Cabinet',isSign:true,lines:["\ud83c\udfc6 CLUB ACHIEVEMENTS","\ud83c\udfc3 Jacob: most consistent member 3 years","\ud83d\udccf Speciality: long-distance endurance","\ud83e\udde0 Known for: eerie mid-run calm","\ud83c\udf0d Also runs in: Costa Rica, Spain, wherever","\ud83e\udd47 Awards: too many, alphabetically"]}
+    ]},
+  vinyl:{name:"RECORD SHOP \u00b7 Jaakses Kaelder",eX:280,pS:{x:280,y:210},
+    th:{f1:'#171026',f2:'#1c1430',wt:'#180a28',wf:'#1e0e30',trim:'#7a2fae'},
+    items:[
+      {t:'shelf',x:40,y:58,w:200,h:92,title:'METAL A\u2013M',pal:['#cc0022','#1a0a3a','#440000','#003300','#220033']},
+      {t:'shelf',x:300,y:58,w:200,h:92,title:'METAL N\u2013Z',pal:['#4a0000','#001a44','#2a0044','#003322','#110011']},
+      {t:'display',x:560,y:58,w:256,h:92,c:'#0a0008',accent:'#7a2fae',title:'METAL OR DEATH',tc:'#cc3366',lines:['200+ records','sorted strictly','do NOT unsort','\u2014 Jacob \ud83e\udd18']},
+      {t:'counter',x:14,y:200,w:130,h:46,c:'#111111',title:'NOW: SABBATH',tc:'#33ff66'},
+      {t:'desk',x:696,y:200,w:130,h:46,c:'#2a1a0e',title:'MANUSCRIPT',tc:'#ffd070'},
+      {t:'shelf',x:34,y:360,w:210,h:42,title:'7-INCH BIN',pal:['#880000','#004400','#000066','#440044','#664400','#004444']},
+      {t:'rug',x:320,y:206,w:220,h:142,c:'#241038',edge:'#7a2fae'},
+    ],
+    npcs:[
+      {id:'v1',x:200,y:288,col:'#cc2244',name:'Metal Fan Lars',lines:["You found it. The holy of holies.","Jacob has 200+ heavy metal vinyls in here.","Sorted by genre, then band, then year. Immaculate.","He once turned down dinner because a","rare Mercyful Fate 7-inch arrived. True story. \ud83e\udd18"]},
+      {id:'v2',x:600,y:288,col:'#8844cc',name:'Writer-in-Residence',lines:["See that desk in the corner?","Jacob is working on language learning books.","Educational materials. The kind that actually work.","He tests every exercise on real students first.","'If they groan, it stays. If they laugh, it stays.' \u2014 Jacob"]},
+      {id:'vs',x:400,y:182,col:null,name:'Vinyl Index',isSign:true,lines:["\ud83c\udfb5 JACOB'S VINYL COLLECTION","\ud83e\udd18 200+ heavy metal records","\ud83d\udcc2 Sorted: genre \u2192 band \u2192 year","\u26a0\ufe0f Do NOT unsort. This is not a joke.","\ud83c\udfb8 Current spin: Black Sabbath \u2014 Vol. 4","\u270d\ufe0f Author-in-progress: language education books"]}
+    ]},
+  cafe:{name:"HYGGE CAFE \u00b7 Jaakses Kokken",eX:280,pS:{x:280,y:210},
+    th:{f1:'#c8954a',f2:'#bd8a40',wt:'#7a4818',wf:'#5a3008',trim:'#caa050'},
+    items:[
+      {t:'counter',x:40,y:58,w:200,h:46,c:'#6a3808',title:'KITCHEN',tc:'#ffe8c0'},
+      {t:'shelf',x:300,y:58,w:200,h:62,title:'BOARD GAMES',pal:['#cc3333','#3355cc','#22aa44','#cc6600','#882299','#228888']},
+      {t:'display',x:560,y:58,w:256,h:62,c:'#101828',accent:'#2244aa',title:'grammgren.dk',tc:'#6aa8ff',lines:['costa rica \u00b7 copenhagen','travel tales','warm + very danish']},
+      {t:'plant',x:18,y:300,w:62,h:62},
+      {t:'display',x:700,y:178,w:126,h:96,c:'#1a0a00',accent:'#6a3010',title:'\ud83c\udf31 MENU',tc:'#88cc44',lines:['havregrod+baer','linsesuppe','hyggepinto','rugbrod+avo']},
+      {t:'table',x:160,y:248,w:84,h:52,flag:'dk'},
+      {t:'table',x:584,y:248,w:84,h:52,flag:'dk'},
+      {t:'table',x:368,y:336,w:84,h:52},
+    ],
+    npcs:[
+      {id:'c1',x:118,y:212,col:'#ff8800',name:'Chef Ingrid',lines:["Jacob cooks here on Thursday evenings.","He brings his recipe notebook \u2014 the 3-language one.","Last week: Danish rye bread with Costa Rican black beans.","It sounds wrong. It tastes incredible.","He called it 'hyggepinto'. It's now on the menu."]},
+      {id:'c2',x:650,y:330,col:'#44aa44',name:'Blogger Birgit',lines:["Have you read grammgren.dk?","Jacob writes travel pieces after every trip.","Costa Rica. Copenhagen. Wherever he goes.","He writes like he teaches \u2014 warm, precise, very Danish.","Maria Del Mar says he starts drafting on the plane home."]},
+      {id:'cs',x:400,y:150,col:null,name:'Menu Board',isSign:true,lines:["\u2615 TODAY'S SPECIALS","\ud83e\udd6a Smorrebrod (Jacob's recipe \u2014 classified)","\ud83c\udf73 Hyggepinto (Danish-Costa Rican fusion)","\ud83c\udf31 Plant-Based Tuesday \u2014 athlete fuel edition","\ud83c\udfb2 Board Game Thursdays \u2014 all welcome","\ud83c\udfb5 Heavy Metal Fridays \u2014 earplugs provided"]}
+    ]},
+  sj_choco:{name:'CAFE BRITT \u00b7 Chocolate & Coffee',eX:280,pS:{x:280,y:210},
+    th:{f1:'#c07848',f2:'#b56c3c',wt:'#6a2800',wf:'#4a1a00',trim:'#aa5500'},
+    items:[
+      {t:'counter',x:40,y:58,w:200,h:46,c:'#4a1a00',title:'CAFE BAR',tc:'#ffd9a0'},
+      {t:'display',x:300,y:58,w:200,h:62,c:'#2a0800',accent:'#aa6622',title:'CACAO',tc:'#ffcc88',lines:['70% \u00b7 85% \u00b7 dark','milk \u00b7 raw','farm to bar']},
+      {t:'display',x:560,y:58,w:256,h:62,c:'#1a3300',accent:'#336600',title:'\ud83c\udf34 TOURS',tc:'#aadd66',lines:['puerto viejo','choco farm','coffee tour']},
+      {t:'shelf',x:14,y:300,w:90,h:62,title:'PV \u00b7 CR \u00b7 SJ',pal:['#cc3300','#226600','#003388']},
+      {t:'display',x:700,y:178,w:126,h:96,c:'#1a2800',accent:'#336600',title:'HOY',tc:'#dfffdf',lines:['cafe chorreado','chocolatl','cacao caliente','brownie CR']},
+      {t:'table',x:160,y:248,w:84,h:52,plate:'#3a1500'},
+      {t:'table',x:584,y:248,w:84,h:52,plate:'#3a1500'},
+      {t:'table',x:368,y:336,w:84,h:52,plate:'#3a1500'},
+    ],
+    npcs:[
+      {id:'britt1',x:118,y:212,col:'#8b4513',skin:'#8B5E3C',name:'Barista Diego',lines:["\u00a1Bienvenidos! Welcome to Cafe Britt!","Jacob discovered cafe chorreado on his first visit.","He tried to order 'filter coffee'. We understood. Eventually.","Now he orders correctly. In Spanish. Mostly.","He takes 2kg of beans home every trip. Every. Trip."]},
+      {id:'britt2',x:650,y:330,col:'#cc7700',skin:'#7A4A2A',name:'Guide Mariana',lines:["We run tours to the cacao farms!","Jacob joined the Puerto Viejo chocolate tour last year.","He took notes. With a pen. In a notebook.","'For the blog,' he said. grammgren.dk has a whole piece about it.","Best student tourist I've ever had. Very thorough."]},
+      {id:'bs',x:400,y:150,col:null,name:'Chalkboard',isSign:true,lines:["\u2615 CAFE BRITT \u00b7 San Jose","\ud83c\udf6b 100% Costa Rican cacao","\ud83c\udf31 Farm-to-bar chocolate","\ud83c\udf34 Tours to Puerto Viejo available","\u2708\ufe0f Ships worldwide \u2014 including Denmark!"]}
+    ]},
+  sj_family:{name:"LA CASA \u00b7 Familia de Maria",eX:280,pS:{x:280,y:210},
+    th:{f1:'#d2a468',f2:'#c69a5e',wt:'#8a3800',wf:'#6a3000',trim:'#cc6600'},
+    items:[
+      {t:'counter',x:40,y:58,w:190,h:46,c:'#5a2800',title:'COCINA \u00b7 GP',tc:'#ffd9a0'},
+      {t:'counter',x:290,y:58,w:160,h:46,c:'#8b4513',title:'CASADO \ud83c\udf7d',tc:'#ffffff'},
+      {t:'sofa',x:506,y:60,w:110,h:44,c:'#cc4400'},
+      {t:'display',x:646,y:58,w:170,h:64,c:'#0a0a14',accent:'#3366aa',title:'CR vs DK',tc:'#9bbcff',lines:['family football','jacob cheers DK','tio forgives him']},
+      {t:'desk',x:14,y:300,w:104,h:42,c:'#7a4010',title:'\ud83c\udde8\ud83c\uddf7'},
+      {t:'display',x:700,y:172,w:126,h:96,c:'#3a2410',accent:'#cc8844',title:'FAMILIA',tc:'#ffd9b0',lines:['rosario','rodrigo','valentina','...jacob?']},
+      {t:'plant',x:18,y:378,w:62,h:62},
+      {t:'rug',x:300,y:206,w:240,h:140,c:'#7a3a2a',edge:'#cc6600'},
+    ],
+    npcs:[
+      {id:'fam1',x:196,y:258,col:'#e67e22',skin:'#8B5E3C',name:'Abuela Rosario',lines:["\u00a1Bienvenido a la casa!","Jacob always eats three plates of gallo pinto here.","First time: 'I'm not that hungry.'","Third plate: absolute silence. Pure focus.","He is family now. We decided."]},
+      {id:'fam2',x:556,y:258,col:'#2980b9',skin:'#7A4A2A',name:'Tio Rodrigo',lines:["Come in, come in!","Jacob helped me fix my computer last visit.","In Danish-accented Spanish. It worked somehow.","We've watched every Denmark World Cup game together.","He cried in 2022. I cried too. We don't discuss it."]},
+      {id:'fs',x:380,y:176,col:null,name:'Family Notice Board',isSign:true,lines:["\ud83c\udfe1 LA CASA \u2014 Familia de Maria","\ud83c\udf73 Gallo pinto: always on the stove","\ud83d\udcf8 Family photos: wall to the right","\ud83c\udde8\ud83c\uddf7 Visiting: Jacob Gramm Gren (honorary)","\ud83c\udf34 Next trip: Puerto Viejo \u2014 ask Maria!"]}
+    ]},
+};
+// derive collision boxes + attach renderer
+for(const _id in INTERIORS){const _r=INTERIORS[_id];_r.obs=_r.items.filter(i=>i.t!=='rug').map(i=>({x:i.x,y:i.y,w:i.w,h:i.h}));_r.draw=(function(rr){return function(ts){drawRoom(rr,ts);};})(_r);}
+
+
+function dTree(tx,ty){X.fillStyle='#5a3010';X.fillRect(tx+7,ty+16,6,12);X.fillStyle='#1e5a14';X.beginPath();X.arc(tx+10,ty+10,13,0,Math.PI*2);X.fill();X.fillStyle='#2d8022';X.beginPath();X.arc(tx+8,ty+6,8,0,Math.PI*2);X.fill();}
+function dFountain(ts){const cx=FOUNTAIN.x+11,cy=FOUNTAIN.y+11;X.fillStyle='#7a6a8a';X.beginPath();X.ellipse(cx,cy,22,12,0,0,Math.PI*2);X.fill();X.fillStyle='#1e4aaa';X.beginPath();X.ellipse(cx,cy,14,9,0,0,Math.PI*2);X.fill();X.fillStyle='#3366cc';X.beginPath();X.ellipse(cx,cy+1,8,6,0,0,Math.PI*2);X.fill();for(let i=0;i<8;i++){const a=ts*0.002+i*Math.PI/4,r=9+Math.sin(ts*0.004+i)*3;X.fillStyle=`rgba(120,170,255,${0.3+0.3*Math.sin(ts*0.005+i)})`;X.beginPath();X.arc(cx+Math.cos(a)*5,cy-r+Math.sin(ts*0.003+i)*2,1.5,0,Math.PI*2);X.fill();}X.fillStyle='#9a8aaa';X.fillRect(cx-2,cy-13,4,13);X.fillStyle='#bbaacc';X.beginPath();X.arc(cx,cy-13,4,0,Math.PI*2);X.fill();}
+function dLamp(lx,ly,ts){X.fillStyle='#6a5a30';X.fillRect(lx+4,ly,4,24);X.fillStyle='#9a8a40';X.fillRect(lx+1,ly-5,10,6);const g=0.22+0.1*Math.sin(ts*0.003+lx);X.fillStyle=`rgba(255,220,80,${g})`;X.beginPath();X.arc(lx+6,ly-2,10,0,Math.PI*2);X.fill();X.fillStyle='#ffe060';X.beginPath();X.arc(lx+6,ly-2,4,0,Math.PI*2);X.fill();}
+function dStall(s,ts){X.fillStyle='rgba(0,0,0,0.18)';X.fillRect(s.x+3,s.y+3,s.w,s.h+8);X.fillStyle='#c8a060';X.fillRect(s.x,s.y+s.h-10,s.w,14);const w=Math.sin(ts*0.002)*1.5;X.fillStyle=s.col;X.beginPath();X.moveTo(s.x-4,s.y-8+w);X.lineTo(s.x+s.w/2,s.y-16+w);X.lineTo(s.x+s.w+4,s.y-8+w);X.lineTo(s.x+s.w,s.y);X.lineTo(s.x,s.y);X.closePath();X.fill();X.fillStyle='rgba(0,0,0,0.6)';X.fillRect(s.x,s.y+s.h-12,s.w,12);X.fillStyle='#ffe080';X.font='4px "Press Start 2P"';X.textAlign='center';X.fillText(s.label,s.x+s.w/2,s.y+s.h-3);X.textAlign='left';}
+function dFlower(fx,fy,ts){X.fillStyle='#2a6a1a';X.fillRect(fx+3,fy,3,10);const h=(fx*3+ts*0.04)%360;X.fillStyle=`hsl(${h},80%,65%)`;for(const[px,py]of[[0,-6],[4,-5],[5,0],[4,5],[0,6],[-4,5],[-5,0],[-4,-5]]){X.beginPath();X.arc(fx+3+px*0.7,fy+py*0.7,3,0,Math.PI*2);X.fill();}X.fillStyle='#ffe060';X.beginPath();X.arc(fx+3,fy,3,0,Math.PI*2);X.fill();}
+function dBuild(b,ts){
+  X.fillStyle='rgba(0,0,0,0.22)';X.fillRect(b.x+5,b.y+5,b.w,b.h);X.fillStyle=b.wallC;X.fillRect(b.x,b.y+20,b.w,b.h-20);
+  X.fillStyle='rgba(0,0,0,0.07)';for(let by=b.y+20;by<b.y+b.h;by+=8)for(let bx=b.x+(Math.floor((by-b.y)/8)%2*10);bx<b.x+b.w;bx+=22)X.fillRect(bx,by,20,6);
+  X.fillStyle=b.roofC;X.fillRect(b.x,b.y,b.w,24);X.fillStyle='rgba(255,255,255,0.07)';X.fillRect(b.x,b.y,b.w,4);
+  for(const wx of b.wXs){X.fillStyle='#87ceeb';X.fillRect(wx,b.y+28,18,14);X.fillStyle='rgba(255,255,255,0.4)';X.fillRect(wx,b.y+28,7,5);X.strokeStyle='#333';X.lineWidth=1;X.strokeRect(wx,b.y+28,18,14);X.beginPath();X.moveTo(wx+9,b.y+28);X.lineTo(wx+9,b.y+42);X.moveTo(wx,b.y+35);X.lineTo(wx+18,b.y+35);X.stroke();}
+  X.fillStyle='#3a2010';X.fillRect(b.dX,b.dY-20,b.dW,20);X.fillStyle='#cc9900';X.fillRect(b.dX+b.dW-5,b.dY-13,3,4);
+  const dz=b.doorZone;
+  if(ov(P.x,P.y,P.w,P.h,dz.x,dz.y,dz.w,dz.h)){const pulse=0.6+0.4*Math.sin(ts*0.006);X.fillStyle=`rgba(255,220,60,${pulse})`;X.fillRect(b.dX-2,b.dY-24,b.dW+4,4);X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.textAlign='center';X.fillText('SPACE',b.dX+b.dW/2,b.dY-28);X.textAlign='left';}
+  X.fillStyle='rgba(0,0,0,0.6)';X.fillRect(b.x+2,b.y+20,b.w-4,14);X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.textAlign='center';X.fillText(b.label,b.x+b.w/2,b.y+31);X.textAlign='left';
+}
+function dNpc(n,ts){
+  const bob=Math.sin(ts*0.0025+n.x*0.1)*1.8;
+  if(n.isAnimal){X.fillStyle='#ff9800';X.fillRect(n.x+2,n.y+8+bob,12,8);X.fillRect(n.x+1,n.y+3+bob,14,7);X.fillRect(n.x+1,n.y+bob,4,5);X.fillRect(n.x+11,n.y+bob,4,5);X.fillStyle='#1a1a2e';X.fillRect(n.x+4,n.y+4+bob,2,2);X.fillRect(n.x+10,n.y+4+bob,2,2);X.fillStyle='#ff9800';X.fillRect(n.x+14,n.y+10+bob,8,3);X.beginPath();X.arc(n.x+22,n.y+10+bob,5,0,Math.PI*2);X.fill();}
+  else{X.fillStyle='rgba(0,0,0,0.15)';X.beginPath();X.ellipse(n.x+8,n.y+26,7,3,0,0,Math.PI*2);X.fill();X.fillStyle='#3a3a5c';X.fillRect(n.x+3,n.y+19+bob,4,6);X.fillRect(n.x+9,n.y+19+bob,4,6);X.fillStyle=n.col;X.fillRect(n.x+2,n.y+9+bob,12,10);const sk2=n.skin||'#f5c8a0';X.fillStyle=sk2;X.fillRect(n.x+3,n.y+1+bob,10,9);X.fillStyle=n.col;X.fillRect(n.x+3,n.y+1+bob,10,3);X.fillStyle='#1a1a2e';X.fillRect(n.x+5,n.y+3+bob,2,2);X.fillRect(n.x+9,n.y+3+bob,2,2);X.fillStyle='#cc5500';X.fillRect(n.x+2,n.y+24+bob,5,3);X.fillRect(n.x+9,n.y+24+bob,5,3);}
+  if(n.heart){const hs=0.85+0.15*Math.sin(ts*0.005);const hx=n.x+14,hy=n.y+1+bob;X.save();X.translate(hx,hy);X.scale(hs,hs);X.fillStyle='#ff3366';X.beginPath();X.moveTo(0,0);X.bezierCurveTo(0,-3,-5,-3,-5,0);X.bezierCurveTo(-5,3,0,6,0,8);X.bezierCurveTo(0,6,5,3,5,0);X.bezierCurveTo(5,-3,0,-3,0,0);X.fill();X.restore();}
+  if(d2(P.x+P.w/2,P.y+P.h/2,n.x+8,n.y+8)<36*36){X.fillStyle='#f4d06a';X.font='9px "Press Start 2P"';X.textAlign='center';X.fillText('!',n.x+8,n.y-3+bob);X.textAlign='left';X.fillStyle='rgba(0,0,0,0.55)';X.fillRect(n.x-18,n.y-14,52,10);X.fillStyle='#ffffcc';X.font='4px "Press Start 2P"';X.textAlign='center';X.fillText(n.name,n.x+8,n.y-6);X.textAlign='left';}
+}
+function dIntNpc(n,ts){
+  if(n.isSign){X.fillStyle='#7a5a2a';X.fillRect(n.x+7,n.y,3,20);X.fillStyle='rgba(0,0,0,0.7)';X.fillRect(n.x-28,n.y-8,74,22);X.strokeStyle='#f4d06a';X.lineWidth=1;X.strokeRect(n.x-28,n.y-8,74,22);X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.textAlign='center';X.fillText(n.name,n.x+8,n.y+7);X.textAlign='left';X.fillStyle='#8888bb';X.font='5px "Press Start 2P"';X.textAlign='center';X.fillText('▸ SPACE',n.x+8,n.y+18);X.textAlign='left';if(d2(P.x+P.w/2,P.y+P.h/2,n.x+8,n.y+8)<36*36){X.fillStyle='#f4d06a';X.font='9px "Press Start 2P"';X.textAlign='center';X.fillText('!',n.x+8,n.y-12);X.textAlign='left';}return;}
+  const bob=Math.sin(ts*0.0025+n.x*0.1)*1.8;const sk=n.skin||'#f5c8a0';X.fillStyle='rgba(0,0,0,0.15)';X.beginPath();X.ellipse(n.x+8,n.y+26,7,3,0,0,Math.PI*2);X.fill();X.fillStyle='#3a3a5c';X.fillRect(n.x+3,n.y+19+bob,4,6);X.fillRect(n.x+9,n.y+19+bob,4,6);X.fillStyle=n.col;X.fillRect(n.x+2,n.y+9+bob,12,10);X.fillStyle=sk;X.fillRect(n.x+3,n.y+1+bob,10,9);X.fillStyle=n.col;X.fillRect(n.x+3,n.y+1+bob,10,3);X.fillStyle='#1a1a2e';X.fillRect(n.x+5,n.y+3+bob,2,2);X.fillRect(n.x+9,n.y+3+bob,2,2);X.fillStyle='#cc5500';X.fillRect(n.x+2,n.y+24+bob,5,3);X.fillRect(n.x+9,n.y+24+bob,5,3);
+  if(n.heart){const hs=0.85+0.15*Math.sin(ts*0.005);const hx=n.x+14,hy=n.y+1+bob;X.save();X.translate(hx,hy);X.scale(hs,hs);X.fillStyle='#ff3366';X.beginPath();X.moveTo(0,0);X.bezierCurveTo(0,-3,-5,-3,-5,0);X.bezierCurveTo(-5,3,0,6,0,8);X.bezierCurveTo(0,6,5,3,5,0);X.bezierCurveTo(5,-3,0,-3,0,0);X.fill();X.restore();}
+  if(d2(P.x+P.w/2,P.y+P.h/2,n.x+8,n.y+8)<36*36){X.fillStyle='#f4d06a';X.font='9px "Press Start 2P"';X.textAlign='center';X.fillText('!',n.x+8,n.y-3+bob);X.textAlign='left';}
+}
+function dPalm(tx,ty){
+  X.fillStyle='#8a5a20';X.fillRect(tx+8,ty+18,5,16);
+  // Curved trunk
+  X.strokeStyle='#8a5a20';X.lineWidth=4;X.beginPath();X.moveTo(tx+10,ty+34);X.bezierCurveTo(tx+14,ty+20,tx+8,ty+10,tx+10,ty+2);X.stroke();
+  // Fronds
+  X.fillStyle='#1a8a20';
+  const fronds=[[0,-14,20,4],[14,-8,4,20],[-14,-8,4,20],[10,-18,16,4],[-10,-18,4,16]];
+  for(const[dx,dy,fw,fh] of fronds){X.fillRect(tx+10+dx,ty+dy,fw,fh);}
+  X.fillStyle='#cc8800';X.beginPath();X.arc(tx+10,ty+2,4,0,Math.PI*2);X.fill();// coconut
+}
+function drawCR(ts){
+  // ── SAN JOSÉ — urban warm-toned streets ───────────────────────────────────
+  // Base: warm concrete / asphalt
+  X.fillStyle='#b7ad98';X.fillRect(0,0,CRW,CRH);
+  for(let cy=0;cy<CRH;cy+=18)for(let cx=0;cx<CRW;cx+=24){
+    X.fillStyle=((Math.floor(cy/18)+Math.floor(cx/24))%2===0)?'#bcb29d':'#b1a791';
+    X.fillRect(cx,cy,24,18);
+  }
+  X.fillStyle='rgba(255,255,255,0.02)';for(let i=0;i<120;i++)X.fillRect((i*151)%CRW,(i*97)%CRH,2,2);
+  // Street grid — main roads
+  X.fillStyle='#888878';
+  X.fillRect(0,148,CRW,26);  // horizontal main road top
+  X.fillRect(0,430,CRW,26);  // horizontal main road bottom
+  X.fillRect(190,0,26,CRH);  // vertical left road
+  X.fillRect(620,0,26,CRH);  // vertical right road
+  // Road markings
+  X.fillStyle='#ffee88';X.lineWidth=2;
+  for(let rx=0;rx<CRW;rx+=36){X.fillRect(rx,159,20,4);X.fillRect(rx,441,20,4);}
+  for(let ry=0;ry<CRH;ry+=36){X.fillRect(201,ry,4,20);X.fillRect(631,ry,4,20);}
+  // Sidewalks
+  X.fillStyle='#d0c0a8';
+  X.fillRect(0,143,CRW,8);X.fillRect(0,172,CRW,8);
+  X.fillRect(0,425,CRW,8);X.fillRect(0,454,CRW,8);
+  X.fillRect(185,0,8,CRH);X.fillRect(213,0,8,CRH);
+  X.fillRect(617,0,8,CRH);X.fillRect(644,0,8,CRH);
+  // ── CARS — drawn under NPCs and buildings ─────────────────────────────────
+  for(const c of SJ_CARS)dCar(c,ts);
+  // ── PARQUE CENTRAL ──────────────────────────────────────────────────────
+  const p=SJ_PLAZA;
+  X.fillStyle='#2a7a18';X.fillRect(p.x,p.y,p.w,p.h);
+  // Park paths
+  X.fillStyle='#c8b890';
+  X.fillRect(p.x,p.y+p.h/2-4,p.w,8);
+  X.fillRect(p.x+p.w/2-4,p.y,8,p.h);
+  // Park grass patches
+  X.fillStyle='#34921e';for(let gi=0;gi<12;gi++)X.fillRect(p.x+14+gi%4*52,p.y+14+Math.floor(gi/4)*50,38,34);
+  // Benches in park
+  const pbenches=[{x:p.x+20,y:p.y+p.h/2-10},{x:p.x+p.w-44,y:p.y+p.h/2-10},{x:p.x+p.w/2-10,y:p.y+20},{x:p.x+p.w/2-10,y:p.y+p.h-30}];
+  for(const b of pbenches){X.fillStyle='#8a6a3a';X.fillRect(b.x,b.y,24,8);X.fillStyle='#6a4a1a';X.fillRect(b.x+2,b.y+8,4,5);X.fillRect(b.x+18,b.y+8,4,5);}
+  // Fountain — Parque Central
+  const fc=SJ_FOUNTAIN,fcx=fc.x+fc.w/2,fcy=fc.y+fc.h/2;
+  X.fillStyle='#7a9aaa';X.beginPath();X.ellipse(fcx,fcy,fc.w/2,fc.h/3,0,0,Math.PI*2);X.fill();
+  X.fillStyle='#3a88aa';X.beginPath();X.ellipse(fcx,fcy,fc.w/3,fc.h/4,0,0,Math.PI*2);X.fill();
+  for(let i=0;i<6;i++){const a=ts*0.002+i*Math.PI/3;X.fillStyle=`rgba(140,200,255,${0.4+0.2*Math.sin(ts*0.005+i)})`;X.beginPath();X.arc(fcx+Math.cos(a)*4,fcy-7+Math.sin(ts*0.004+i)*2,1.5,0,Math.PI*2);X.fill();}
+  X.fillStyle='#aabbcc';X.fillRect(fcx-2,fcy-10,4,10);
+  // ── PUERTO VIEJO TRAVEL BOOTH ─────────────────────────────────────────────
+  const bth=PV_BOOTH,bz=PV_BOOTH.zone;
+  X.fillStyle='#1a5a10';X.fillRect(bth.x,bth.y,bth.w,bth.h);
+  X.fillStyle='#2a8a18';X.fillRect(bth.x,bth.y,bth.w,10);
+  X.fillStyle='#fffaee';X.fillRect(bth.x+4,bth.y+12,bth.w-8,bth.h-16);
+  X.fillStyle='#cc3300';X.font='4px "Press Start 2P"';X.textAlign='center';X.fillText('PUERTO',bth.x+bth.w/2,bth.y+21);X.fillText('VIEJO',bth.x+bth.w/2,bth.y+28);X.textAlign='left';
+  X.fillStyle='#004400';X.font='3px "Press Start 2P"';X.textAlign='center';X.fillText('🌴 TRIPS',bth.x+bth.w/2,bth.y+36);X.textAlign='left';
+  if(ov(P.x,P.y,P.w,P.h,bz.x,bz.y,bz.w,bz.h)){
+    const pulse=0.6+0.4*Math.sin(ts*0.006);
+    X.fillStyle=`rgba(255,220,60,${pulse})`;X.fillRect(bth.x-2,bth.y-4,bth.w+4,3);
+    X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.textAlign='center';X.fillText('SPACE',bth.x+bth.w/2,bth.y-7);X.textAlign='left';
+  }
+  // ── LAMPS along roads ─────────────────────────────────────────────────────
+  const sjLamps=[{x:220,y:156},{x:600,y:156},{x:220,y:432},{x:600,y:432},{x:196,y:220},{x:196,y:380},{x:624,y:220},{x:624,y:380}];
+  for(const l of sjLamps)dLamp(l.x,l.y,ts);
+  // ── BUILDINGS ─────────────────────────────────────────────────────────────
+  for(const b of CR_BLDS)dBuild(b,ts);
+  // ── TREES / PALMS ─────────────────────────────────────────────────────────
+  for(const t of CR_TREES){if(t.palm)dPalm(t.x,t.y);else dTree(t.x,t.y);}
+  // ── FLOWERS ───────────────────────────────────────────────────────────────
+  for(const f of CR_FLOWERS)dFlower(f.x,f.y,ts);
+  // ── BUS STOPS ─────────────────────────────────────────────────────────────
+  for(const bs of SJ_BUSES){
+    X.fillStyle='#336699';X.fillRect(bs.x,bs.y,bs.w,bs.h);
+    X.fillStyle='#aaccee';X.fillRect(bs.x+2,bs.y+4,bs.w-4,bs.h-8);
+    X.fillStyle='#ffffff';X.font='3px "Press Start 2P"';X.textAlign='center';X.fillText('BUS',bs.x+bs.w/2,bs.y+14);X.textAlign='left';
+  }
+  // ── CR EGGS ───────────────────────────────────────────────────────────────
+  for(const e of CR_EGGS){if(e.found)continue;const g=0.5+0.5*Math.sin(ts*0.004+e.x);X.fillStyle=`rgba(255,80,255,${g*0.25})`;X.beginPath();X.arc(e.x+9,e.y+9,15,0,Math.PI*2);X.fill();X.fillStyle='rgba(0,0,0,0.65)';X.fillRect(e.x,e.y,18,18);X.strokeStyle=`rgba(255,80,255,${g})`;X.lineWidth=1.5;X.strokeRect(e.x,e.y,18,18);X.font='11px serif';X.textAlign='center';X.fillText(e.icon,e.x+9,e.y+13);X.textAlign='left';if(d2(P.x+P.w/2,P.y+P.h/2,e.x+9,e.y+9)<38*38){X.fillStyle='#ff88ff';X.font='6px "Press Start 2P"';X.textAlign='center';X.fillText('SPACE',e.x+9,e.y-5);X.textAlign='left';}}
+  // ── RETURN AIRPLANE ───────────────────────────────────────────────────────
+  const ra=CR_AIRPORT,rz=ra.zone;
+  X.fillStyle='#555566';X.fillRect(ra.x-20,ra.y+ra.h,ra.w+40,18);
+  X.fillStyle='#ffee00';X.fillRect(ra.x+ra.w/2-2,ra.y+ra.h+4,4,10);
+  X.fillStyle='rgba(0,0,0,0.18)';X.beginPath();X.ellipse(ra.x+ra.w/2,ra.y+ra.h+4,ra.w*0.6,6,0,0,Math.PI*2);X.fill();
+  X.fillStyle='#ddeeff';X.fillRect(ra.x+8,ra.y+10,ra.w-12,16);
+  X.fillStyle='#bbccdd';X.fillRect(ra.x+ra.w-4,ra.y+14,10,8);
+  X.fillStyle='#aabbcc';X.fillRect(ra.x+4,ra.y+12,8,12);
+  X.fillStyle='#ccdded';X.fillRect(ra.x+20,ra.y+14,ra.w-28,6);
+  X.fillStyle='#aabbcc';X.fillRect(ra.x+28,ra.y+5,8,10);
+  X.fillStyle='#87ceeb';for(let wi=0;wi<4;wi++)X.fillRect(ra.x+18+wi*14,ra.y+13,6,5);
+  drawCRFlag(ra.x+ra.w-2,ra.y+10,12,8);drawDanishFlag(ra.x+ra.w-2,ra.y+20,12,8);
+  X.fillStyle='#333';X.beginPath();X.arc(ra.x+22,ra.y+ra.h+2,4,0,Math.PI*2);X.fill();
+  X.beginPath();X.arc(ra.x+ra.w-14,ra.y+ra.h+2,4,0,Math.PI*2);X.fill();
+  if(ov(P.x,P.y,P.w,P.h,rz.x,rz.y,rz.w,rz.h)){
+    const pulse=0.6+0.4*Math.sin(ts*0.006);
+    X.fillStyle=`rgba(255,220,60,${pulse})`;X.fillRect(ra.x-2,ra.y-6,ra.w+4,4);
+    X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.textAlign='center';
+    X.fillText('✈ SPACE — FLY TO DENMARK',ra.x+ra.w/2,ra.y-10);
+    X.textAlign='left';
+  }
+  // Airport sign
+  X.fillStyle='#aaaaaa';X.fillRect(ra.x-40,ra.y+6,3,30);
+  X.fillStyle='#004488';X.fillRect(ra.x-62,ra.y+2,26,16);
+  X.fillStyle='#ffffff';X.font='3px "Press Start 2P"';X.textAlign='center';X.fillText('AEROP.',ra.x-49,ra.y+10);X.fillText('SJO',ra.x-49,ra.y+17);X.textAlign='left';
+  // ── LOCATION SIGN ─────────────────────────────────────────────────────────
+  X.fillStyle='rgba(0,0,0,0.7)';X.fillRect(14,16,230,18);
+  X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.fillText('🇨🇷 SAN JOSÉ · COSTA RICA',18,28);
+}
+function drawTown(ts){
+  // grass field with soft mow stripes
+  for(let gy=0;gy<WH;gy+=26){X.fillStyle=(Math.floor(gy/26)%2===0)?'#4d7a39':'#477234';X.fillRect(0,gy,WW,26);}
+  X.fillStyle='rgba(255,255,255,0.022)';for(let i=0;i<150;i++)X.fillRect((i*137)%WW,(i*89)%WH,2,2);
+  X.fillStyle='#3a6e2c';X.fillRect(0,0,WW,10);X.fillRect(0,WH-10,WW,10);X.fillRect(0,0,10,WH);X.fillRect(WW-10,0,10,WH);
+  // central town square (stone plaza)
+  const PZ={x:172,y:142,w:496,h:286};
+  X.fillStyle='rgba(0,0,0,0.10)';X.fillRect(PZ.x+4,PZ.y+4,PZ.w,PZ.h);
+  for(let ty=PZ.y;ty<PZ.y+PZ.h;ty+=28)for(let tx=PZ.x;tx<PZ.x+PZ.w;tx+=28){
+    const tw=Math.min(28,PZ.x+PZ.w-tx),th=Math.min(28,PZ.y+PZ.h-ty);
+    X.fillStyle=((Math.floor((ty-PZ.y)/28)+Math.floor((tx-PZ.x)/28))%2===0)?'#a7a08c':'#9b9480';
+    X.fillRect(tx,ty,tw,th);X.strokeStyle='rgba(0,0,0,0.05)';X.lineWidth=1;X.strokeRect(tx,ty,tw,th);
+  }
+  X.strokeStyle='#857d68';X.lineWidth=4;X.strokeRect(PZ.x+2,PZ.y+2,PZ.w-4,PZ.h-4);
+  X.strokeStyle='rgba(255,255,255,0.10)';X.lineWidth=1;X.strokeRect(PZ.x+5,PZ.y+5,PZ.w-10,PZ.h-10);
+  X.fillStyle='#1f5fa0';X.fillRect(LAKE.x,LAKE.y,LAKE.w,LAKE.h);X.fillStyle='#2b73bd';X.fillRect(LAKE.x,LAKE.y,LAKE.w,8);X.fillStyle='rgba(255,255,255,0.18)';for(let i=0;i<5;i++)X.fillRect(LAKE.x+14+i*42,LAKE.y+14+Math.sin(ts*0.002+i)*3,30,3);X.fillStyle='rgba(0,0,0,0.12)';X.fillRect(LAKE.x,LAKE.y+LAKE.h-6,LAKE.w,6);
+  X.fillStyle='#9a8060';X.fillRect(BRIDGE.x,BRIDGE.y,BRIDGE.w,BRIDGE.h);X.strokeStyle='#7a6040';X.lineWidth=2;for(let i=0;i<=3;i++){X.beginPath();X.moveTo(BRIDGE.x+i*15,BRIDGE.y);X.lineTo(BRIDGE.x+i*15,BRIDGE.y+BRIDGE.h);X.stroke();}X.fillStyle='#aaa090';X.fillRect(BRIDGE.x,BRIDGE.y,BRIDGE.w,4);X.fillRect(BRIDGE.x,BRIDGE.y+BRIDGE.h-4,BRIDGE.w,4);
+  for(const bt of BOATS){X.fillStyle='#c89050';X.fillRect(bt.x,bt.y+bt.h/2,bt.w,bt.h/2);X.fillStyle='#a87030';X.fillRect(bt.x+bt.w/2,bt.y,2,bt.h/2);X.fillStyle='#e0c080';X.fillRect(bt.x+bt.w/2+2,bt.y,12,8);}
+  X.fillStyle='#aaaaaa';X.fillRect(FP.x,FP.y,3,70);const fw=Math.sin(ts*0.003)*3;drawDanishFlag(FP.x+3,FP.y+fw,28,18);drawCRFlag(FP.x+3,FP.y+22+fw*0.7,22,14);X.fillStyle='#ddddaa';X.beginPath();X.arc(FP.x+1.5,FP.y,3,0,Math.PI*2);X.fill();
+  for(const t of TREES)dTree(t.x,t.y);
+  for(const b of BLDS)dBuild(b,ts);
+  for(const b of BENCH_B){X.fillStyle='#8a6a3a';X.fillRect(b.x,b.y,b.w,b.h);X.fillStyle='#6a4a1a';X.fillRect(b.x+4,b.y+b.h,8,5);X.fillRect(b.x+b.w-12,b.y+b.h,8,5);}
+  for(const f of FLOWERS)dFlower(f.x,f.y,ts);
+  for(const s of STALLS)dStall(s,ts);
+  for(const l of LAMPS)dLamp(l.x,l.y,ts);
+  dFountain(ts);
+  for(const e of EGGS){if(e.found)continue;const g=0.5+0.5*Math.sin(ts*0.004+e.x);X.fillStyle=`rgba(255,80,255,${g*0.25})`;X.beginPath();X.arc(e.x+9,e.y+9,15,0,Math.PI*2);X.fill();X.fillStyle='rgba(0,0,0,0.65)';X.fillRect(e.x,e.y,18,18);X.strokeStyle=`rgba(255,80,255,${g})`;X.lineWidth=1.5;X.strokeRect(e.x,e.y,18,18);X.font='11px serif';X.textAlign='center';X.fillText(e.icon,e.x+9,e.y+13);X.textAlign='left';if(d2(P.x+P.w/2,P.y+P.h/2,e.x+9,e.y+9)<38*38){X.fillStyle='#ff88ff';X.font='6px "Press Start 2P"';X.textAlign='center';X.fillText('SPACE',e.x+9,e.y-5);X.textAlign='left';}}
+  for(const n of WNPCS)dNpc(n,ts);
+  // ── AIRPLANE ──────────────────────────────────────────────────────────────
+  const ap=AIRPLANE,az=ap.zone;
+  // Tarmac strip
+  X.fillStyle='#555566';X.fillRect(ap.x-20,ap.y+ap.h,ap.w+40,18);
+  X.fillStyle='#ffee00';X.fillRect(ap.x+ap.w/2-2,ap.y+ap.h+4,4,10);
+  // Shadow
+  X.fillStyle='rgba(0,0,0,0.18)';X.beginPath();X.ellipse(ap.x+ap.w/2,ap.y+ap.h+4,ap.w*0.6,6,0,0,Math.PI*2);X.fill();
+  // Fuselage
+  X.fillStyle='#ddeeff';X.fillRect(ap.x+8,ap.y+10,ap.w-12,16);
+  X.fillStyle='#bbccdd';X.fillRect(ap.x+ap.w-4,ap.y+14,10,8);// tail
+  X.fillStyle='#aabbcc';X.fillRect(ap.x+4,ap.y+12,8,12);// nose
+  // Wings
+  X.fillStyle='#ccdded';X.fillRect(ap.x+20,ap.y+14,ap.w-28,6);
+  X.fillStyle='#aabbcc';X.fillRect(ap.x+28,ap.y+5,8,10);// top fin
+  // Windows
+  X.fillStyle='#87ceeb';for(let wi=0;wi<4;wi++)X.fillRect(ap.x+18+wi*14,ap.y+13,6,5);
+  // Flag stickers on tail
+  drawDanishFlag(ap.x+ap.w-2,ap.y+10,12,8);
+  drawCRFlag(ap.x+ap.w-2,ap.y+20,12,8);
+  // Wheels
+  X.fillStyle='#333';X.beginPath();X.arc(ap.x+22,ap.y+ap.h+2,4,0,Math.PI*2);X.fill();X.beginPath();X.arc(ap.x+ap.w-14,ap.y+ap.h+2,4,0,Math.PI*2);X.fill();
+  // Prompt when near
+  if(ov(P.x,P.y,P.w,P.h,az.x,az.y,az.w,az.h)){
+    const pulse=0.6+0.4*Math.sin(ts*0.006);
+    X.fillStyle=`rgba(255,220,60,${pulse})`;X.fillRect(ap.x-2,ap.y-6,ap.w+4,4);
+    X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.textAlign='center';
+    X.fillText('✈ SPACE',ap.x+ap.w/2,ap.y-10);
+    X.fillText('FLY TO COSTA RICA',ap.x+ap.w/2,ap.y-20);
+    X.textAlign='left';
+  }
+  // Small sign next to airplane
+  X.fillStyle='#aaaaaa';X.fillRect(ap.x-40,ap.y+6,3,30);
+  X.fillStyle='#224488';X.fillRect(ap.x-58,ap.y+2,22,16);
+  X.fillStyle='#ffffff';X.font='4px "Press Start 2P"';X.textAlign='center';X.fillText('✈ CR',ap.x-47,ap.y+13);X.textAlign='left';
+}
+function dPlayer(ts){
+  const useCamera=scene==='town'||scene==='costarica';
+  const sx=useCamera?P.x-camX:P.x,sy=useCamera?P.y-camY:P.y;
+  const mv=P.vx!==0||P.vy!==0,leg=mv?Math.sin(ts*0.016)*4:0;
+  X.fillStyle='rgba(0,0,0,0.2)';X.beginPath();X.ellipse(sx+7,sy+P.h+2,7,3,0,0,Math.PI*2);X.fill();
+  X.fillStyle='#cc4400';X.fillRect(sx,sy+16,6,3);X.fillRect(sx+8,sy+16,6,3);
+  X.fillStyle='#2244aa';X.fillRect(sx+1,sy+11,5,6+leg);X.fillRect(sx+8,sy+11,5,6-leg);
+  X.fillStyle='#4fc3f7';X.fillRect(sx,sy+5,P.w,8);X.fillStyle='rgba(255,255,255,0.22)';X.fillRect(sx+3,sy+5,8,3);
+  X.fillStyle='#4fc3f7';X.fillRect(sx-3,sy+5,4,7);X.fillRect(sx+P.w-1,sy+5,4,7);
+  X.fillStyle='#f5c8a0';X.fillRect(sx+2,sy,10,7);X.fillStyle='#5c3a1e';X.fillRect(sx+2,sy,10,2);
+  X.fillStyle='#1a1a2e';
+  if(P.dir===0){X.fillRect(sx+4,sy+3,2,2);X.fillRect(sx+8,sy+3,2,2);}
+  else if(P.dir===1){X.fillRect(sx+4,sy+2,2,2);X.fillRect(sx+8,sy+2,2,2);}
+  else if(P.dir===2){X.fillRect(sx+3,sy+2,2,2);X.fillRect(sx+7,sy+2,2,2);}
+  else{X.fillRect(sx+5,sy+2,2,2);X.fillRect(sx+9,sy+2,2,2);}
+  X.fillStyle='rgba(0,0,0,0.6)';X.fillRect(sx-6,sy-12,28,9);X.fillStyle='#f4d06a';X.font='5px "Press Start 2P"';X.fillText('JACOB',sx-4,sy-5);
+}
+function applyGrade(){
+  const g=X.createRadialGradient(W/2,H/2,H*0.34,W/2,H/2,H*0.96);
+  g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(6,16,15,0.42)');
+  X.fillStyle=g;X.fillRect(0,0,W,H);
+  const t=X.createLinearGradient(0,0,0,H);
+  t.addColorStop(0,'rgba(255,242,205,0.05)');t.addColorStop(0.22,'rgba(255,242,205,0)');
+  X.fillStyle=t;X.fillRect(0,0,W,H);
+}
+function showWin(){const w=document.getElementById('win');if(!w)return;w.classList.add('show');setTimeout(function(){w.classList.remove('show');},5200);}
+let lastTs=0;
+function loop(ts){
+  if(!gameOn)return;lastTs=lastTs||ts;lastTs=ts;
+  if(fading){fadeA+=fadeDir*0.07;if(fadeDir===1&&fadeA>=1){fadeA=1;fadeDone();}if(fadeDir===-1&&fadeA<=0){fadeA=0;fading=false;}}
+  if(!dlgOpen&&!fading){
+    updateNpcs(ts);const spd=2;let nx=P.x,ny=P.y;
+    if(keys['ArrowLeft']||keys['a']){nx-=spd;P.dir=2;}if(keys['ArrowRight']||keys['d']){nx+=spd;P.dir=3;}
+    if(keys['ArrowUp']||keys['w']){ny-=spd;P.dir=1;}if(keys['ArrowDown']||keys['s']){ny+=spd;P.dir=0;}
+    P.vx=nx-P.x;P.vy=ny-P.y;
+    if(scene==='town'){if(!townBlocked(nx,P.y))P.x=nx;if(!townBlocked(P.x,ny))P.y=ny;updateCam();}
+    else if(scene==='costarica'){if(!crBlocked(nx,P.y))P.x=nx;if(!crBlocked(P.x,ny))P.y=ny;updateCam();}
+    else{if(!intBlocked(nx,P.y,scene))P.x=nx;if(!intBlocked(P.x,ny,scene))P.y=ny;}
+  }else{P.vx=0;P.vy=0;}
+  X.clearRect(0,0,W,H);
+  if(scene==='town'){X.save();X.translate(-camX,-camY);drawTown(ts);X.restore();}
+  else if(scene==='costarica'){X.save();X.translate(-camX,-camY);drawCR(ts);for(const n of CR_NPCS)dNpc(n,ts);X.restore();}
+  else{INTERIORS[scene].draw(ts);for(const n of INTERIORS[scene].npcs)dIntNpc(n,ts);}
+  dPlayer(ts);
+  applyGrade();
+  if(fadeA>0){X.fillStyle=`rgba(0,0,0,${fadeA})`;X.fillRect(0,0,W,H);}
+  requestAnimationFrame(loop);
+}
+document.addEventListener('keydown',e=>{
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space'].includes(e.code))e.preventDefault();
+  keys[e.code]=true;keys[e.key]=true;
+  if(e.code==='Space'&&gameOn&&!fading)interact();
+});
+document.addEventListener('keyup',e=>{keys[e.code]=false;keys[e.key]=false;});
+function bindBtn(id,code){
+  const el=document.getElementById(id);if(!el)return;
+  const on=()=>keys[code]=true,off=()=>keys[code]=false;
+  el.addEventListener('mousedown',on);el.addEventListener('mouseup',off);el.addEventListener('mouseleave',off);
+  el.addEventListener('touchstart',e=>{e.preventDefault();on();},{passive:false});
+  el.addEventListener('touchend',e=>{e.preventDefault();off();},{passive:false});
+}
+bindBtn('ml','ArrowLeft');bindBtn('mr','ArrowRight');bindBtn('mu','ArrowUp');bindBtn('md','ArrowDown');
+document.getElementById('mt').addEventListener('click',()=>{if(!fading)interact();});
+const sndBtn=document.getElementById('snd');
+sndBtn.addEventListener('click',()=>{audioMuted=!audioMuted;sndBtn.textContent=audioMuted?'🔇':'🔊';if(_audioCtx){try{audioMuted?_audioCtx.suspend():_audioCtx.resume();}catch(e){}}});
+document.getElementById('sp').addEventListener('click',()=>{document.getElementById('so').style.display='none';gameOn=true;requestAnimationFrame(loop);});
+</script>
+</body>
+</html>

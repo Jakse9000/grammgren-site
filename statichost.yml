@@ -1,9 +1,0 @@
-# statichost.eu configuration
-# public = the folder that holds index.html. "." means the repo root.
-public: .
-
-# First domain = primary (what visitors land on).
-# Any domains listed after it redirect to the primary.
-domains:
-  - grammgren.dk
-  - www.grammgren.dk

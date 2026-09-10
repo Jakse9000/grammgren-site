@@ -96,7 +96,19 @@
   }
   .nav .pill::after{display:none}
   .nav .pill:hover{background:var(--teal-deep)}
-  @media(max-width:680px){.nav a:not(.pill){display:none}}
+  /* Mobile: the links used to be hidden outright, leaving no way to reach a
+     section on a phone. Wrap them onto a second row instead. CSS only, so it
+     works with JavaScript unavailable. */
+  @media(max-width:680px){
+    /* padding-top/bottom, not the shorthand: the shorthand would wipe the
+       horizontal padding .wrap supplies and push everything to the edge. */
+    .bar-in{height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px;gap:9px}
+    .nav{width:100%;gap:16px;justify-content:space-between;flex-wrap:nowrap;
+         overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .nav::-webkit-scrollbar{display:none}
+    .nav a{font-size:13.5px;white-space:nowrap}
+    .nav .pill{padding:7px 14px;font-size:13.5px}
+  }
 
   /* ---------- hero ---------- */
   .hero{padding-top:clamp(56px,9vw,110px);padding-bottom:clamp(48px,7vw,84px)}

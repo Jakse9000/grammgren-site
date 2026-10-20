@@ -1,0 +1,1255 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Hvervning til vores Horde-gruppe i WoW Forever: vælg class, spec og professions.">
+<title>Hordens Krigsråd</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 2h24v28l-12-6-12 6z' fill='%23c4302a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Grenze+Gotisch:wght@600;800&display=swap">
+<style>
+:root{
+  /* Layout: et krigsbord om natten. Banner-masthead, gruppens party frames øverst, hvervningen nedenunder med et heltekort, der følger med. Bevidst ét mørkt univers, fordi WoW's class-farver er lavet til mørk baggrund. */
+  --iron:#15110e;
+  --leather:#201913;
+  --leather-2:#2b221b;
+  --seam:#47382b;
+  --seam-2:#604c3a;
+  --bone:#efe4cd;
+  --ash:#ad9e87;
+  --dim:#7f715f;
+  --blood:#c4302a;
+  --blood-hi:#dc4537;
+  --blood-deep:#74201a;
+  --tank:#71aae3;
+  --healer:#7fc66d;
+  --dps:#e2594d;
+  --good:#7fc66d;
+  --warn:#e8a842;
+  --bad:#e2594d;
+  --glow:rgba(196,48,42,.22);
+  --torch:rgba(232,150,60,.09);
+  --shade:rgba(0,0,0,.55);
+  --display:"Grenze Gotisch", Georgia, "Times New Roman", serif;
+  --body:"Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  --label:"Alegreya Sans SC", "Alegreya Sans", "Gill Sans", system-ui, sans-serif;
+  color-scheme: dark;
+}
+html{background:var(--iron)}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{
+  margin:0;
+  background-color:var(--iron);
+  background-image:
+    radial-gradient(60rem 30rem at 8% -8rem, var(--glow), transparent 70%),
+    radial-gradient(48rem 26rem at 96% -6rem, var(--torch), transparent 70%);
+  background-repeat:no-repeat;
+  color:var(--bone);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+*{box-sizing:border-box}
+a{color:var(--bone);text-underline-offset:3px;text-decoration-color:var(--seam-2)}
+a:hover{text-decoration-color:var(--blood-hi)}
+:focus-visible{outline:2px solid var(--bone);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.wrap{
+  max-width:1160px;margin:0 auto;
+  padding-block:28px 64px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:56px;
+}
+
+/* Masthead */
+.masthead{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,auto);gap:18px 28px;align-items:start}
+.banner{
+  width:70px;height:170px;margin-top:-28px;
+  background:linear-gradient(180deg,var(--blood-hi),var(--blood) 45%,var(--blood-deep));
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);
+  display:flex;justify-content:center;padding-top:30px;color:var(--bone);
+}
+.banner svg{width:40px;height:40px}
+.eyebrow{margin:0;font-family:var(--label);font-weight:500;letter-spacing:.09em;color:var(--ash);font-size:1rem}
+h1{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2.7rem, 1.9rem + 4vw, 4.9rem);
+  line-height:.95;margin:.12em 0 .22em;letter-spacing:.005em;text-wrap:balance;
+}
+.lede{margin:0;max-width:58ch;color:var(--bone);font-size:1.08rem}
+.lede em{font-style:normal;color:var(--ash)}
+.countdown{
+  border:1px solid var(--seam);border-radius:4px;padding:14px 18px 12px;min-width:0;
+  background:linear-gradient(180deg,var(--leather-2),var(--leather));
+}
+.label{margin:0 0 6px;font-family:var(--label);font-weight:700;letter-spacing:.09em;color:var(--ash);font-size:.92rem}
+.cd-digits{display:flex;gap:16px;font-variant-numeric:tabular-nums}
+.cd-digits span{display:flex;flex-direction:column}
+.cd-digits b{font-family:var(--display);font-weight:800;font-size:2.7rem;line-height:1}
+.cd-digits i{font-style:normal;font-family:var(--label);color:var(--ash);font-size:.85rem;letter-spacing:.06em}
+.cd-when{margin:.55rem 0 0;color:var(--ash);font-size:.875rem;max-width:34ch}
+.chips-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tagchip{font-family:var(--label);font-weight:700;letter-spacing:.07em;font-size:.82rem;border:1px solid var(--seam-2);border-radius:999px;padding:2px 10px;color:var(--bone)}
+.tagchip.horde{background:var(--blood-deep);border-color:var(--blood)}
+
+/* Section heads */
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--seam)}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,1.4rem + 1.6vw,2.7rem);margin:0;line-height:1;text-wrap:balance}
+.sec-head .spacer{flex:1 1 0}
+.comp{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;font-family:var(--label);font-weight:700;letter-spacing:.06em;font-size:.95rem}
+.comp span{display:inline-flex;align-items:center;gap:6px;color:var(--ash)}
+.comp span.ok{color:var(--good)}
+.comp span.miss{color:var(--bad)}
+.comp .role{width:20px;height:20px}
+.note{margin:0 0 14px;padding:10px 14px;border:1px solid var(--seam-2);border-radius:4px;color:var(--bone);background:var(--leather);font-size:.95rem;max-width:80ch}
+
+/* Role badge */
+.role{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--shade);color:var(--rc,var(--bone));flex:none}
+.role svg{width:62%;height:62%}
+
+/* Party frames */
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,196px),1fr));gap:12px}
+.frame{
+  --cc:var(--seam-2);--on:var(--bone);--cct:var(--bone);
+  position:relative;background:var(--leather);border:1px solid var(--seam);border-radius:4px;
+  display:flex;flex-direction:column;min-width:0;
+}
+.frame .bar{
+  background:var(--cc);color:var(--on);
+  padding:8px 10px 7px;display:flex;align-items:center;gap:8px;
+  border-radius:3px 3px 0 0;font-weight:800;font-size:1.05rem;line-height:1.2;
+}
+.frame .bar .who{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frame .body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1 1 auto;min-width:0}
+.frame .char{margin:0;font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.1;color:var(--bone);overflow-wrap:anywhere}
+.frame .cls{margin:0;color:var(--cct);font-weight:700;line-height:1.3}
+.frame .meta{margin:0;color:var(--ash);font-size:.9rem;line-height:1.35}
+.pchips{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.pchip{font-size:.8rem;border:1px solid var(--seam-2);border-radius:999px;padding:0 8px;color:var(--bone);line-height:1.6}
+.pchip.sec{color:var(--ash);border-style:dashed}
+.cry{margin:2px 0 0;font-style:italic;color:var(--ash);font-size:.92rem;overflow-wrap:anywhere}
+.ops{display:flex;flex-wrap:wrap;gap:14px;margin-top:auto;padding-top:6px}
+.linkbtn{background:none;border:0;color:var(--ash);font:inherit;font-size:.86rem;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--seam-2)}
+.linkbtn:hover{color:var(--bone)}
+.linkbtn.danger{color:var(--bad)}
+.reserve{position:absolute;top:-9px;right:8px;font-family:var(--label);font-weight:700;letter-spacing:.07em;font-size:.72rem;background:var(--iron);border:1px solid var(--seam-2);border-radius:999px;padding:0 8px;color:var(--ash)}
+.frame.empty{background:transparent;border:1px dashed var(--seam-2);min-height:168px;display:grid;place-items:center;text-align:center;color:var(--ash);padding:14px}
+.frame.empty .need{display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--label);font-weight:700;letter-spacing:.07em}
+.frame.empty .role{width:38px;height:38px;background:var(--leather-2)}
+.frame.empty small{font-family:var(--body);letter-spacing:0;font-weight:400;color:var(--dim);font-size:.85rem;max-width:22ch}
+
+/* Intel */
+.intel{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px 28px;margin-top:26px}
+.panel{min-width:0;border-top:1px solid var(--seam);padding-top:12px}
+.panel.wide{grid-column:1/-1}
+.panel h3{font-family:var(--label);font-weight:700;letter-spacing:.09em;font-size:1rem;color:var(--ash);margin:0 0 10px}
+.warnlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.warnlist li{display:grid;grid-template-columns:12px minmax(0,1fr);gap:10px;align-items:start;max-width:62ch}
+.warnlist li::before{content:"";width:9px;height:9px;transform:rotate(45deg);background:var(--sev,var(--ash));margin-top:.55em}
+.warnlist li.bad{--sev:var(--bad)}
+.warnlist li.warn{--sev:var(--warn)}
+.warnlist li.good{--sev:var(--good)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--seam-2);border-radius:999px;padding:3px 11px;font-size:.92rem}
+.dots{display:inline-flex;gap:3px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.empty-line{color:var(--dim);margin:0;font-size:.95rem}
+.profgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,172px),1fr));gap:8px}
+.ptile{border:1px dashed var(--seam);border-radius:4px;padding:8px 10px;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ptile.has{border-style:solid;border-color:var(--seam-2);background:var(--leather)}
+.ptile .pn{font-weight:700;color:var(--dim)}
+.ptile.has .pn{color:var(--bone)}
+.ptile .pk{font-family:var(--label);font-weight:500;letter-spacing:.06em;font-size:.78rem;color:var(--dim)}
+.ptile .names{font-size:.9rem;line-height:1.35;overflow-wrap:anywhere}
+.ptile .flag{font-size:.8rem;color:var(--warn)}
+.camplist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.camplist li{max-width:62ch;font-size:.95rem}
+.camplist b{font-weight:700}
+.camplist .by{color:var(--ash)}
+.small{font-size:.9rem;color:var(--ash);margin:0 0 10px;max-width:62ch}
+
+/* Recruit */
+.recruit-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start}
+.steps{display:flex;flex-direction:column;gap:34px;margin:0}
+fieldset.step{border:0;margin:0;padding:0;min-width:0}
+fieldset.step > legend{padding:0;margin:0 0 12px;font-family:var(--display);font-weight:800;font-size:1.7rem;line-height:1.1;display:flex;align-items:center;gap:10px}
+.n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--blood);color:var(--bone);font-family:var(--body);font-weight:800;font-size:.95rem;flex:none}
+.stepbody{display:flex;flex-direction:column;gap:12px;min-width:0}
+.hint{margin:0;color:var(--ash);font-size:.95rem;max-width:64ch}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:5px;font-family:var(--label);font-weight:500;letter-spacing:.05em;color:var(--ash);font-size:.92rem;min-width:0}
+.field input{
+  font-family:var(--body);letter-spacing:0;font-size:1rem;color:var(--bone);
+  background:var(--leather);border:1px solid var(--seam-2);border-radius:4px;padding:10px 12px;width:100%;
+}
+.field input::placeholder{color:var(--dim)}
+.field input:focus-visible{outline:2px solid var(--blood-hi);outline-offset:0;border-color:transparent}
+
+.grid-picks{display:grid;gap:8px}
+.classgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,148px),1fr))}
+.racegrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,140px),1fr))}
+.specgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr))}
+.profpick{grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr))}
+.pick{
+  appearance:none;font:inherit;color:var(--bone);text-align:left;cursor:pointer;
+  background:var(--leather);border:1px solid var(--seam);border-radius:4px;padding:10px 12px;
+  display:flex;flex-direction:column;gap:4px;min-width:0;
+  transition:border-color .15s ease, background-color .15s ease;
+}
+.pick:hover:not(:disabled){border-color:var(--seam-2);background:var(--leather-2)}
+.pick[aria-pressed="true"]{border-color:var(--cc,var(--blood-hi));background:var(--leather-2);box-shadow:inset 0 0 0 1px var(--cc,var(--blood-hi))}
+.pick:disabled{opacity:.36;cursor:not-allowed}
+.pick .nm{font-weight:800;font-size:1.05rem;color:var(--cct,var(--bone));line-height:1.2}
+.pick .sub{font-size:.85rem;color:var(--ash);line-height:1.35}
+.pick .roles{display:flex;gap:4px}
+.pick .roles .role{width:20px;height:20px}
+.pick .rl{display:flex;align-items:center;gap:7px;font-family:var(--label);font-weight:700;letter-spacing:.06em;font-size:.82rem;color:var(--ash)}
+.pick .rl .role{width:20px;height:20px}
+.pick .txt{font-size:.92rem;color:var(--bone);line-height:1.4}
+.pick .has{font-size:.8rem;color:var(--warn)}
+.pick .pair{font-size:.8rem;color:var(--good)}
+
+.unsure{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.unsure > span{font-family:var(--label);font-weight:700;letter-spacing:.07em;color:var(--ash);margin-right:4px}
+.btn{
+  font:inherit;font-weight:700;font-size:.98rem;border-radius:4px;padding:10px 14px;cursor:pointer;
+  border:1px solid var(--seam-2);background:transparent;color:var(--bone);
+  transition:background-color .15s ease, border-color .15s ease;
+}
+.btn:hover:not(:disabled){background:var(--leather-2);border-color:var(--ash)}
+.btn.primary{background:var(--blood);border-color:var(--blood);color:var(--bone)}
+.btn.primary:hover:not(:disabled){background:var(--blood-hi);border-color:var(--blood-hi)}
+.btn.slim{padding:6px 12px;font-size:.92rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.info{background:var(--leather);border:1px solid var(--seam);border-radius:4px;padding:12px 14px;min-width:0}
+.info p{margin:0 0 8px;max-width:66ch}
+.info p:last-child{margin-bottom:0}
+.info .chips{margin-top:2px}
+.racials{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:0}
+.racials dt{font-weight:700}
+.racials dd{margin:0;color:var(--ash)}
+.meta-note{font-size:.9rem;color:var(--ash);margin:0;max-width:66ch}
+.meta-note b{color:var(--bone)}
+
+.quiz{background:var(--leather);border:1px solid var(--seam-2);border-radius:4px;padding:16px;display:flex;flex-direction:column;gap:16px}
+.quiz h3{margin:0;font-family:var(--display);font-weight:800;font-size:1.45rem}
+.quiz fieldset{border:0;margin:0;padding:0;min-width:0}
+.quiz legend{padding:0;margin-bottom:6px;font-weight:700}
+.qopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:6px}
+.qopt{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--seam);border-radius:4px;padding:8px 10px;cursor:pointer;font-size:.95rem;line-height:1.35}
+.qopt:hover{border-color:var(--seam-2)}
+.qopt input{margin-top:3px;accent-color:var(--blood)}
+.qopt:has(input:checked){border-color:var(--blood-hi);background:var(--leather-2)}
+.verdict{border-top:1px solid var(--seam);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.verdict .big{font-family:var(--display);font-weight:800;font-size:1.8rem;line-height:1.1;margin:0}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+
+.secrow{display:flex;flex-wrap:wrap;gap:8px}
+.check{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--seam);border-radius:999px;padding:5px 12px 5px 10px;cursor:pointer;font-size:.95rem}
+.check:has(input:checked){border-color:var(--seam-2);background:var(--leather-2)}
+.check input{accent-color:var(--blood)}
+
+.preview{min-width:0}
+.preview .sticky{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px);display:flex;flex-direction:column;gap:12px}
+.frame.big .bar{font-size:1.15rem;padding:10px 12px 9px}
+.frame.big .char{font-size:1.6rem}
+.frame.big .body{padding:12px 14px 14px;gap:8px}
+.actions{display:flex;flex-direction:column;gap:8px}
+.status{min-height:1.5em;margin:0;font-size:.94rem;color:var(--ash)}
+.status.ok{color:var(--good)}
+.status.err{color:var(--warn)}
+textarea.fallback{width:100%;min-height:130px;resize:vertical;font:inherit;font-size:.9rem;color:var(--bone);background:var(--leather);border:1px solid var(--seam-2);border-radius:4px;padding:10px}
+
+footer{border-top:1px solid var(--seam);padding-top:14px;color:var(--ash);font-size:.88rem}
+footer p{margin:0 0 6px;max-width:80ch}
+
+@media (max-width: 900px){
+  .recruit-grid{grid-template-columns:minmax(0,1fr)}
+  .preview .sticky{position:static}
+}
+@media (max-width: 760px){
+  .masthead{grid-template-columns:auto minmax(0,1fr)}
+  .countdown{grid-column:1/-1}
+  .banner{width:50px;height:118px;padding-top:22px}
+  .banner svg{width:28px;height:28px}
+  .racials{grid-template-columns:minmax(0,1fr)}
+  .racials dd{margin-bottom:6px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="banner" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+        <line x1="9" y1="42" x2="35" y2="11"/>
+        <line x1="39" y1="42" x2="13" y2="11"/>
+        <path d="M31 5c7 0 12 5 12 12-5 0-9-3-11.5-7.5z" fill="currentColor" stroke="none"/>
+        <path d="M17 5C10 5 5 10 5 17c5 0 9-3 11.5-7.5z" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <p class="eyebrow">World of Warcraft: Forever</p>
+      <h1>Hordens Krigsråd</h1>
+      <p class="lede">Fem helte, én gruppe. Vælg din class, spec og dine professions, så vi ved hvem der tanker, hvem der healer, og hvem der står for maden over lejrbålet. <em>Lok'tar ogar!</em></p>
+      <div class="chips-row">
+        <span class="tagchip horde">Horde</span>
+        <span class="tagchip">PvE · Normal ruleset</span>
+        <span class="tagchip">5 helte</span>
+      </div>
+    </div>
+    <aside class="countdown" aria-label="Nedtælling til launch">
+      <p class="label" id="cd-label">Portene åbner om</p>
+      <div class="cd-digits" id="cd-digits">
+        <span><b id="cd-d">--</b><i>dage</i></span>
+        <span><b id="cd-h">--</b><i>timer</i></span>
+        <span><b id="cd-m">--</b><i>min</i></span>
+      </div>
+      <p class="cd-when" id="cd-when"></p>
+    </aside>
+  </header>
+
+  <section aria-labelledby="h-council">
+    <div class="sec-head">
+      <h2 id="h-council">Gruppen</h2>
+      <p class="comp" id="comp-summary"></p>
+      <span class="spacer"></span>
+      <button type="button" class="btn slim" id="copy-all" hidden>Kopiér gruppen</button>
+    </div>
+    <p class="note" id="board-note" hidden></p>
+    <textarea class="fallback" id="copy-all-fallback" hidden readonly aria-label="Gruppen som tekst"></textarea>
+    <div class="board" id="board"></div>
+
+    <div class="intel">
+      <div class="panel">
+        <h3>Krigsherrens bemærkninger</h3>
+        <ul class="warnlist" id="warnings"></ul>
+      </div>
+      <div class="panel">
+        <h3>Gruppen bringer</h3>
+        <div class="chips" id="utility"></div>
+      </div>
+      <div class="panel wide">
+        <h3>Professions i gruppen</h3>
+        <div class="profgrid" id="profgrid"></div>
+      </div>
+      <div class="panel wide">
+        <h3>Lejrbålet</h3>
+        <p class="small">Nyt i Forever: Cooking tænder bålet, og de andre professions tilføjer buffs og stationer. Alle ved bålet får glæde af dem.</p>
+        <ul class="camplist" id="camp"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-recruit" id="recruit">
+    <div class="sec-head">
+      <h2 id="h-recruit">Meld dig til Horden</h2>
+    </div>
+    <div class="recruit-grid">
+      <form class="steps" id="form" novalidate>
+        <fieldset class="step">
+          <legend><span class="n">1</span>Hvem er du?</legend>
+          <div class="stepbody">
+            <div class="fields">
+              <label class="field" for="in-player">Dit navn
+                <input type="text" id="in-player" maxlength="24" autocomplete="nickname" placeholder="Fx Mikkel">
+              </label>
+              <label class="field" for="in-char">Karakternavn (valgfrit)
+                <input type="text" id="in-char" maxlength="24" autocomplete="off" placeholder="Fx Grumbak">
+              </label>
+              <label class="field" for="in-cry">Dit kampråb (valgfrit)
+                <input type="text" id="in-cry" maxlength="70" autocomplete="off" placeholder="Fx For Horden og for snacks!">
+              </label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="step">
+          <legend><span class="n">2</span>Class</legend>
+          <div class="stepbody">
+            <div class="grid-picks classgrid" id="classes"></div>
+            <div class="unsure">
+              <span>I tvivl?</span>
+              <button type="button" class="btn slim" id="quiz-open" aria-expanded="false" aria-controls="quiz">Tag Thralls prøve</button>
+              <button type="button" class="btn slim" id="dice">Kast terningen</button>
+            </div>
+            <div class="quiz" id="quiz" hidden></div>
+            <div class="info" id="class-info" hidden></div>
+            <p class="meta-note"><b>Meta lige nu:</b> Icy Veins har endnu ikke udgivet tier lists for Forever, og Blizzards erklærede mål er, at alle specs er konkurrencedygtige. Vælg det, du synes er sjovt. Til gengæld var Warlocks totalt dominerende i dueling-turneringen om 100.000 dollars.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="step">
+          <legend><span class="n">3</span>Race</legend>
+          <div class="stepbody">
+            <p class="hint" id="race-hint">Vælg en class først, så viser vi hvilke Horde-racer der kan spille den.</p>
+            <div class="grid-picks racegrid" id="races"></div>
+            <div class="info" id="race-info" hidden></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="step">
+          <legend><span class="n">4</span>Spec</legend>
+          <div class="stepbody">
+            <p class="hint" id="spec-hint">Din spec bestemmer din rolle i gruppen.</p>
+            <div class="grid-picks specgrid" id="specs"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="step">
+          <legend><span class="n">5</span>Professions</legend>
+          <div class="stepbody">
+            <p class="hint">Vælg op til to primære. Du kan skifte senere, men så starter du forfra med den nye. Secondary professions kan alle tage oveni.</p>
+            <div id="prof-suggest"></div>
+            <div class="grid-picks profpick" id="profs"></div>
+            <div class="info" id="prof-info" hidden></div>
+            <div class="secrow" id="secs"></div>
+          </div>
+        </fieldset>
+      </form>
+
+      <aside class="preview" aria-label="Din helt">
+        <div class="sticky">
+          <p class="label">Din helt</p>
+          <div id="hero-card"></div>
+          <div class="actions">
+            <button type="button" class="btn primary" id="save">Skriv mig i krigsrådet</button>
+            <button type="button" class="btn" id="copy-me">Kopiér til gruppechatten</button>
+            <button type="button" class="linkbtn" id="reset">Start forfra</button>
+          </div>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+          <textarea class="fallback" id="copy-me-fallback" hidden readonly aria-label="Din helt som tekst"></textarea>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer>
+    <p>Data om races, classes, specs og professions er hentet fra Icy Veins' guides til WoW Forever og Blizzards beta-noter fra 15. oktober 2026. Det er beta, så detaljer kan ændre sig før launch.</p>
+    <p><a href="https://www.icy-veins.com/wow-forever/choosing-your-main" target="_blank" rel="noopener">Choosing Your Class</a> · <a href="https://www.icy-veins.com/wow-forever/race-guide" target="_blank" rel="noopener">Race guide</a> · <a href="https://www.icy-veins.com/wow-forever/professions-overview" target="_blank" rel="noopener">Professions</a> · <a href="https://www.icy-veins.com/wow-forever/realms" target="_blank" rel="noopener">Rulesets</a> · <a href="https://worldofwarcraft.blizzard.com/es-es/forever" target="_blank" rel="noopener">Blizzard: WoW Forever</a></p>
+    <p>Alle med linket kan melde sig, rette og fjerne helte. Vær søde ved hinanden. · <a href="https://grammgren.dk">grammgren.dk</a></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ===== Indstillinger: indsæt dit Supabase-projekts Project URL og publishable key ===== */
+const CONFIG = {
+  SUPABASE_URL: "https://rzmbslexuuunnpxtappv.supabase.co",
+  SUPABASE_KEY: "sb_publishable_BPrqUjOvQYk4LtSCTAW4zA_-KUsOQrf"    // den offentlige nøgle, aldrig secret/service_role
+};
+const TABLE = "helte";
+const POLL_MS = 8000;
+const LAUNCH = Date.UTC(2026, 10, 4, 23, 0, 0); // 4. nov 2026 kl. 23:00 UTC
+const DRAFT_KEY = "krigsraad-draft-v1";
+
+const ICON = {
+  tank:'<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.2 14 3.4v4.1c0 3.5-2.5 6-6 7.3-3.5-1.3-6-3.8-6-7.3V3.4z"/></svg>',
+  healer:'<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M6 1.5h4V6h4.5v4H10v4.5H6V10H1.5V6H6z"/></svg>',
+  melee:'<svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M14.6 1.4v2.4L7.9 10.5 5.5 8.1l6.7-6.7zM3.3 8.6l1.2-1.2 4.1 4.1-1.2 1.2zM4.4 11.2l1.4 1.4-2.9 2.9-1.4-1.4z"/></svg>',
+  ranged:'<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="8" r="2.1" fill="currentColor"/></svg>'
+};
+const ROLES = {
+  tank:{label:"Tank", group:"tank", color:"var(--tank)"},
+  healer:{label:"Healer", group:"healer", color:"var(--healer)"},
+  melee:{label:"Melee DPS", group:"dps", color:"var(--dps)"},
+  ranged:{label:"Ranged DPS", group:"dps", color:"var(--dps)"}
+};
+
+const RACES = {
+  orc:{name:"Orc", tag:"Grøn muskel og ægte Horde-stolthed. Nyt i Forever: Orcs kan være Mages.", racials:[
+    ["Blood Fury","+10 % attack power og spell power i 15 sek. (3 min. cooldown)"],
+    ["Shatter Curse","Fjerner curses og banes, og du tager 5 % mindre magisk skade i 8 sek."],
+    ["Savage","+1 % crit"],
+    ["Hardiness","Stuns varer 20 % kortere"]]},
+  undead:{name:"Undead", tag:"Forsaken med et hævet øjenbryn. Nyt i Forever: Undead kan være Paladins.", racials:[
+    ["Will of the Forsaken","Bryd fear, charm og sleep (2 min. cooldown)"],
+    ["Cannibalize","Spis et lig og få 35 % health og mana over tid"],
+    ["Touch of the Grave","Chance for at dræne liv fra dit mål, når du rammer"],
+    ["Underwater Breathing","300 % længere tid under vand"]]},
+  tauren:{name:"Tauren", tag:"Stor, rolig og svær at vælte. Løber hurtigere og hurtigere.", racials:[
+    ["War Stomp","Stunner alt omkring dig i 2 sek. (90 sek. cooldown)"],
+    ["Cultivation","Gro dine egne urter, også uden Herbalism (15 min. cooldown)"],
+    ["Endurance","+5 % health og +2 % crit-skade og crit-healing"],
+    ["Plainsrunning","Op til 30 % ekstra fart, jo længere du løber"]]},
+  troll:{name:"Troll", tag:"Afslappet voodoo-energi. Nyt i Forever: Trolls kan være Warlocks.", racials:[
+    ["Berserking","+10 % haste i 12 sek. (3 min. cooldown)"],
+    ["Rapid Regeneration","Få 50 % af dit health tilbage over tid"],
+    ["Regeneration","20 % af din health-regen fortsætter i kamp"],
+    ["Beast Slaying","+5 % skade mod beasts"]]},
+  skyborne:{name:"Skyborne", tag:"Ny neutral elver-race med egen startø, Zephras Isle. Kan vælge Horde.", racials:[
+    ["Skysight","+10 % fart, i 15 min. hvis du finder en elemental convergence"],
+    ["Walk on Air","Svæv nedad i 10 sek. (90 sek. cooldown)"],
+    ["Wind Blessed","+3 % haste"],
+    ["Elemental Insight","+5 % skade mod elementals"]]}
+};
+const RACE_ORDER = ["orc","undead","tauren","troll","skyborne"];
+
+const CLASSES = {
+  warrior:{name:"Warrior", color:"#C69B6D", text:"#d6ad80", races:["orc","undead","tauren","troll","skyborne"],
+    blurb:"Våbenmesteren. Arms med tohåndsvåben, Fury med et våben i hver hånd, eller klassisk skjold-tank. Lidt sej at levele alene, men bliver mærkbart stærkere med hvert nyt våben.",
+    util:["Battle Shout (raid-wide)"], prof:["mining","blacksmithing"],
+    specs:[
+      {id:"arms", name:"Arms", role:"melee", txt:"Tohåndsvåben, Rend og Overpower, plus den nye Spearing Strike."},
+      {id:"fury", name:"Fury", role:"melee", txt:"Dual wield og konstant rage. Raging Blows lader Whirlwind ramme med begge våben."},
+      {id:"prot", name:"Protection", role:"tank", txt:"Skjold-tank. Charge virker i Defensive Stance, og cooldowns er lettere at bruge."}]},
+  paladin:{name:"Paladin", color:"#F48CBA", text:"#f6a0c7", races:["undead"],
+    blurb:"Tung rustning, tre roller og masser af gruppestøtte. Helt nyt: Horde kan spille Paladin, men kun som Undead.",
+    util:["Blessings","Salvation","Rez"], prof:["mining","blacksmithing"],
+    specs:[
+      {id:"holy", name:"Holy", role:"healer", txt:"Healer med Holy Shock og god mana-økonomi."},
+      {id:"prot", name:"Protection", role:"tank", txt:"Komplet tank: Consecration fra start og taunt via Seal of Fury."},
+      {id:"ret", name:"Retribution", role:"melee", txt:"Seals og Holy Strike. Twist of Light gør seal twisting langt lettere."}]},
+  hunter:{name:"Hunter", color:"#AAD372", text:"#b6da82", races:["orc","tauren","troll","skyborne"],
+    blurb:"Den nemmeste klasse at klare sig alene med. Kæledyr, fælder og afstand. I Forever er Survival en rigtig melee-spec.",
+    util:["Trueshot Aura (MM, raid-wide)","Track Beasts"], prof:["skinning","leatherworking"],
+    specs:[
+      {id:"bm", name:"Beast Mastery", role:"ranged", txt:"Kæledyret er stjernen, og du kan kalde en Hawk ind oveni."},
+      {id:"mm", name:"Marksmanship", role:"ranged", txt:"Dine egne skud i centrum. Lone Wolf, hvis du vil spille uden pet."},
+      {id:"sv", name:"Survival", role:"melee", txt:"Melee-hunter med fælder og Strider Kick."}]},
+  rogue:{name:"Rogue", color:"#FFF468", text:"#fff27a", races:["orc","undead","troll","skyborne"],
+    blurb:"Taktisk melee med stealth, gifte og combo points. Kan dirke låse op og sappe mobs, før gruppen puller.",
+    util:["Pick Lock","Sap","Scouting i stealth"], prof:["skinning","leatherworking"],
+    specs:[
+      {id:"assa", name:"Assassination", role:"melee", txt:"Gifte og Mutilate, med Venom som ny finisher."},
+      {id:"combat", name:"Combat", role:"melee", txt:"Våbenspecialist. Restless Blades giver Adrenaline Rush og Blade Flurry oftere."},
+      {id:"sub", name:"Subtlety", role:"melee", txt:"Stealth, setup og bleeds. Farligst i PvP."}]},
+  priest:{name:"Priest", color:"#FFFFFF", text:"#ffffff", races:["undead","troll"],
+    blurb:"Healerens klasse: to healer-specs og Shadow som ranged DPS bygget på DoTs. Der er altid noget nyttigt at lave.",
+    util:["Power Word: Fortitude","Dispel","Rez"], prof:["tailoring","enchanting"],
+    specs:[
+      {id:"disc", name:"Discipline", role:"healer", txt:"Skjolde og Penance, og den healer der laver mest skade."},
+      {id:"holy", name:"Holy", role:"healer", txt:"Klassisk healer med den bredeste værktøjskasse."},
+      {id:"shadow", name:"Shadow", role:"ranged", txt:"DoTs, Mind Flay og Vampiric Embrace. Giver også gruppen Spirit."}]},
+  shaman:{name:"Shaman", color:"#0B68CC", text:"#55a8f5", races:["orc","tauren","troll","skyborne"],
+    blurb:"Hybrid med totems: ranged, melee eller healer. Totems som Windfury og Strength of Earth virker nu på hele raidet.",
+    util:["Totems (raid-wide)","Windfury Totem","Rez"], prof:["skinning","leatherworking"],
+    specs:[
+      {id:"ele", name:"Elemental", role:"ranged", txt:"Lava Burst på Flame Shock og Elemental Mastery som capstone."},
+      {id:"enh", name:"Enhancement", role:"melee", txt:"Våben og lyn i samme rotation, med Windfury Totem."},
+      {id:"resto", name:"Restoration", role:"healer", txt:"Chain Heal og Riptide, plus Mana Tide Totem til gruppen."}]},
+  mage:{name:"Mage", color:"#3FC7EB", text:"#5ccfee", races:["orc","undead","troll"],
+    blurb:"Ren spellcaster med stor AoE og kontrol. Laver mad og vand til hele gruppen og åbner portaler. Orcs kan nu være Mages.",
+    util:["Mad og vand","Portaler","Arcane Intellect"], prof:["tailoring","enchanting"],
+    specs:[
+      {id:"arcane", name:"Arcane", role:"ranged", txt:"Ny identitet: byg Arcane Blast-stacks op og styr din mana."},
+      {id:"fire", name:"Fire", role:"ranged", txt:"Crits og store tal. Heating Up gør Pyroblast hurtigere."},
+      {id:"frost", name:"Frost", role:"ranged", txt:"Kontrol og frosne mål, nu med Frost Blast til at slowe."}]},
+  warlock:{name:"Warlock", color:"#8788EE", text:"#9e9ff3", races:["orc","undead","troll"],
+    blurb:"Den mørke og seje caster: DoTs, drains og dæmoner. Laver Healthstones og summoner dem, der kom for sent.",
+    util:["Healthstones","Summoning","Soulstone"], prof:["tailoring","enchanting"],
+    specs:[
+      {id:"aff", name:"Affliction", role:"ranged", txt:"DoTs kan nu crit'e, og drains er en rigtig rotation."},
+      {id:"demo", name:"Demonology", role:"ranged", txt:"Dæmonen skalerer med dig. Demonic Pact lader dig beholde Sacrifice-buffet."},
+      {id:"destro", name:"Destruction", role:"ranged", txt:"Fire og Shadow i samspil: Incinerate og Bane of Havoc."}]},
+  druid:{name:"Druid", color:"#FF7C0A", text:"#ff922f", races:["tauren","skyborne"],
+    blurb:"Den mest fleksible klasse: tank, healer, melee og ranged på én karakter. Travel Form før du får mount, og nu også en almindelig rez.",
+    util:["Mark of the Wild","Innervate","Rebirth (combat rez)"], prof:["skinning","leatherworking"],
+    specs:[
+      {id:"balance", name:"Balance", role:"ranged", txt:"Caster med Eclipse, der belønner skift mellem Wrath og Starfire."},
+      {id:"cat", name:"Feral (Cat)", role:"melee", txt:"Kat-form med energy og combo points. Berserk er ny capstone."},
+      {id:"bear", name:"Feral (Bear)", role:"tank", txt:"Bjørne-tank med Mangle og en solid pulje health."},
+      {id:"resto", name:"Restoration", role:"healer", txt:"HoTs og gruppeheling, nu med Wild Growth."}]}
+};
+const CLASS_ORDER = ["warrior","paladin","hunter","rogue","priest","shaman","mage","warlock","druid"];
+
+const PROFS = {
+  herbalism:{name:"Herbalism", kind:"gather", desc:"Saml urter og frø. Fodrer Alchemy.", camp:["Incense Candle","+Intellect"], pair:["alchemy"]},
+  mining:{name:"Mining", kind:"gather", desc:"Malm, sten og ædelsten. Fodrer Blacksmithing og Engineering.", camp:["Lodestone","+melee attack power"], pair:["blacksmithing","engineering"]},
+  skinning:{name:"Skinning", kind:"gather", desc:"Læder og skind fra beasts. Fodrer Leatherworking.", camp:["Camp Chair","+2 % crit"], pair:["leatherworking"]},
+  alchemy:{name:"Alchemy", kind:"craft", desc:"Potions, elixirs og flasks. Kan transmutere arcanite.", camp:["Mana Well","mana-regen"], needs:"herbalism", pair:["herbalism"]},
+  blacksmithing:{name:"Blacksmithing", kind:"craft", desc:"Våben og mail/plate, og egne stykker kun smeden kan bære.", camp:["Sharpening Wheel","+Strength"], needs:"mining", pair:["mining"]},
+  engineering:{name:"Engineering", kind:"craft", desc:"Bomber, goggles og gadgets. Vælg Goblin eller Gnomish.", camp:["Repair Bot","reparation og reagents"], needs:"mining", pair:["mining"]},
+  leatherworking:{name:"Leatherworking", kind:"craft", desc:"Leather og mail, armor kits og tasker.", camp:["Camp Tent","rested XP, op til 5 % af et level"], needs:"skinning", pair:["skinning"]},
+  tailoring:{name:"Tailoring", kind:"craft", desc:"Cloth-gear og tasker. Cloth dropper fra humanoids.", camp:["Faction Banner","+Spirit"], pair:["enchanting"]},
+  enchanting:{name:"Enchanting", kind:"craft", desc:"Enchants på gear. Disenchant det, du ikke bruger.", camp:["Enchanted Lute","armor, stats og resistance"], pair:["tailoring"]}
+};
+const PROF_ORDER = ["herbalism","mining","skinning","alchemy","blacksmithing","engineering","leatherworking","tailoring","enchanting"];
+const SECS = {
+  cooking:{name:"Cooking", desc:"Buff-mad og selve lejrbålet. Campfire kits giver plads til 3, 5 eller 10 ting.", camp:["Lejrbål + Cookie's Feast","tænder bålet og giver Stamina-mad"]},
+  firstaid:{name:"First Aid", desc:"Bandager, og i Forever også healing potions og poultices.", camp:["First Aid Kit","+Stamina"]},
+  fishing:{name:"Fishing", desc:"Fisk til Cooking og olier til Alchemy.", camp:["Fish Bowl","+8 % stats"]}
+};
+const SEC_ORDER = ["cooking","firstaid","fishing"];
+const KIND = {gather:"Gathering", craft:"Crafting", sec:"Secondary"};
+
+const QUIZ = [
+  {q:"Der står en flok mobs foran gruppen. Hvad gør du?", a:[
+    {t:"Løber ind først og samler dem alle sammen", s:{warrior:2,paladin:2,druid:1}, role:"tank"},
+    {t:"Holder alle i live bagfra", s:{priest:2,shaman:1,druid:1,paladin:1}, role:"healer"},
+    {t:"Brænder dem ned fra sikker afstand", s:{mage:2,warlock:2,hunter:1,shaman:1}, role:"ranged"},
+    {t:"Sniger mig bag om dem og stikker dem i ryggen", s:{rogue:3,druid:1,warrior:1}, role:"melee"}]},
+  {q:"Hvem følger dig rundt i Azeroth?", a:[
+    {t:"En ulv, en kat eller en kæmpe flagermus", s:{hunter:3}},
+    {t:"En dæmon i snor", s:{warlock:3}},
+    {t:"Ingen. Jeg bliver selv til dyret", s:{druid:3}},
+    {t:"Kun mit våben og mit gode humør", s:{warrior:1,rogue:1,paladin:1,mage:1,priest:1,shaman:1}}]},
+  {q:"Raidet wiper for femte gang i aften. Hvad er dit bidrag?", a:[
+    {t:"Jeg har allerede stillet mad og vand frem til alle", s:{mage:3}},
+    {t:"Jeg summoner de to, der kom for sent", s:{warlock:3}},
+    {t:"Jeg rezzer folk og holder humøret oppe", s:{priest:2,paladin:1,shaman:1,druid:1}},
+    {t:"Jeg dirker kisten op, mens ingen kigger", s:{rogue:3}}]},
+  {q:"Hvilken kraft kalder på dig?", a:[
+    {t:"Det hellige lys, også selvom jeg er død", s:{paladin:3,priest:1}},
+    {t:"Jord, ild, vand og luft", s:{shaman:3,druid:1}},
+    {t:"Skygger, forbandelser og ting man ikke taler om", s:{warlock:2,priest:1,rogue:1}},
+    {t:"Ren arkan magi og at vide alting bedst", s:{mage:3}},
+    {t:"Rå styrke og en meget stor økse", s:{warrior:3,hunter:1}}]},
+  {q:"Hvordan vil du helst spille?", a:[
+    {t:"Én ting, og være rigtig god til den", s:{mage:1,warlock:1,rogue:1,hunter:1}},
+    {t:"Kunne skifte rolle, når gruppen mangler noget", s:{druid:2,paladin:2,shaman:2,priest:1}},
+    {t:"Klare mig selv, når de andre er offline", s:{hunter:2,warlock:2}},
+    {t:"Stå forrest og tage ansvaret", s:{warrior:2,paladin:1}}]}
+];
+
+/* ---------- state ---------- */
+const blank = () => ({player:"", char:"", cry:"", cls:null, race:null, spec:null, prof:[], sec:[]});
+let state = blank();
+let editingId = null;
+let heroes = [];
+let pendingDelete = null;
+let overwriteOk = null;
+let lastRows = "";
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function lum(hex){
+  const n = parseInt(hex.slice(1), 16);
+  const ch = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+}
+function onColor(hex){
+  const L = lum(hex);
+  const dark = (L + 0.05) / (0.006 + 0.05);
+  const light = (0.86 + 0.05) / (L + 0.05);
+  return dark >= light ? "#140f0b" : "#f8f1e3";
+}
+function slug(s){
+  const t = String(s || "").toLowerCase().trim()
+    .replace(/æ/g, "ae").replace(/ø/g, "oe").replace(/å/g, "aa")
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+  return t || "";
+}
+function roleBadge(role){
+  const r = ROLES[role];
+  if (!r) return "";
+  return '<span class="role" style="--rc:' + r.color + '" title="' + r.label + '">' + ICON[role] + '<span class="vh">' + r.label + '</span></span>';
+}
+function specOf(h){ const c = CLASSES[h.cls]; return c ? c.specs.find((s) => s.id === h.spec) || null : null; }
+function roleOf(h){ const s = specOf(h); return s ? s.role : null; }
+function groupOf(h){ const r = roleOf(h); return r ? ROLES[r].group : null; }
+function profName(id){ return (PROFS[id] || SECS[id] || {}).name || id; }
+function cleanHero(d){
+  return {
+    id: d.id,
+    player: String(d.player || "").slice(0, 24),
+    char: String(d.char || "").slice(0, 24),
+    cry: String(d.cry || "").slice(0, 70),
+    cls: CLASSES[d.cls] ? d.cls : null,
+    race: RACES[d.race] ? d.race : null,
+    spec: typeof d.spec === "string" ? d.spec : null,
+    prof: Array.isArray(d.prof) ? d.prof.filter((p) => PROFS[p]).slice(0, 2) : [],
+    sec: Array.isArray(d.sec) ? d.sec.filter((p) => SECS[p]) : [],
+    updated: d.updated || ""
+  };
+}
+
+/* ---------- frame (party card) ---------- */
+function frameHTML(h, opts){
+  opts = opts || {};
+  const c = CLASSES[h.cls];
+  const sp = specOf(h);
+  const r = RACES[h.race];
+  const style = c ? ' style="--cc:' + c.color + ';--on:' + onColor(c.color) + ';--cct:' + c.text + ';--rc:' + c.color + '"' : "";
+  const who = h.player ? esc(h.player) : (opts.preview ? "Dit navn" : "Ukendt");
+  const role = sp ? roleBadge(sp.role) : "";
+  const clsLine = c ? esc((r ? r.name + " " : "") + c.name) : (opts.preview ? "Vælg en class" : "");
+  const specLine = sp ? esc(sp.name) + " · " + ROLES[sp.role].label : (c && opts.preview ? "Vælg en spec" : "");
+  let chips = "";
+  (h.prof || []).forEach((p) => { chips += '<span class="pchip">' + esc(profName(p)) + '</span>'; });
+  (h.sec || []).forEach((p) => { chips += '<span class="pchip sec">' + esc(profName(p)) + '</span>'; });
+  if (!chips && opts.preview) chips = '<span class="pchip sec">Ingen professions endnu</span>';
+  let ops = "";
+  if (opts.ops) {
+    if (pendingDelete === h.id) {
+      ops = '<div class="ops"><span class="meta">Fjern ' + who + '?</span><button type="button" class="linkbtn danger" data-del-yes="' + esc(h.id) + '">Ja, fjern</button><button type="button" class="linkbtn" data-del-no="1">Nej</button></div>';
+    } else {
+      ops = '<div class="ops"><button type="button" class="linkbtn" data-edit="' + esc(h.id) + '">Ret</button>' + (opts.canDelete ? '<button type="button" class="linkbtn" data-del="' + esc(h.id) + '">Fjern</button>' : "") + '</div>';
+    }
+  }
+  return '<article class="frame' + (opts.big ? " big" : "") + '"' + style + '>' +
+    (opts.reserve ? '<span class="reserve">Reserve</span>' : "") +
+    '<div class="bar"><span class="who">' + who + '</span>' + role + '</div>' +
+    '<div class="body">' +
+      (h.char ? '<p class="char">' + esc(h.char) + '</p>' : "") +
+      (clsLine ? '<p class="cls">' + clsLine + '</p>' : "") +
+      (specLine ? '<p class="meta">' + specLine + '</p>' : "") +
+      (chips ? '<div class="pchips">' + chips + '</div>' : "") +
+      (h.cry ? '<p class="cry">“' + esc(h.cry) + '”</p>' : "") +
+      ops +
+    '</div></article>';
+}
+function emptyHTML(need){
+  const map = {
+    tank:["tank","Tank søges","Warrior, Paladin eller Druid (Bear)"],
+    healer:["healer","Healer søges","Priest, Shaman, Druid eller Paladin"],
+    dps:["melee","DPS søges","Alle classes kan lave skade"]
+  };
+  const m = map[need];
+  return '<div class="frame empty"><div class="need">' + roleBadge(m[0]) + '<span>' + m[1] + '</span><small>' + m[2] + '</small></div></div>';
+}
+
+/* ---------- board + analysis ---------- */
+function sortedHeroes(){
+  return heroes.slice().sort((a, b) => (a.updated || "").localeCompare(b.updated || ""));
+}
+function renderBoard(){
+  const list = sortedHeroes();
+  const t = list.filter((h) => groupOf(h) === "tank");
+  const he = list.filter((h) => groupOf(h) === "healer");
+  const d = list.filter((h) => groupOf(h) === "dps");
+  const other = list.filter((h) => !groupOf(h));
+  const rest = d.concat(t.slice(1), he.slice(1), other);
+  const ops = {ops: api.ok, canDelete: api.ok};
+  let html = "";
+  html += t[0] ? frameHTML(t[0], ops) : emptyHTML("tank");
+  html += he[0] ? frameHTML(he[0], ops) : emptyHTML("healer");
+  for (let i = 0; i < 3; i++) html += rest[i] ? frameHTML(rest[i], ops) : emptyHTML("dps");
+  rest.slice(3).forEach((h) => { html += frameHTML(h, Object.assign({reserve:true}, ops)); });
+  $("#board").innerHTML = html;
+
+  const nt = t.length, nh = he.length, nd = d.length;
+  const cell = (role, label, n, want) => '<span class="' + (n >= want ? "ok" : "miss") + '">' + roleBadge(role) + label + ' ' + n + '/' + want + '</span>';
+  $("#comp-summary").innerHTML = cell("tank", "Tank", nt, 1) + cell("healer", "Healer", nh, 1) + cell("melee", "DPS", nd, 3);
+  $("#copy-all").hidden = list.length === 0;
+
+  renderIntel(list, {nt: nt, nh: nh, nd: nd});
+}
+
+function namesHTML(arr){
+  return arr.map((h) => { const c = CLASSES[h.cls]; return '<span style="color:' + (c ? c.text : "var(--bone)") + '">' + esc(h.player) + '</span>'; }).join(", ");
+}
+function plainNames(arr){
+  const n = arr.map((h) => h.player);
+  if (n.length <= 1) return n.join("");
+  return n.slice(0, -1).join(", ") + " og " + n[n.length - 1];
+}
+
+function renderIntel(list, cnt){
+  const W = [];
+  if (!list.length) {
+    W.push(["", "Krigsrådet er tomt. Vær den første til at melde dig nedenfor."]);
+  } else {
+    if (cnt.nt === 0) W.push(["bad", "Ingen tank endnu. Nogen skal tage tæsk: Warrior, Paladin eller Druid i Bear-form."]);
+    if (cnt.nh === 0) W.push(["bad", "Ingen healer. Det giver korte dungeons og lange løbeture fra kirkegården. Priest, Shaman, Druid og Paladin kan heale."]);
+    if (cnt.nt > 1) W.push(["warn", "Flere tanks end en dungeon bruger. I 5-mands må én af jer lave skade, men til raids er det guld værd."]);
+    if (cnt.nh > 1) W.push(["warn", "To healere eller flere. Luksus i raids, men i dungeons må én skifte til DPS."]);
+    if (list.length > 5) W.push(["warn", "Flere end fem helte. Til dungeons må I skiftes, til raids er I godt på vej."]);
+    const dupes = {};
+    list.forEach((h) => { if (h.cls && h.spec) { const k = h.cls + ":" + h.spec; (dupes[k] = dupes[k] || []).push(h); } });
+    Object.keys(dupes).forEach((k) => {
+      if (dupes[k].length > 1) { const h = dupes[k][0]; W.push(["warn", plainNames(dupes[k]) + " er begge " + specOf(h).name + " " + CLASSES[h.cls].name + ". Der bliver kamp om det samme loot."]); }
+    });
+    if (list.some((h) => h.cls === "paladin")) W.push(["good", "Undead Paladin i gruppen. Det har Horden aldrig haft før."]);
+  }
+  const profMap = {};
+  PROF_ORDER.concat(SEC_ORDER).forEach((p) => { profMap[p] = []; });
+  list.forEach((h) => { h.prof.forEach((p) => profMap[p] && profMap[p].push(h)); h.sec.forEach((p) => profMap[p] && profMap[p].push(h)); });
+  if (list.length) {
+    PROF_ORDER.forEach((p) => {
+      const need = PROFS[p].needs;
+      if (need && profMap[p].length && !profMap[need].length) W.push(["warn", PROFS[p].name + ", men ingen " + PROFS[need].name + " i gruppen. Materialerne skal købes på Auction House."]);
+    });
+    ["herbalism","mining","skinning"].forEach((p) => {
+      if (profMap[p].length > 1) W.push(["warn", plainNames(profMap[p]) + " har alle " + PROFS[p].name + ". I kommer til at dele hver eneste node."]);
+    });
+    if (!profMap.cooking.length) W.push(["warn", "Ingen har Cooking endnu, og det er Cooking, der tænder lejrbålet. Det er en secondary, så alle kan tage den oveni."]);
+    if (cnt.nt >= 1 && cnt.nh >= 1 && cnt.nd >= 3 && list.length === 5) W.unshift(["good", "Gruppen er komplet: tank, healer og tre DPS. Lok'tar ogar!"]);
+  }
+  $("#warnings").innerHTML = W.map((w) => '<li class="' + w[0] + '">' + esc(w[1]) + '</li>').join("");
+
+  const util = new Map();
+  list.forEach((h) => {
+    const c = CLASSES[h.cls]; if (!c) return;
+    c.util.forEach((u) => { if (!util.has(u)) util.set(u, new Set()); util.get(u).add(c.color); });
+  });
+  $("#utility").innerHTML = util.size ? Array.from(util.entries()).map((e) => '<span class="chip"><span class="dots">' + Array.from(e[1]).map((col) => '<span class="dot" style="--c:' + col + '"></span>').join("") + '</span>' + esc(e[0]) + '</span>').join("") : '<p class="empty-line">Buffs og utility dukker op her, når folk melder sig.</p>';
+
+  $("#profgrid").innerHTML = PROF_ORDER.concat(SEC_ORDER).map((p) => {
+    const P = PROFS[p] || SECS[p];
+    const who = profMap[p];
+    let flag = "";
+    if (PROFS[p] && PROFS[p].needs && who.length && !profMap[PROFS[p].needs].length) flag = '<span class="flag">Mangler ' + esc(PROFS[PROFS[p].needs].name) + '</span>';
+    return '<div class="ptile' + (who.length ? " has" : "") + '"><span class="pn">' + esc(P.name) + '</span><span class="pk">' + KIND[PROFS[p] ? PROFS[p].kind : "sec"] + '</span><span class="names">' + (who.length ? namesHTML(who) : '<span style="color:var(--dim)">Ingen endnu</span>') + '</span>' + flag + '</div>';
+  }).join("");
+
+  const camp = [];
+  if (!profMap.cooking.length) camp.push('<li><b>Bålet mangler en kok.</b> <span class="by">Uden Cooking intet lejrbål, og så heller ingen af tingene nedenfor.</span></li>');
+  SEC_ORDER.concat(PROF_ORDER).forEach((p) => {
+    const P = PROFS[p] || SECS[p];
+    if (profMap[p].length) camp.push('<li><b>' + esc(P.camp[0]) + '</b>: ' + esc(P.camp[1]) + ' <span class="by">· ' + esc(plainNames(profMap[p])) + '</span></li>');
+  });
+  $("#camp").innerHTML = list.length ? camp.join("") : '<li class="empty-line">Lejrbålets buffs vises her, når folk har valgt professions.</li>';
+}
+
+/* ---------- recruit form ---------- */
+function othersWith(p){
+  const me = slug(state.player);
+  return heroes.filter((h) => h.id !== me && h.id !== editingId && (h.prof.indexOf(p) > -1 || h.sec.indexOf(p) > -1));
+}
+function renderClasses(){
+  $("#classes").innerHTML = CLASS_ORDER.map((k) => {
+    const c = CLASSES[k];
+    const roles = Array.from(new Set(c.specs.map((s) => s.role)));
+    return '<button type="button" class="pick" data-cls="' + k + '" aria-pressed="' + (state.cls === k) + '" style="--cc:' + c.color + ';--cct:' + c.text + '"><span class="nm">' + c.name + '</span><span class="roles">' + roles.map(roleBadge).join("") + '</span></button>';
+  }).join("");
+  const info = $("#class-info");
+  const c = CLASSES[state.cls];
+  if (!c) { info.hidden = true; return; }
+  info.hidden = false;
+  info.innerHTML = '<p>' + esc(c.blurb) + '</p><div class="chips">' + c.util.map((u) => '<span class="chip"><span class="dots"><span class="dot" style="--c:' + c.color + '"></span></span>' + esc(u) + '</span>').join("") + '</div>';
+}
+function renderRaces(){
+  const c = CLASSES[state.cls];
+  $("#race-hint").textContent = c ? (c.races.length === 1 ? "Undead er den eneste Horde-race, der kan være Paladin. Den er valgt for dig." : "Disse Horde-racer kan være " + c.name + ".") : "Vælg en class først, så viser vi hvilke Horde-racer der kan spille den.";
+  $("#races").innerHTML = RACE_ORDER.map((k) => {
+    const r = RACES[k];
+    const ok = !c || c.races.indexOf(k) > -1;
+    return '<button type="button" class="pick" data-race="' + k + '" aria-pressed="' + (state.race === k) + '"' + (ok ? "" : " disabled") + '><span class="nm">' + r.name + '</span><span class="sub">' + (ok ? esc(r.racials[0][0]) : "Kan ikke være " + esc(c.name)) + '</span></button>';
+  }).join("");
+  const info = $("#race-info");
+  const r = RACES[state.race];
+  if (!r) { info.hidden = true; return; }
+  info.hidden = false;
+  info.innerHTML = '<p>' + esc(r.tag) + '</p><dl class="racials">' + r.racials.map((x) => '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>').join("") + '</dl>';
+}
+function renderSpecs(){
+  const c = CLASSES[state.cls];
+  $("#spec-hint").textContent = c ? "Din spec bestemmer din rolle i gruppen. Du kan altid skifte talents senere." : "Vælg en class, så dukker dens specs op her.";
+  if (!c) { $("#specs").innerHTML = ""; return; }
+  $("#specs").innerHTML = c.specs.map((s) => '<button type="button" class="pick" data-spec="' + s.id + '" aria-pressed="' + (state.spec === s.id) + '" style="--cc:' + c.color + ';--cct:' + c.text + '"><span class="nm">' + esc(s.name) + '</span><span class="rl">' + roleBadge(s.role) + ROLES[s.role].label + '</span><span class="txt">' + esc(s.txt) + '</span></button>').join("");
+}
+function renderProfs(){
+  const c = CLASSES[state.cls];
+  const sug = $("#prof-suggest");
+  if (c) {
+    const same = c.prof.every((p) => state.prof.indexOf(p) > -1);
+    sug.innerHTML = same ? "" : '<button type="button" class="btn slim" id="use-suggest">Klassisk valg for ' + esc(c.name) + ': ' + esc(PROFS[c.prof[0]].name) + ' + ' + esc(PROFS[c.prof[1]].name) + '</button>';
+  } else sug.innerHTML = "";
+  $("#profs").innerHTML = PROF_ORDER.map((p) => {
+    const P = PROFS[p];
+    const on = state.prof.indexOf(p) > -1;
+    const others = othersWith(p);
+    const other = state.prof.find((x) => x !== p);
+    const paired = on && other && P.pair && P.pair.indexOf(other) > -1;
+    return '<button type="button" class="pick" data-prof="' + p + '" aria-pressed="' + on + '"><span class="nm">' + P.name + '</span><span class="sub">' + KIND[P.kind] + '</span>' +
+      (paired ? '<span class="pair">Klassisk par</span>' : "") +
+      (others.length ? '<span class="has">Har allerede: ' + esc(others.map((h) => h.player).join(", ")) + '</span>' : "") + '</button>';
+  }).join("");
+  const info = $("#prof-info");
+  if (!state.prof.length) { info.hidden = true; }
+  else {
+    info.hidden = false;
+    info.innerHTML = state.prof.map((p) => { const P = PROFS[p]; return '<p><b>' + esc(P.name) + '.</b> ' + esc(P.desc) + ' Ved lejrbålet: <b>' + esc(P.camp[0]) + '</b> (' + esc(P.camp[1]) + ').</p>'; }).join("");
+  }
+  $("#secs").innerHTML = SEC_ORDER.map((p) => {
+    const S = SECS[p];
+    return '<label class="check" title="' + esc(S.desc) + '"><input type="checkbox" id="sec-' + p + '" data-sec="' + p + '"' + (state.sec.indexOf(p) > -1 ? " checked" : "") + '>' + S.name + (p === "cooking" ? " (tænder bålet)" : "") + '</label>';
+  }).join("");
+}
+function renderPreview(){
+  $("#hero-card").innerHTML = frameHTML(Object.assign({}, state), {preview:true, big:true});
+  const id = slug(state.player);
+  const exists = id && heroes.some((h) => h.id === id);
+  $("#save").textContent = (id && overwriteOk === id) ? "Overskriv " + state.player.trim() : (exists && editingId === id) || (editingId && !exists) ? "Gem ændringer" : "Skriv mig i krigsrådet";
+}
+function renderForm(){
+  renderClasses(); renderRaces(); renderSpecs(); renderProfs(); renderPreview(); saveDraft();
+}
+function syncInputs(){
+  $("#in-player").value = state.player;
+  $("#in-char").value = state.char;
+  $("#in-cry").value = state.cry;
+}
+
+function setClass(k){
+  const c = CLASSES[k]; if (!c) return;
+  if (state.cls !== k) state.spec = null;
+  state.cls = k;
+  if (state.race && c.races.indexOf(state.race) === -1) state.race = null;
+  if (c.races.length === 1) state.race = c.races[0];
+}
+
+/* ---------- status + copy ---------- */
+function status(msg, kind){
+  const el = $("#status");
+  el.textContent = msg || "";
+  el.className = "status" + (kind ? " " + kind : "");
+}
+function heroText(h){
+  const c = CLASSES[h.cls], sp = specOf(h), r = RACES[h.race];
+  const lines = [];
+  lines.push((h.char ? h.char + " (" + h.player + ")" : h.player));
+  lines.push([r ? r.name : "", c ? c.name : "?"].filter(Boolean).join(" ") + (sp ? " · " + sp.name + " · " + ROLES[sp.role].label : ""));
+  const pr = h.prof.length ? h.prof.map(profName).join(" + ") : "ikke besluttet";
+  lines.push("Professions: " + pr + (h.sec.length ? " | Secondary: " + h.sec.map(profName).join(", ") : ""));
+  if (h.cry) lines.push("Kampråb: “" + h.cry + "”");
+  return lines.join("\n");
+}
+function copyText(text, area, btn, okLabel){
+  const done = () => { const old = btn.textContent; btn.textContent = okLabel || "Kopieret"; setTimeout(() => { btn.textContent = old; }, 1600); area.hidden = true; };
+  const fail = () => { area.hidden = false; area.value = text; area.focus(); area.select(); };
+  try {
+    const p = navigator.clipboard && navigator.clipboard.writeText(text);
+    if (p && p.then) p.then(done, fail); else fail();
+  } catch (e) { fail(); }
+}
+function missing(){
+  const m = [];
+  if (!state.player.trim()) m.push("dit navn");
+  if (!state.cls) m.push("class");
+  if (!state.race) m.push("race");
+  if (!state.spec) m.push("spec");
+  return m;
+}
+
+/* ---------- database (Supabase REST) ---------- */
+const api = {
+  ok: /^https:\/\/[^\s]+$/.test(CONFIG.SUPABASE_URL) && CONFIG.SUPABASE_KEY.length > 20,
+  base(){ return CONFIG.SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/" + TABLE; },
+  headers(extra){
+    const h = {apikey: CONFIG.SUPABASE_KEY, "Content-Type": "application/json"};
+    // Gamle "anon"-nøgler er JWT'er og skal også sendes som Bearer; nye publishable keys kun som apikey.
+    if (CONFIG.SUPABASE_KEY.indexOf("eyJ") === 0) h.Authorization = "Bearer " + CONFIG.SUPABASE_KEY;
+    return Object.assign(h, extra || {});
+  },
+  async check(r){
+    if (r.ok) return r;
+    const e = new Error("HTTP " + r.status); e.status = r.status;
+    try { e.detail = await r.text(); } catch (x) {}
+    throw e;
+  },
+  async list(){
+    const r = await fetch(api.base() + "?select=*&order=created_at.asc", {headers: api.headers(), cache: "no-store"});
+    await api.check(r);
+    return r.text();
+  },
+  async upsert(row){
+    const r = await fetch(api.base() + "?on_conflict=id", {method:"POST", headers: api.headers({Prefer:"resolution=merge-duplicates,return=minimal"}), body: JSON.stringify(row)});
+    await api.check(r);
+  },
+  async remove(id){
+    const r = await fetch(api.base() + "?id=eq." + encodeURIComponent(id), {method:"DELETE", headers: api.headers({Prefer:"return=minimal"})});
+    await api.check(r);
+  }
+};
+function fromRow(r){
+  return cleanHero({id:r.id, player:r.player, char:r.karakter, cry:r.kampraab, cls:r.cls, race:r.race, spec:r.spec, prof:r.prof, sec:r.sec, updated:r.created_at});
+}
+function setNote(msg){
+  const n = $("#board-note");
+  n.hidden = !msg;
+  n.textContent = msg || "";
+}
+async function refresh(){
+  if (!api.ok) return;
+  try {
+    const raw = await api.list();
+    setNote("");
+    if (raw === lastRows) return;
+    lastRows = raw;
+    const rows = JSON.parse(raw);
+    heroes = Array.isArray(rows) ? rows.map(fromRow).filter((h) => h.id && h.player) : [];
+    if (pendingDelete && !heroes.some((h) => h.id === pendingDelete)) pendingDelete = null;
+    renderBoard(); renderProfs(); renderPreview();
+  } catch (e) {
+    setNote("Kunne ikke hente gruppen lige nu" + (e.status ? " (fejl " + e.status + ")" : "") + ". Siden prøver igen af sig selv.");
+  }
+}
+function applyMode(){
+  $("#save").hidden = !api.ok;
+  $("#copy-me").classList.toggle("primary", !api.ok);
+  if (!api.ok) setNote("Krigsrådet er ikke forbundet til en database endnu. Du kan stadig bygge din helt nedenfor og kopiere den til gruppechatten.");
+}
+
+async function save(){
+  const m = missing();
+  if (m.length) { status("Mangler: " + m.join(", ") + ".", "err"); return; }
+  if (!api.ok) return;
+  const id = slug(state.player);
+  if (!id) { status("Brug mindst ét bogstav eller tal i dit navn.", "err"); return; }
+  const taken = heroes.some((h) => h.id === id) && editingId !== id;
+  if (taken && overwriteOk !== id) {
+    overwriteOk = id;
+    renderPreview();
+    status("Der er allerede en helt, der hedder " + state.player.trim() + ". Tryk igen for at overskrive, eller brug et andet navn.", "err");
+    return;
+  }
+  overwriteOk = null;
+  const row = {
+    id: id,
+    player: state.player.trim(),
+    karakter: state.char.trim(),
+    kampraab: state.cry.trim(),
+    cls: state.cls, race: state.race, spec: state.spec,
+    prof: state.prof.slice(0, 2), sec: state.sec.slice(),
+    updated_at: new Date().toISOString()
+  };
+  const btn = $("#save");
+  btn.disabled = true;
+  status("Skriver i krigsrådet …");
+  try {
+    try { await api.upsert(row); }
+    catch (e) {
+      if (!e.status || e.status >= 500) { await new Promise((r) => setTimeout(r, 700 + Math.random() * 600)); await api.upsert(row); }
+      else throw e;
+    }
+    if (editingId && editingId !== id) { try { await api.remove(editingId); } catch (e) {} }
+    editingId = id;
+    saveDraft();
+    status(row.player + " er skrevet ind i krigsrådet. Lok'tar ogar!", "ok");
+    await refresh();
+  } catch (e) {
+    if (e.status === 400 || e.status === 409 || e.status === 422) {
+      status("Databasen afviste helten. Tjek at navn og kampråb ikke er for lange, og prøv igen.", "err");
+    } else if (e.status === 401 || e.status === 403) {
+      status("Databasen afviste skrivningen (fejl " + e.status + "). Krigsrådet er måske fuldt, eller opsætningen mangler. Kopiér din helt til chatten imens.", "err");
+    } else {
+      status("Det lykkedes ikke at gemme lige nu. Prøv igen om lidt, eller kopiér din helt til chatten.", "err");
+    }
+  } finally {
+    btn.disabled = false;
+    renderPreview();
+  }
+}
+
+/* ---------- quiz + dice ---------- */
+function renderQuiz(){
+  const el = $("#quiz");
+  el.innerHTML = '<h3>Thralls prøve</h3>' + QUIZ.map((q, i) =>
+    '<fieldset><legend>' + (i + 1) + '. ' + esc(q.q) + '</legend><div class="qopts">' +
+    q.a.map((a, j) => '<label class="qopt" for="q' + i + '-' + j + '"><input type="radio" name="q' + i + '" id="q' + i + '-' + j + '" value="' + j + '"><span>' + esc(a.t) + '</span></label>').join("") +
+    '</div></fieldset>').join("") +
+    '<div class="row"><button type="button" class="btn primary slim" id="quiz-go">Hør hvad Thrall siger</button></div><div id="quiz-out" aria-live="polite"></div>';
+}
+function quizResult(){
+  const score = {}; CLASS_ORDER.forEach((k) => { score[k] = 0; });
+  let role = null;
+  for (let i = 0; i < QUIZ.length; i++) {
+    const sel = document.querySelector('input[name="q' + i + '"]:checked');
+    if (!sel) return {missing: i + 1};
+    const a = QUIZ[i].a[+sel.value];
+    Object.keys(a.s).forEach((k) => { score[k] += a.s[k]; });
+    if (a.role) role = a.role;
+  }
+  const max = Math.max.apply(null, CLASS_ORDER.map((k) => score[k]));
+  let top = CLASS_ORDER.filter((k) => score[k] === max);
+  const fits = top.filter((k) => CLASSES[k].specs.some((s) => s.role === role));
+  if (fits.length) top = fits;
+  const cls = top[Math.floor(Math.random() * top.length)];
+  const c = CLASSES[cls];
+  let spec = c.specs.find((s) => s.role === role);
+  if (!spec && (role === "melee" || role === "ranged")) spec = c.specs.find((s) => ROLES[s.role].group === "dps");
+  if (!spec) spec = c.specs[0];
+  return {cls: cls, spec: spec.id};
+}
+function showQuizResult(){
+  const out = $("#quiz-out");
+  const res = quizResult();
+  if (res.missing) { out.innerHTML = '<p class="status err">Svar på spørgsmål ' + res.missing + ' først.</p>'; return; }
+  const c = CLASSES[res.cls], sp = c.specs.find((s) => s.id === res.spec);
+  out.innerHTML = '<div class="verdict"><p class="label">Thrall har talt</p><p class="big" style="color:' + c.text + '">' + esc(sp.name) + ' ' + esc(c.name) + '</p><p class="hint">' + esc(c.blurb) + '</p><div class="row"><button type="button" class="btn primary slim" id="quiz-use" data-cls="' + res.cls + '" data-spec="' + res.spec + '">Bliv ' + esc(c.name) + '</button><button type="button" class="btn slim" id="quiz-again">Prøv igen</button></div></div>';
+}
+function rollDice(){
+  const list = sortedHeroes().filter((h) => h.id !== slug(state.player) && h.id !== editingId);
+  const nt = list.filter((h) => groupOf(h) === "tank").length;
+  const nh = list.filter((h) => groupOf(h) === "healer").length;
+  const want = !list.length ? null : nt === 0 ? "tank" : nh === 0 ? "healer" : null;
+  let pool = [];
+  CLASS_ORDER.forEach((k) => CLASSES[k].specs.forEach((s) => { if (!want || s.role === want) pool.push([k, s.id]); }));
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  const c = CLASSES[pick[0]];
+  state.cls = pick[0];
+  state.spec = pick[1];
+  state.race = c.races[Math.floor(Math.random() * c.races.length)];
+  state.prof = c.prof.slice();
+  renderForm();
+  const sp = specOf(state);
+  status("Terningen siger: " + RACES[state.race].name + " " + c.name + ", " + sp.name + "." + (want ? " Den tog hensyn til, at gruppen mangler en " + want + "." : ""), "ok");
+}
+
+/* ---------- draft ---------- */
+function saveDraft(){
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify({state: state, editingId: editingId})); } catch (e) {}
+}
+function loadDraft(){
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d && d.state) {
+      const h = cleanHero(d.state);
+      state = {player:h.player, char:h.char, cry:h.cry, cls:h.cls, race:h.race, spec:h.spec, prof:h.prof, sec:h.sec};
+      if (state.cls && !CLASSES[state.cls].specs.some((s) => s.id === state.spec)) state.spec = null;
+      if (state.cls && state.race && CLASSES[state.cls].races.indexOf(state.race) === -1) state.race = null;
+      editingId = typeof d.editingId === "string" ? d.editingId : null;
+    }
+  } catch (e) {}
+}
+
+/* ---------- countdown ---------- */
+function tick(){
+  const ms = LAUNCH - Date.now();
+  if (ms <= 0) {
+    $("#cd-label").textContent = "Portene er åbne";
+    $("#cd-digits").innerHTML = '<span><b>Lok\'tar!</b><i>log ind nu</i></span>';
+    return false;
+  }
+  const m = Math.floor(ms / 60000);
+  $("#cd-d").textContent = Math.floor(m / 1440);
+  $("#cd-h").textContent = String(Math.floor((m % 1440) / 60)).padStart(2, "0");
+  $("#cd-m").textContent = String(m % 60).padStart(2, "0");
+  return true;
+}
+function whenText(){
+  const opt = {weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit"};
+  let dk = "", mine = "", tz = "";
+  try { dk = new Date(LAUNCH).toLocaleString("da-DK", Object.assign({timeZone:"Europe/Copenhagen"}, opt)); } catch (e) {}
+  try { mine = new Date(LAUNCH).toLocaleString("da-DK", opt); tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  let t = "Launch 4. november kl. 23:00 UTC.";
+  if (dk) t += " I Danmark: " + dk + ".";
+  if (mine && tz !== "Europe/Copenhagen") t += " Hos dig: " + mine + ".";
+  $("#cd-when").textContent = t;
+}
+
+/* ---------- events ---------- */
+function bind(){
+  $("#in-player").addEventListener("input", (e) => { state.player = e.target.value; overwriteOk = null; renderPreview(); renderProfs(); saveDraft(); });
+  $("#in-char").addEventListener("input", (e) => { state.char = e.target.value; renderPreview(); saveDraft(); });
+  $("#in-cry").addEventListener("input", (e) => { state.cry = e.target.value; renderPreview(); saveDraft(); });
+  $("#form").addEventListener("submit", (e) => e.preventDefault());
+
+  $("#classes").addEventListener("click", (e) => { const b = e.target.closest("[data-cls]"); if (!b) return; setClass(b.dataset.cls); status(""); renderForm(); });
+  $("#races").addEventListener("click", (e) => { const b = e.target.closest("[data-race]"); if (!b || b.disabled) return; state.race = b.dataset.race; renderForm(); });
+  $("#specs").addEventListener("click", (e) => { const b = e.target.closest("[data-spec]"); if (!b) return; state.spec = b.dataset.spec; renderForm(); });
+  $("#profs").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-prof]"); if (!b) return;
+    const p = b.dataset.prof, i = state.prof.indexOf(p);
+    if (i > -1) state.prof.splice(i, 1);
+    else if (state.prof.length >= 2) { status("Du kan kun have to primære professions. Fjern en af dem først.", "err"); return; }
+    else state.prof.push(p);
+    status(""); renderForm();
+  });
+  $("#prof-suggest").addEventListener("click", (e) => {
+    if (!e.target.closest("#use-suggest")) return;
+    const c = CLASSES[state.cls]; if (!c) return;
+    state.prof = c.prof.slice(); renderForm();
+  });
+  $("#secs").addEventListener("change", (e) => {
+    const cb = e.target.closest("[data-sec]"); if (!cb) return;
+    const p = cb.dataset.sec;
+    state.sec = SEC_ORDER.filter((x) => (x === p ? cb.checked : state.sec.indexOf(x) > -1));
+    renderPreview(); saveDraft();
+  });
+
+  $("#quiz-open").addEventListener("click", () => {
+    const q = $("#quiz");
+    if (q.hidden) { if (!q.innerHTML) renderQuiz(); q.hidden = false; }
+    else q.hidden = true;
+    $("#quiz-open").setAttribute("aria-expanded", String(!q.hidden));
+  });
+  $("#quiz").addEventListener("click", (e) => {
+    if (e.target.closest("#quiz-go")) showQuizResult();
+    else if (e.target.closest("#quiz-again")) { renderQuiz(); }
+    else {
+      const u = e.target.closest("#quiz-use");
+      if (u) {
+        setClass(u.dataset.cls); state.spec = u.dataset.spec;
+        if (!state.prof.length) state.prof = CLASSES[state.cls].prof.slice();
+        $("#quiz").hidden = true; $("#quiz-open").setAttribute("aria-expanded", "false");
+        renderForm();
+        status("Thralls dom er skrevet ind i din helt. Vælg race og ret gerne til.", "ok");
+      }
+    }
+  });
+  $("#dice").addEventListener("click", rollDice);
+
+  $("#save").addEventListener("click", save);
+  $("#copy-me").addEventListener("click", (e) => {
+    const m = missing();
+    if (m.length) { status("Mangler: " + m.join(", ") + ".", "err"); return; }
+    copyText("Hordens Krigsråd · ny helt\n" + heroText(state), $("#copy-me-fallback"), e.currentTarget, "Kopieret til udklipsholderen");
+  });
+  $("#copy-all").addEventListener("click", (e) => {
+    const list = sortedHeroes();
+    const t = list.filter((h) => groupOf(h) === "tank").length, h = list.filter((h) => groupOf(h) === "healer").length, d = list.filter((h) => groupOf(h) === "dps").length;
+    const text = "Hordens Krigsråd · WoW Forever (Horde, PvE)\nTank " + t + "/1 · Healer " + h + "/1 · DPS " + d + "/3\n\n" + list.map(heroText).join("\n\n");
+    copyText(text, $("#copy-all-fallback"), e.currentTarget, "Kopieret");
+  });
+  $("#reset").addEventListener("click", () => {
+    state = blank(); editingId = null; syncInputs(); renderForm(); status("Ny, blank helt.");
+  });
+
+  $("#board").addEventListener("click", async (e) => {
+    const ed = e.target.closest("[data-edit]");
+    const del = e.target.closest("[data-del]");
+    const yes = e.target.closest("[data-del-yes]");
+    const no = e.target.closest("[data-del-no]");
+    if (ed) {
+      const h = heroes.find((x) => x.id === ed.dataset.edit); if (!h) return;
+      state = {player:h.player, char:h.char, cry:h.cry, cls:h.cls, race:h.race, spec:h.spec, prof:h.prof.slice(), sec:h.sec.slice()};
+      editingId = h.id; syncInputs(); renderForm();
+      status("Du retter " + h.player + ". Gem, når du er færdig.");
+      $("#recruit").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+    } else if (del) { pendingDelete = del.dataset.del; renderBoard(); }
+    else if (no) { pendingDelete = null; renderBoard(); }
+    else if (yes && api.ok) {
+      const id = yes.dataset.delYes; pendingDelete = null;
+      try {
+        await api.remove(id);
+        if (editingId === id) { editingId = null; saveDraft(); }
+        status("Helten er fjernet fra krigsrådet.");
+        await refresh();
+      } catch (err) {
+        status("Det lykkedes ikke at fjerne helten. Prøv igen om lidt.", "err");
+        renderBoard();
+      }
+    }
+  });
+}
+
+/* ---------- boot ---------- */
+loadDraft();
+syncInputs();
+bind();
+renderForm();
+renderBoard();
+whenText();
+if (tick()) setInterval(tick, 15000);
+applyMode();
+if (api.ok) {
+  refresh();
+  setInterval(() => { if (document.visibilityState === "visible") refresh(); }, POLL_MS);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") refresh(); });
+}
+})();
+</script>
+</body>
+</html>

@@ -108,6 +108,7 @@ h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,1.4rem + 1.
 .comp span{display:inline-flex;align-items:center;gap:6px;color:var(--ash)}
 .comp span.ok{color:var(--good)}
 .comp span.miss{color:var(--bad)}
+.comp span.short{color:var(--warn)}
 .comp .role{width:20px;height:20px}
 .note{margin:0 0 14px;padding:10px 14px;border:1px solid var(--seam-2);border-radius:4px;color:var(--bone);background:var(--leather);font-size:.95rem;max-width:80ch}
 
@@ -140,7 +141,12 @@ h2{font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,1.4rem + 1.
 .linkbtn{background:none;border:0;color:var(--ash);font:inherit;font-size:.86rem;cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--seam-2)}
 .linkbtn:hover{color:var(--bone)}
 .linkbtn.danger{color:var(--bad)}
-.reserve{position:absolute;top:-9px;right:8px;font-family:var(--label);font-weight:700;letter-spacing:.07em;font-size:.72rem;background:var(--iron);border:1px solid var(--seam-2);border-radius:999px;padding:0 8px;color:var(--ash)}
+.alt{margin:4px 0 0;padding-top:7px;border-top:1px dashed var(--seam);display:flex;flex-wrap:wrap;align-items:center;gap:3px 8px;font-size:.9rem;line-height:1.3}
+.alt-k{font-family:var(--label);font-weight:700;letter-spacing:.06em;color:var(--ash);font-size:.8rem}
+.alt-v{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--alt,var(--bone));min-width:0;overflow-wrap:anywhere}
+.alt-v .role{width:18px;height:18px}
+.count{font-family:var(--label);font-weight:700;letter-spacing:.06em;color:var(--ash);font-size:1rem}
+.frame.empty.invite .role{color:var(--bone)}
 .frame.empty{background:transparent;border:1px dashed var(--seam-2);min-height:168px;display:grid;place-items:center;text-align:center;color:var(--ash);padding:14px}
 .frame.empty .need{display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--label);font-weight:700;letter-spacing:.07em}
 .frame.empty .role{width:38px;height:38px;background:var(--leather-2)}
@@ -190,6 +196,13 @@ fieldset.step > legend{padding:0;margin:0 0 12px;font-family:var(--display);font
   font-family:var(--body);letter-spacing:0;font-size:1rem;color:var(--bone);
   background:var(--leather);border:1px solid var(--seam-2);border-radius:4px;padding:10px 12px;width:100%;
 }
+.field select{
+  font-family:var(--body);letter-spacing:0;font-size:1rem;color:var(--bone);
+  background:var(--leather);border:1px solid var(--seam-2);border-radius:4px;padding:10px 12px;width:100%;cursor:pointer;
+}
+.field select:focus-visible{outline:2px solid var(--blood-hi);outline-offset:0;border-color:transparent}
+.field select optgroup, .field select option{background:var(--leather);color:var(--bone)}
+.alt-field{max-width:380px}
 .field input::placeholder{color:var(--dim)}
 .field input:focus-visible{outline:2px solid var(--blood-hi);outline-offset:0;border-color:transparent}
 
@@ -325,6 +338,7 @@ footer p{margin:0 0 6px;max-width:80ch}
   <section aria-labelledby="h-council">
     <div class="sec-head">
       <h2 id="h-council">Gruppen</h2>
+      <span class="count" id="hero-count"></span>
       <p class="comp" id="comp-summary"></p>
       <span class="spacer"></span>
       <button type="button" class="btn slim" id="copy-all" hidden>Kopiér gruppen</button>
@@ -406,6 +420,10 @@ footer p{margin:0 0 6px;max-width:80ch}
           <div class="stepbody">
             <p class="hint" id="spec-hint">Din spec bestemmer din rolle i gruppen.</p>
             <div class="grid-picks specgrid" id="specs"></div>
+            <label class="field alt-field" for="in-alt">Jeg spiller også gerne …
+              <select id="in-alt"></select>
+            </label>
+            <p class="hint" id="alt-hint">Valgfrit. Vælg en anden spec, du gerne hopper over i, hvis gruppen mangler noget en aften.</p>
           </div>
         </fieldset>
 
@@ -618,7 +636,8 @@ const QUIZ = [
 ];
 
 /* ---------- state ---------- */
-const blank = () => ({player:"", char:"", cry:"", cls:null, race:null, spec:null, prof:[], sec:[]});
+const blank = () => ({player:"", char:"", cry:"", cls:null, race:null, spec:null, alt:null, prof:[], sec:[]});
+const PARTY = 5;
 let state = blank();
 let editingId = null;
 let heroes = [];
@@ -656,6 +675,23 @@ function specOf(h){ const c = CLASSES[h.cls]; return c ? c.specs.find((s) => s.i
 function roleOf(h){ const s = specOf(h); return s ? s.role : null; }
 function groupOf(h){ const r = roleOf(h); return r ? ROLES[r].group : null; }
 function profName(id){ return (PROFS[id] || SECS[id] || {}).name || id; }
+function parseAlt(v){
+  if (typeof v !== "string") return null;
+  const m = v.split(":");
+  const c = CLASSES[m[0]];
+  const s = c ? c.specs.find((x) => x.id === m[1]) : null;
+  return s ? {key: v, cls: m[0], c: c, s: s, label: s.name + " " + c.name, group: ROLES[s.role].group} : null;
+}
+function altGroup(h){ const a = parseAlt(h.alt); return a ? a.group : null; }
+function targets(n){
+  const p = Math.max(1, Math.ceil(n / PARTY));
+  return {parties: p, tank: p, healer: p, dps: p * 3};
+}
+function altFill(group, list){ return list.filter((h) => groupOf(h) !== group && altGroup(h) === group); }
+function altNames(arr){
+  const n = arr.map((h) => h.player + " (" + parseAlt(h.alt).label + ")");
+  return n.length <= 1 ? n.join("") : n.slice(0, -1).join(", ") + " og " + n[n.length - 1];
+}
 function cleanHero(d){
   return {
     id: d.id,
@@ -665,6 +701,7 @@ function cleanHero(d){
     cls: CLASSES[d.cls] ? d.cls : null,
     race: RACES[d.race] ? d.race : null,
     spec: typeof d.spec === "string" ? d.spec : null,
+    alt: parseAlt(d.alt) ? d.alt : null,
     prof: Array.isArray(d.prof) ? d.prof.filter((p) => PROFS[p]).slice(0, 2) : [],
     sec: Array.isArray(d.sec) ? d.sec.filter((p) => SECS[p]) : [],
     updated: d.updated || ""
@@ -686,6 +723,8 @@ function frameHTML(h, opts){
   (h.prof || []).forEach((p) => { chips += '<span class="pchip">' + esc(profName(p)) + '</span>'; });
   (h.sec || []).forEach((p) => { chips += '<span class="pchip sec">' + esc(profName(p)) + '</span>'; });
   if (!chips && opts.preview) chips = '<span class="pchip sec">Ingen professions endnu</span>';
+  const a = parseAlt(h.alt);
+  const alt = a ? '<p class="alt"><span class="alt-k">Spiller også gerne</span><span class="alt-v" style="--alt:' + a.c.text + ';--rc:' + a.c.color + '">' + roleBadge(a.s.role) + esc(a.label) + '</span></p>' : "";
   let ops = "";
   if (opts.ops) {
     if (pendingDelete === h.id) {
@@ -695,7 +734,6 @@ function frameHTML(h, opts){
     }
   }
   return '<article class="frame' + (opts.big ? " big" : "") + '"' + style + '>' +
-    (opts.reserve ? '<span class="reserve">Reserve</span>' : "") +
     '<div class="bar"><span class="who">' + who + '</span>' + role + '</div>' +
     '<div class="body">' +
       (h.char ? '<p class="char">' + esc(h.char) + '</p>' : "") +
@@ -703,17 +741,23 @@ function frameHTML(h, opts){
       (specLine ? '<p class="meta">' + specLine + '</p>' : "") +
       (chips ? '<div class="pchips">' + chips + '</div>' : "") +
       (h.cry ? '<p class="cry">“' + esc(h.cry) + '”</p>' : "") +
+      alt +
       ops +
     '</div></article>';
 }
-function emptyHTML(need){
+function emptyHTML(need, count, fill){
   const map = {
-    tank:["tank","Tank søges","Warrior, Paladin eller Druid (Bear)"],
-    healer:["healer","Healer søges","Priest, Shaman, Druid eller Paladin"],
-    dps:["melee","DPS søges","Alle classes kan lave skade"]
+    tank:["tank", "Tank søges", "tanks søges", "Warrior, Paladin eller Druid (Bear)"],
+    healer:["healer", "Healer søges", "healere søges", "Priest, Shaman, Druid eller Paladin"],
+    dps:["melee", "DPS søges", "DPS søges", "Alle classes kan lave skade"]
   };
   const m = map[need];
-  return '<div class="frame empty"><div class="need">' + roleBadge(m[0]) + '<span>' + m[1] + '</span><small>' + m[2] + '</small></div></div>';
+  const title = count > 1 ? count + " " + m[2] : m[1];
+  const small = fill && fill.length ? "Kan også: " + altNames(fill) : m[3];
+  return '<div class="frame empty"><div class="need">' + roleBadge(m[0]) + '<span>' + esc(title) + '</span><small>' + esc(small) + '</small></div></div>';
+}
+function inviteHTML(){
+  return '<div class="frame empty invite"><div class="need"><span class="role"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M7 2h2v5h5v2H9v5H7V9H2V7h5z"/></svg></span><span>Plads til flere</span><small>Send linket videre. Hver femte helt giver et nyt dungeon-hold.</small></div></div>';
 }
 
 /* ---------- board + analysis ---------- */
@@ -726,18 +770,19 @@ function renderBoard(){
   const he = list.filter((h) => groupOf(h) === "healer");
   const d = list.filter((h) => groupOf(h) === "dps");
   const other = list.filter((h) => !groupOf(h));
-  const rest = d.concat(t.slice(1), he.slice(1), other);
+  const T = targets(list.length);
   const ops = {ops: api.ok, canDelete: api.ok};
   let html = "";
-  html += t[0] ? frameHTML(t[0], ops) : emptyHTML("tank");
-  html += he[0] ? frameHTML(he[0], ops) : emptyHTML("healer");
-  for (let i = 0; i < 3; i++) html += rest[i] ? frameHTML(rest[i], ops) : emptyHTML("dps");
-  rest.slice(3).forEach((h) => { html += frameHTML(h, Object.assign({reserve:true}, ops)); });
+  t.concat(he, d, other).forEach((h) => { html += frameHTML(h, ops); });
+  const gaps = [["tank", T.tank - t.length], ["healer", T.healer - he.length], ["dps", T.dps - d.length]].filter((g) => g[1] > 0);
+  gaps.forEach((g) => { html += emptyHTML(g[0], g[1], g[0] === "dps" ? [] : altFill(g[0], list)); });
+  if (!gaps.length) html += inviteHTML();
   $("#board").innerHTML = html;
 
   const nt = t.length, nh = he.length, nd = d.length;
-  const cell = (role, label, n, want) => '<span class="' + (n >= want ? "ok" : "miss") + '">' + roleBadge(role) + label + ' ' + n + '/' + want + '</span>';
-  $("#comp-summary").innerHTML = cell("tank", "Tank", nt, 1) + cell("healer", "Healer", nh, 1) + cell("melee", "DPS", nd, 3);
+  const cell = (role, label, n, want, floor) => '<span class="' + (n >= want ? "ok" : n >= floor ? "short" : "miss") + '">' + roleBadge(role) + label + ' ' + n + '/' + want + '</span>';
+  $("#comp-summary").innerHTML = cell("tank", "Tank", nt, T.tank, 1) + cell("healer", "Healer", nh, T.healer, 1) + cell("melee", "DPS", nd, T.dps, 3);
+  $("#hero-count").textContent = list.length ? list.length + (list.length === 1 ? " helt" : " helte") + (T.parties > 1 ? " · " + T.parties + " hold" : "") : "";
   $("#copy-all").hidden = list.length === 0;
 
   renderIntel(list, {nt: nt, nh: nh, nd: nd});
@@ -757,15 +802,19 @@ function renderIntel(list, cnt){
   if (!list.length) {
     W.push(["", "Krigsrådet er tomt. Vær den første til at melde dig nedenfor."]);
   } else {
-    if (cnt.nt === 0) W.push(["bad", "Ingen tank endnu. Nogen skal tage tæsk: Warrior, Paladin eller Druid i Bear-form."]);
-    if (cnt.nh === 0) W.push(["bad", "Ingen healer. Det giver korte dungeons og lange løbeture fra kirkegården. Priest, Shaman, Druid og Paladin kan heale."]);
-    if (cnt.nt > 1) W.push(["warn", "Flere tanks end en dungeon bruger. I 5-mands må én af jer lave skade, men til raids er det guld værd."]);
-    if (cnt.nh > 1) W.push(["warn", "To healere eller flere. Luksus i raids, men i dungeons må én skifte til DPS."]);
-    if (list.length > 5) W.push(["warn", "Flere end fem helte. Til dungeons må I skiftes, til raids er I godt på vej."]);
+    const T = targets(list.length);
+    const alsoNote = (group, word) => { const f = altFill(group, list); return f.length ? " " + altNames(f) + " spiller også gerne " + word + "." : ""; };
+    const holdTxt = T.parties === 2 ? "to fulde hold" : T.parties + " fulde hold";
+    if (cnt.nt === 0) W.push(["bad", "Ingen tank endnu. Nogen skal tage tæsk: Warrior, Paladin eller Druid i Bear-form." + alsoNote("tank", "tank")]);
+    else if (cnt.nt < T.tank) { const n = T.tank - cnt.nt; W.push(["warn", "Til " + holdTxt + " mangler I " + n + (n > 1 ? " tanks." : " tank.") + alsoNote("tank", "tank")]); }
+    if (cnt.nh === 0) W.push(["bad", "Ingen healer. Det giver korte dungeons og lange løbeture fra kirkegården. Priest, Shaman, Druid og Paladin kan heale." + alsoNote("healer", "healer")]);
+    else if (cnt.nh < T.healer) { const n = T.healer - cnt.nh; W.push(["warn", "Til " + holdTxt + " mangler I " + n + (n > 1 ? " healere." : " healer.") + alsoNote("healer", "healer")]); }
+    if (cnt.nt > T.tank) W.push(["warn", "Flere tanks end hold. En 5-mands dungeon har plads til én tank, så nogen må lave skade, eller I stiller et hold mere."]);
+    if (cnt.nh > T.healer) W.push(["warn", "Flere healere end hold. I en 5-mands dungeon må én skifte til DPS, men i raids er det ren luksus."]);
     const dupes = {};
     list.forEach((h) => { if (h.cls && h.spec) { const k = h.cls + ":" + h.spec; (dupes[k] = dupes[k] || []).push(h); } });
     Object.keys(dupes).forEach((k) => {
-      if (dupes[k].length > 1) { const h = dupes[k][0]; W.push(["warn", plainNames(dupes[k]) + " er begge " + specOf(h).name + " " + CLASSES[h.cls].name + ". Der bliver kamp om det samme loot."]); }
+      if (dupes[k].length > 1) { const h = dupes[k][0]; W.push(["warn", plainNames(dupes[k]) + (dupes[k].length > 2 ? " er alle " : " er begge ") + specOf(h).name + " " + CLASSES[h.cls].name + ". Der bliver kamp om det samme loot."]); }
     });
     if (list.some((h) => h.cls === "paladin")) W.push(["good", "Undead Paladin i gruppen. Det har Horden aldrig haft før."]);
   }
@@ -778,10 +827,13 @@ function renderIntel(list, cnt){
       if (need && profMap[p].length && !profMap[need].length) W.push(["warn", PROFS[p].name + ", men ingen " + PROFS[need].name + " i gruppen. Materialerne skal købes på Auction House."]);
     });
     ["herbalism","mining","skinning"].forEach((p) => {
-      if (profMap[p].length > 1) W.push(["warn", plainNames(profMap[p]) + " har alle " + PROFS[p].name + ". I kommer til at dele hver eneste node."]);
+      if (profMap[p].length > 1) W.push(["warn", plainNames(profMap[p]) + (profMap[p].length > 2 ? " har alle " : " har begge ") + PROFS[p].name + ". I kommer til at dele hver eneste node."]);
     });
     if (!profMap.cooking.length) W.push(["warn", "Ingen har Cooking endnu, og det er Cooking, der tænder lejrbålet. Det er en secondary, så alle kan tage den oveni."]);
-    if (cnt.nt >= 1 && cnt.nh >= 1 && cnt.nd >= 3 && list.length === 5) W.unshift(["good", "Gruppen er komplet: tank, healer og tre DPS. Lok'tar ogar!"]);
+    const T2 = targets(list.length);
+    if (list.length % PARTY === 0 && cnt.nt >= T2.tank && cnt.nh >= T2.healer && cnt.nd >= T2.dps) {
+      W.unshift(["good", T2.parties === 1 ? "Gruppen er komplet: tank, healer og tre DPS. Lok'tar ogar!" : T2.parties + " fulde dungeon-hold, hver med tank, healer og tre DPS. Lok'tar ogar!"]);
+    }
   }
   $("#warnings").innerHTML = W.map((w) => '<li class="' + w[0] + '">' + esc(w[1]) + '</li>').join("");
 
@@ -846,6 +898,28 @@ function renderSpecs(){
   if (!c) { $("#specs").innerHTML = ""; return; }
   $("#specs").innerHTML = c.specs.map((s) => '<button type="button" class="pick" data-spec="' + s.id + '" aria-pressed="' + (state.spec === s.id) + '" style="--cc:' + c.color + ';--cct:' + c.text + '"><span class="nm">' + esc(s.name) + '</span><span class="rl">' + roleBadge(s.role) + ROLES[s.role].label + '</span><span class="txt">' + esc(s.txt) + '</span></button>').join("");
 }
+function renderAlt(){
+  const main = state.cls && state.spec ? state.cls + ":" + state.spec : "";
+  if (state.alt && (state.alt === main || !parseAlt(state.alt))) state.alt = null;
+  let html = '<option value="">Ikke noget bestemt</option>';
+  ["tank","healer","melee","ranged"].forEach((role) => {
+    html += '<optgroup label="' + ROLES[role].label + '">';
+    CLASS_ORDER.forEach((k) => CLASSES[k].specs.forEach((s) => {
+      const v = k + ":" + s.id;
+      if (s.role !== role || v === main) return;
+      html += '<option value="' + v + '"' + (state.alt === v ? " selected" : "") + '>' + esc(s.name + " " + CLASSES[k].name) + '</option>';
+    }));
+    html += '</optgroup>';
+  });
+  $("#in-alt").innerHTML = html;
+  const me = slug(state.player);
+  const others = heroes.filter((h) => h.id !== me && h.id !== editingId);
+  const T = targets(others.length + 1);
+  const short = [];
+  if (others.filter((h) => groupOf(h) === "tank").length < T.tank && roleOf(state) !== "tank") short.push("en tank");
+  if (others.filter((h) => groupOf(h) === "healer").length < T.healer && roleOf(state) !== "healer") short.push("en healer");
+  $("#alt-hint").textContent = "Valgfrit. Vælg en anden spec, du gerne hopper over i, hvis gruppen mangler noget en aften." + (short.length && others.length ? " Lige nu mangler gruppen " + short.join(" og ") + "." : "");
+}
 function renderProfs(){
   const c = CLASSES[state.cls];
   const sug = $("#prof-suggest");
@@ -881,7 +955,7 @@ function renderPreview(){
   $("#save").textContent = (id && overwriteOk === id) ? "Overskriv " + state.player.trim() : (exists && editingId === id) || (editingId && !exists) ? "Gem ændringer" : "Skriv mig i krigsrådet";
 }
 function renderForm(){
-  renderClasses(); renderRaces(); renderSpecs(); renderProfs(); renderPreview(); saveDraft();
+  renderClasses(); renderRaces(); renderSpecs(); renderAlt(); renderProfs(); renderPreview(); saveDraft();
 }
 function syncInputs(){
   $("#in-player").value = state.player;
@@ -910,6 +984,8 @@ function heroText(h){
   lines.push([r ? r.name : "", c ? c.name : "?"].filter(Boolean).join(" ") + (sp ? " · " + sp.name + " · " + ROLES[sp.role].label : ""));
   const pr = h.prof.length ? h.prof.map(profName).join(" + ") : "ikke besluttet";
   lines.push("Professions: " + pr + (h.sec.length ? " | Secondary: " + h.sec.map(profName).join(", ") : ""));
+  const a = parseAlt(h.alt);
+  if (a) lines.push("Spiller også gerne: " + a.label + " (" + ROLES[a.s.role].label + ")");
   if (h.cry) lines.push("Kampråb: “" + h.cry + "”");
   return lines.join("\n");
 }
@@ -961,7 +1037,7 @@ const api = {
   }
 };
 function fromRow(r){
-  return cleanHero({id:r.id, player:r.player, char:r.karakter, cry:r.kampraab, cls:r.cls, race:r.race, spec:r.spec, prof:r.prof, sec:r.sec, updated:r.created_at});
+  return cleanHero({id:r.id, player:r.player, char:r.karakter, cry:r.kampraab, cls:r.cls, race:r.race, spec:r.spec, alt:r.alt, prof:r.prof, sec:r.sec, updated:r.created_at});
 }
 function setNote(msg){
   const n = $("#board-note");
@@ -1009,22 +1085,34 @@ async function save(){
     karakter: state.char.trim(),
     kampraab: state.cry.trim(),
     cls: state.cls, race: state.race, spec: state.spec,
+    alt: parseAlt(state.alt) && state.alt !== state.cls + ":" + state.spec ? state.alt : null,
     prof: state.prof.slice(0, 2), sec: state.sec.slice(),
     updated_at: new Date().toISOString()
   };
   const btn = $("#save");
   btn.disabled = true;
   status("Skriver i krigsrådet …");
-  try {
+  let altSkipped = false;
+  const send = async () => {
     try { await api.upsert(row); }
     catch (e) {
-      if (!e.status || e.status >= 500) { await new Promise((r) => setTimeout(r, 700 + Math.random() * 600)); await api.upsert(row); }
+      // Databasen har endnu ikke kolonnen "alt": gem helten uden alternativet.
+      if (e.status === 400 && "alt" in row && /alt/.test(e.detail || "")) {
+        delete row.alt; altSkipped = true;
+        await api.upsert(row);
+      } else throw e;
+    }
+  };
+  try {
+    try { await send(); }
+    catch (e) {
+      if (!e.status || e.status >= 500) { await new Promise((r) => setTimeout(r, 700 + Math.random() * 600)); await send(); }
       else throw e;
     }
     if (editingId && editingId !== id) { try { await api.remove(editingId); } catch (e) {} }
     editingId = id;
     saveDraft();
-    status(row.player + " er skrevet ind i krigsrådet. Lok'tar ogar!", "ok");
+    status(row.player + " er skrevet ind i krigsrådet. Lok'tar ogar!" + (altSkipped && state.alt ? " Dit alternativ kunne ikke gemmes endnu." : ""), "ok");
     await refresh();
   } catch (e) {
     if (e.status === 400 || e.status === 409 || e.status === 422) {
@@ -1106,7 +1194,7 @@ function loadDraft(){
     const d = JSON.parse(raw);
     if (d && d.state) {
       const h = cleanHero(d.state);
-      state = {player:h.player, char:h.char, cry:h.cry, cls:h.cls, race:h.race, spec:h.spec, prof:h.prof, sec:h.sec};
+      state = {player:h.player, char:h.char, cry:h.cry, cls:h.cls, race:h.race, spec:h.spec, alt:h.alt, prof:h.prof, sec:h.sec};
       if (state.cls && !CLASSES[state.cls].specs.some((s) => s.id === state.spec)) state.spec = null;
       if (state.cls && state.race && CLASSES[state.cls].races.indexOf(state.race) === -1) state.race = null;
       editingId = typeof d.editingId === "string" ? d.editingId : null;
@@ -1149,6 +1237,7 @@ function bind(){
   $("#classes").addEventListener("click", (e) => { const b = e.target.closest("[data-cls]"); if (!b) return; setClass(b.dataset.cls); status(""); renderForm(); });
   $("#races").addEventListener("click", (e) => { const b = e.target.closest("[data-race]"); if (!b || b.disabled) return; state.race = b.dataset.race; renderForm(); });
   $("#specs").addEventListener("click", (e) => { const b = e.target.closest("[data-spec]"); if (!b) return; state.spec = b.dataset.spec; renderForm(); });
+  $("#in-alt").addEventListener("change", (e) => { state.alt = e.target.value || null; renderPreview(); saveDraft(); });
   $("#profs").addEventListener("click", (e) => {
     const b = e.target.closest("[data-prof]"); if (!b) return;
     const p = b.dataset.prof, i = state.prof.indexOf(p);
@@ -1200,7 +1289,8 @@ function bind(){
   $("#copy-all").addEventListener("click", (e) => {
     const list = sortedHeroes();
     const t = list.filter((h) => groupOf(h) === "tank").length, h = list.filter((h) => groupOf(h) === "healer").length, d = list.filter((h) => groupOf(h) === "dps").length;
-    const text = "Hordens Krigsråd · WoW Forever (Horde, PvE)\nTank " + t + "/1 · Healer " + h + "/1 · DPS " + d + "/3\n\n" + list.map(heroText).join("\n\n");
+    const T = targets(list.length);
+    const text = "Hordens Krigsråd · WoW Forever (Horde, PvE)\n" + list.length + " helte" + (T.parties > 1 ? ", " + T.parties + " hold" : "") + " · Tank " + t + "/" + T.tank + " · Healer " + h + "/" + T.healer + " · DPS " + d + "/" + T.dps + "\n\n" + list.map(heroText).join("\n\n");
     copyText(text, $("#copy-all-fallback"), e.currentTarget, "Kopieret");
   });
   $("#reset").addEventListener("click", () => {
@@ -1214,7 +1304,7 @@ function bind(){
     const no = e.target.closest("[data-del-no]");
     if (ed) {
       const h = heroes.find((x) => x.id === ed.dataset.edit); if (!h) return;
-      state = {player:h.player, char:h.char, cry:h.cry, cls:h.cls, race:h.race, spec:h.spec, prof:h.prof.slice(), sec:h.sec.slice()};
+      state = {player:h.player, char:h.char, cry:h.cry, cls:h.cls, race:h.race, spec:h.spec, alt:h.alt, prof:h.prof.slice(), sec:h.sec.slice()};
       editingId = h.id; syncInputs(); renderForm();
       status("Du retter " + h.player + ". Gem, når du er færdig.");
       $("#recruit").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});

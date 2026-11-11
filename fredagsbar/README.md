@@ -1,4 +1,4 @@
-# Slaget om Dalgasgade · v1.5
+# Slaget om Dalgasgade · v1.5.1
 
 Multiplayer-pixelspil til UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026.
 
@@ -58,13 +58,13 @@ Antallet af runder i duellen sættes med `&runder=5` på storskærmens adresse. 
 ## Kortet
 Kortet er tegnet efter plantegningen ved indgangen. Begge etager ligger side om side ligesom på skiltet: 1. sal til venstre og stuen til højre. Stuen og 1. sal er forbundet af to trapper: én for enden af gangen ved Lokale 0.1 og én ved Lokale 0.3/Kursistkantinen. Går man op ad trinene, står man ved den samme trappe på den anden etage. Test-kollegaerne og de gule prikker bruger også trapperne.
 
-Mod nord ligger en smal parkeringsplads og lige bag den banen, så toget kan ses fra Personalerummet. På parkeringspladsen holder en havareret bil på Troels' reserverede plads, og her er bagindgangen, hvor leveringsbilen holder. Hovedindgangen ved "Du er her" vender ind mod gården i vinklen mellem de to fløje. Forpladsen er tegnet efter Street View: UCplus-flaget, det blå »UCplus Indgang«-skilt, bøgehæk med brune vinterblade, en lygtepæl og skiltet med parkering forbudt nede ved Dalgasgade. En flisesti fører langs den lange længe hen til cykelskuret, der står foran længen som på satellitbilledet. Det er langt og har et stejlt, mørkt tag med sne, en åben port med cykler og vedbend op ad væggen. Facaderne har hvid bræddebeklædning over grå mur, og på gavlen mod gården står UCplus Sprogcenter. Nye kollegaer dukker op ved hovedindgangen.
+Mod nord ligger en smal parkeringsplads og lige bag den banen, så toget kan ses fra Personalerummet. Her er bagindgangen, hvor leveringsbilen holder. Helt ved bagdøren ligger Troels' reserverede plads, og der holder en havareret bil. Leveringsbilen bakker ud samme vej, som den kom. Hovedindgangen ved "Du er her" vender ind mod gården i vinklen mellem de to fløje. Forpladsen er tegnet efter Street View: UCplus-flaget, det blå »UCplus Indgang«-skilt, bøgehæk med brune vinterblade, en lygtepæl og skiltet med parkering forbudt nede ved Dalgasgade. En flisesti fører langs den lange længe hen til cykelskuret, der står foran længen som på satellitbilledet. Det er langt og har et stejlt, mørkt tag med sne, en åben port med cykler og vedbend op ad væggen. Facaderne har hvid bræddebeklædning over grå mur, og på gavlen mod gården står UCplus Sprogcenter. Nye kollegaer dukker op ved hovedindgangen.
 
 Rummene fordeler sig sådan:
 - **Personalerummet** (stuen): kaffepausen i lobbyen, og her vågner djævlen.
 - **Lokale 0.1** (stuen): festlokalet med bar, Karins guitar og fredagsbaren i finalen.
 - **Chefens kontor** (stuen, bag receptionen): pengeboksen med kodelås og alarm. Fredagskassen ligger her, når den er åbnet.
-- **Grupperum 1** (stuen): her står **Frivillige-Bente**. Falder man i snak med hende, fortæller hun om Troels' bil og HANS parkeringsplads, og man kan ikke gå fra hende. Man slipper først væk efter tre undskyldninger. Kommer man for tæt på, begynder hun selv at snakke.
+- **Grupperum 1** (stuen): her står **Frivillige-Bente**. Falder man i snak med hende, fortæller hun om Troels' parkeringsplads helt ved døren. Troels siger selv, at han sagtens kan gå et stykke, men Bente insisterer, og man kan ikke gå fra hende. Man slipper først væk efter tre undskyldninger. Kommer man for tæt på, begynder hun selv at snakke.
 - **Receptionen** (stuen) har et lille vindue ud til Indgangen.
 - **Personalekøkkenet** og **Kopirummet** (stuen).
 - **IT-kontoret** (stuen, ved siden af Testkontoret): IT-mandens kedelige kontor. Der er mere plads nu, hvor serveren er væk. Gætter man kodeordet til IT-mandens computer (det står på en gul lap), kommer diskokuglen, flaskerne og Pong frem.
@@ -79,6 +79,10 @@ Rummene fordeler sig sådan:
 Rum, døre, trapper, møbler, trykplader, genstande og opgavepunkter er data øverst i scriptet i `index.html` (`ROOMS`, `DOORS`, `STAIR_ENDS`, `FURN`, `PLATES`, `ITEMS`, `NPCS`, `PZ_NPCS`, `NOTE_POS`, `SERVER` (pengeboksen), `PALLET`, `DEL_DEST`). Ledetråden "Tæl …" til pengeboksens kode tælles direkte i møbellisten, så den passer også, hvis møblerne flyttes.
 
 Storskærmen følger holdet i Akt 1: den zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles. Navneskiltene vokser, når der er zoomet ud.
+
+## Ændringer i v1.5.1
+- Sofaen i Personalerummet står nu mellem de to døre, så rummets navn kan læses.
+- Troels' plads og den havarerede bil er flyttet hen helt ved bagindgangen, og Bente fortæller nu, hvorfor hun insisterer på den.
 
 ## Ændringer i v1.5
 - Djævlekampen har fået en fase 2: djævlens raseri med rødt blæk, der skal undgås, mens man svarer. Man skal nå at svare, før blækket rammer, og hans HP i fase 2 afhænger af, hvor godt fase 1 gik.

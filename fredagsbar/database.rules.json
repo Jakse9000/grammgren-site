@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "games": {
+      "$game": {
+        ".read": true,
+        "players": {
+          "$pid": {
+            ".write": true,
+            ".validate": "!newData.exists() || (newData.child('n').isString() && newData.child('n').val().length <= 16 && newData.child('r').isString())"
+          }
+        },
+        "state": {
+          ".write": true,
+          ".validate": "!newData.exists() || newData.child('phase').isString()"
+        },
+        "actions": {
+          "$aid": {
+            ".write": true,
+            ".validate": "!newData.exists() || newData.child('type').isString()"
+          }
+        }
+      }
+    }
+  }
+}

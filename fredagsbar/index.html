@@ -428,7 +428,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.5
+   SLAGET OM DALGASGADE · v1.5.1
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -611,7 +611,7 @@ F('counter', 1442, 290, 122, 12, 12);
 FURN.push({ t: 'coffee', x: 1452, y: 290, w: 14, h: 10, ht: 14, z: 1 }, { t: 'micro', x: 1504, y: 290, w: 20, h: 10, ht: 10, z: 1 });
 F('fridge', 1572, 290, 20, 12, 20);
 F('table', 1480, 336, 120, 24, 7, { cake: 1 });
-F('sofa', 1444, 404, 56, 16, 6); F('plant', 1680, 296, 12, 8, 7, { top: 22 });
+F('sofa', 1550, 404, 56, 16, 6); F('plant', 1680, 296, 12, 8, 7, { top: 22 });
 // Personalekøkkenet
 F('counter', 1440, 586, 84, 14, 12, { label: 'KØKKEN' }); FURN.push({ t: 'coffee', x: 1446, y: 586, w: 14, h: 10, ht: 14, z: 1 }, { t: 'micro', x: 1494, y: 586, w: 20, h: 10, ht: 10, z: 1 });
 F('table', 1498, 538, 48, 18, 7); F('fridge', 1440, 516, 20, 12, 20);
@@ -648,7 +648,7 @@ F('plant', 960, 460, 12, 8, 7, { top: 22 }); F('bench', 800, 600, 50, 8, 5);
 F('counter', 840, 1112, 84, 14, 12, { label: 'KANTINE' });
 [[846, 1160], [912, 1160], [846, 1222], [912, 1222], [846, 1284], [1040, 1270]].forEach(([x, y], i) => F('round', x, y, 34, 22, 7, { v: i % 5 }));
 // udenfor: cykelstativ, lygtepæle, skilt og parkerede biler
-F('bikes', 2420, 244, 74, 6, 2, { top: 16 }); F('planter', 2042, 528, 18, 12, 8); F('planter', 2106, 528, 18, 12, 8); F('bench', 2044, 694, 34, 8, 5);
+F('bikes', 2472, 244, 74, 6, 2, { top: 16 }); F('planter', 2042, 528, 18, 12, 8); F('planter', 2106, 528, 18, 12, 8); F('bench', 2044, 694, 34, 8, 5);
 F('sign', 2140, 1388, 3, 3, 1, { top: 32, px: 18 }); F('blocker', 2059, 602, 6, 5, 1);   // skilt ved Dalgasgade og flagstang ved hovedindgangen
 // forpladsen som på Street View: cykelskuret med saddeltag, bøgehækken, indgangsskiltet, parkering forbudt og en lygtepæl
 F('shed', 1562, 700, 150, 46, 20, { top: 26 }); F('hedge', 1556, 758, 164, 8, 10, { top: 14 }); F('hedge', 2132, 884, 62, 8, 10, { top: 14 });
@@ -657,8 +657,8 @@ F('hedge', 1436, 1364, 596, 8, 10, { top: 14 }); F('hedge', 2132, 1364, 424, 8, 
 F('ucsign', 2002, 728, 30, 3, 1, { top: 26 }); F('nopark', 2033, 1356, 3, 3, 1, { top: 26, px: 6 }); F('lamppost', 2128, 878, 3, 3, 1, { top: 44, px: 3 });
 for (let x = 140; x < WW; x += 330) F('lamp', x, 216, 4, 4, 2, { top: 48 });
 // den havarerede bil holder på Troels' plads, lige uden for Personalerummet
-const WRECK = { x: 1476, y: 214 }, FLAG = { x: 2062, y: 606 };
-F('blocker', WRECK.x + 4, WRECK.y + 18, 62, 13, 1); F('psign', 1556, 240, 3, 3, 1, { top: 26, px: 10 });
+const WRECK = { x: 2252, y: 214 }, FLAG = { x: 2062, y: 606 };
+F('blocker', WRECK.x + 4, WRECK.y + 18, 62, 13, 1); F('psign', WRECK.x + 82, 240, 3, 3, 1, { top: 26, px: 10 });
 const PARKED = [];
 for (let i = 0, x = 40; x < WW - 90; i++, x += 92) if (hash(i * 7.3) > 0.3 && x < 1300 && !FURN.some(f => f.t === 'lamp' && f.x > x - 14 && f.x < x + 82)) PARKED.push({ x, y: 214, c: ['#3a5f8a', '#8a2a2a', '#4f6a3a', '#c9c4b5', '#2a2a30', '#7a6a2a'][i % 6] });
 const PLATES = [
@@ -828,8 +828,8 @@ const NPCS = [
   { id: 'banen', name: 'Banen', x: 1820, y: 222, lines: ['Banen mellem Skanderborg og Herning. Toget dytter, når det kører forbi sprogcentret.', 'Et tog, toget, tog, togene. Kursisterne har lært bøjningen udenad, fordi de har hørt den hver halve time.'] },
   { id: 'kontordoer', name: 'Den låste kontordør', x: 972, y: 766, lines: () => { const need = S().pneed || 1; return ['Døren til det mørke kontor er låst. På låsen står der: "Åbnes kun, når tre trykplader i huset trædes ned SAMTIDIG."', 'Tre plader: Lokale 0.3 i stuen, Kursistkantinen og Lokale 1.4 på 1. sal.' + (need > 1 ? ' Der skal stå mindst ' + need + ' kollegaer på hver plade.' : '') + ' Find nogle kollegaer og fordel jer på begge etager!']; }, openLines: ['Døren står åben. Derinde i mørket glimter Sprogcentrets nøglebundt.'] },
   { id: 'flag', name: 'Flaget', x: 2062, y: 620, lines: ['UCplus-flaget blafrer i vinden ved hovedindgangen.', 'I dag vajer det for alle kollegaerne – og for fredagsbaren.'] },
-  { id: 'vrag', name: 'Den havarerede bil', x: 1511, y: 250, act: 'push' },
-  { id: 'pskilt', name: 'Parkeringsskiltet', x: 1558, y: 250, lines: ['P · RESERVERET · TROELS', 'Med mindre skrift: »Gælder hele døgnet – også i weekender og ferier.«'] },
+  { id: 'vrag', name: 'Den havarerede bil', x: WRECK.x + 35, y: 252, act: 'push' },
+  { id: 'pskilt', name: 'Parkeringsskiltet', x: WRECK.x + 84, y: 252, lines: ['P · RESERVERET · TROELS', 'Med mindre skrift: »Gælder hele døgnet. Opsat af Bente.«', 'Nedenunder, med en anden kuglepen: »Jeg kan altså godt gå. Mvh. Troels«'] },
   { id: 'madras', name: 'Den gamle madras', x: 515, y: 346, act: 'nap', lines: ['En gammel, slidt madras med kaffepletter og en pude, der har set bedre dage.', 'Morfarrummet er personalets hemmelige hvilested. Ti minutter på madrassen svarer til to kopper kaffe.'] },
   { id: 'radiator', name: 'Radiatoren', x: 560, y: 530, lines: ['Radiatoren står på fuld skrue, og knappen er knækket af.', 'Termometeret viser 34 grader. Holdet i Lokale 1.5 har lært ordet »hedebølge« – i november.', 'Der hænger en seddel: »Varmemesteren kommer i morgen.« Den er dateret marts 2023.'] },
   { id: 'router', name: 'Routeren', x: 646, y: 418, lines: ['En router med fjorten blinkende lamper. Ingen ved, hvad de betyder.', 'På et klistermærke står der: »Har du prøvet at slukke og tænde?«'] },
@@ -872,16 +872,16 @@ for (let i = 0; i < 26; i++) STRING_LIGHTS.push({ x: 1788 + i * 8, y: 270 + Math
 const DEVIL = { x: 1655, y: 372 };
 // Frivillige-Bente i Grupperum 1. Falder man i snak med hende, er det svært at slippe væk.
 const BENTE = { x: 2466, y: 1300 }, BENTE_LOOK = { c: '#c86a9a', h: '#d9d9d9', s: '#f5d2b0', hs: 'kroller', g: 1 };
-const BENTE_LINES = ['Nej, hej med dig! Har du to minutter? Det tager kun to minutter.', 'Hent endelig dine kollegaer! Historien er meget bedre, når flere lytter på én gang.', 'Har du set Troels\' bil? Den er nyvasket. Igen.',
-  'Han vasker den hver lørdag. Med sådan en særlig svamp, han har købt i Tyskland.', 'Og så har han jo sin EGEN parkeringsplads. Den nærmest døren.',
-  'Der står TROELS på asfalten. Med store bogstaver. Han har selv malet dem.', 'En dag holdt der en anden bil på HANS plads. Han gik rundt om den tre gange.',
-  'Han sagde ikke noget. Han stod bare og kiggede på den. I tyve minutter.', 'Og nu holder der en bil med motorhjelmen oppe lige derude. På HANS plads!',
-  'Troels siger, at det ikke er hans bil. Men den holder på hans plads. Så hvem ellers?', 'Har du hørt om Troels\' vinterdæk? Han skifter dem den 1. oktober. Uanset vejret.',
-  'Det står i hans kalender. Med rødt. Og en lille tegning af et dæk.', 'Jeg foreslog engang, at vi kunne deles om pladsen om fredagen. Det gik ikke så godt.',
-  'Han kalder den »pladsen«. Ikke »parkeringspladsen«. Bare »pladsen«.', 'Nå, hvor var jeg? Nåh ja – Troels\' bil!'];
-const BENTE_BACK = ['Ja ja, det skal vi alle sammen. Men lige én ting til om bilen …', 'To sekunder! Det handler om parkeringspladsen. HANS parkeringsplads.', 'Nåh, nå. Jamen så må du jo løbe. Hils Troels – og sig, at jeg holder øje med HANS plads!'];
+const BENTE_LINES = ['Nej, hej med dig! Har du to minutter? Det tager kun to minutter.', 'Hent endelig dine kollegaer! Historien er meget bedre, når flere lytter på én gang.',
+  'Har du set Troels\' parkeringsplads? Den er HELT ude ved bagdøren. Det har jeg sørget for.', 'Han går jo lidt dårligt, stakkel. Så han skal ikke gå ét skridt mere end nødvendigt.',
+  'Han siger selv, at han sagtens kan gå fra den anden ende af parkeringspladsen. Pjat!', 'Jeg har selv malet TROELS på asfalten. Med store bogstaver, så ingen er i tvivl.',
+  'Jeg har målt efter: Fra hans plads til døren er der fire skridt. Fire! Det er passende.', 'En dag holdt der en anden bil på HANS plads. Jeg gik rundt om den tre gange.',
+  'Og nu holder der en bil med motorhjelmen oppe lige ude ved bagdøren. På HANS plads!', 'Troels siger, at han gerne parkerer ude ved banen. Han trænger til at gå, siger han. Hører du det?!',
+  'Jeg foreslog også en rampe. Og et gelænder. Og en lille bænk halvvejs. Han sagde nej tak.', 'Han kalder den »din plads, Bente«. Det er jo sødt. Men det er HANS plads.',
+  'Nå, hvor var jeg? Nåh ja – Troels\' plads!'];
+const BENTE_BACK = ['Ja ja, det skal vi alle sammen. Men lige én ting til om Troels\' plads …', 'To sekunder! Det handler om parkeringspladsen. HANS plads, helt ved døren.', 'Nåh, nå. Jamen så må du jo løbe. Hils Troels – og sig, at jeg holder øje med HANS plads!'];
 const BENTE_EXC = ['Undskyld, jeg skal lige …', 'Jeg tror, nogen kalder på mig …', 'Jeg skal VIRKELIG videre nu!'];
-const BENTE_AMB = ['Har nogen set Troels\' bil?', 'Hvem holder på HANS plads?!', 'Kom og sæt dig, jeg skal lige fortælle noget!', 'Nyvasket, siger jeg jer. Nyvasket!'];
+const BENTE_AMB = ['Holder der stadig en bil på Troels\' plads?!', 'Hvem holder på HANS plads?!', 'Kom og sæt dig, jeg skal lige fortælle noget!', 'HELT ved døren, siger jeg jer. HELT ved døren!'];
 // kursisterne i Kursistkantinen roser appen DanskPlus – på hvert sit sprog
 const KURS = [
   { x: 896, y: 1204, n: 'OKSANA', d: 0, lk: { c: '#f4d06a', h: '#e3c27a', s: '#f5d2b0', hs: 'langt', g: 0 }, say: 'DanskPlus — це фантастика!' },
@@ -897,7 +897,7 @@ const MATTRESS = { x: 515, y: 318 }, NAP_MS = 8000, HOT = roomById('l15'), RACKS
 const SEATS = [];
 [1492, 1512, 1532, 1552, 1572, 1592].forEach(x => SEATS.push({ x, y: 332, d: 0 }));
 [1492, 1512, 1532, 1552, 1572, 1592].forEach(x => SEATS.push({ x, y: 375, d: 1 }));
-SEATS.push({ x: 1470, y: 352, d: 3 }, { x: 1612, y: 352, d: 2 }, { x: 1456, y: 413, d: 0 }, { x: 1472, y: 413, d: 0 }, { x: 1488, y: 413, d: 0 },
+SEATS.push({ x: 1470, y: 352, d: 3 }, { x: 1612, y: 352, d: 2 }, { x: 1562, y: 413, d: 0 }, { x: 1578, y: 413, d: 0 }, { x: 1594, y: 413, d: 0 },
   { x: 1452, y: 318, d: 1 }, { x: 1476, y: 318, d: 1 }, { x: 1530, y: 318, d: 1 }, { x: 1554, y: 316, d: 1 }, { x: 1606, y: 316, d: 1 },
   { x: 1640, y: 326, d: 2 }, { x: 1662, y: 346, d: 2 }, { x: 1684, y: 326, d: 2 }, { x: 1640, y: 398, d: 2 }, { x: 1664, y: 414, d: 1 }, { x: 1686, y: 392, d: 2 },
   { x: 1516, y: 410, d: 1 }, { x: 1540, y: 420, d: 1 }, { x: 1564, y: 410, d: 1 }, { x: 1588, y: 420, d: 1 }, { x: 1612, y: 410, d: 1 });
@@ -1192,8 +1192,8 @@ function renderMap() {
   P(g, 2094, 252, 276, 3, '#6d6a64'); P(g, 2094, 326, 276, 3, '#6d6a64');
   for (const [x, y] of [[2150, 262], [2280, 270], [2120, 318], [2360, 300]]) { P(g, x, y, 10, 2, '#e9eef5'); P(g, x + 3, y - 1, 5, 1, '#e9eef5'); }
   // Troels' plads: gule streger og navnet på asfalten
-  P(g, 1466, 217, 2, 34, '#f4d06a'); P(g, 1556, 217, 2, 34, '#f4d06a'); for (let x = 1470; x < 1554; x += 8) P(g, x, 249, 4, 2, '#f4d06a');
-  g.fillStyle = 'rgba(244,208,106,0.75)'; g.font = '5px "Press Start 2P", monospace'; g.textAlign = 'center'; g.fillText('TROELS', 1511, 247); g.textAlign = 'left';
+  { const wx = WRECK.x; P(g, wx - 10, 217, 2, 34, '#f4d06a'); P(g, wx + 80, 217, 2, 34, '#f4d06a'); for (let x = wx - 6; x < wx + 78; x += 8) P(g, x, 249, 4, 2, '#f4d06a');
+    g.fillStyle = 'rgba(244,208,106,0.75)'; g.font = '5px "Press Start 2P", monospace'; g.textAlign = 'center'; g.fillText('TROELS', wx + 35, 247); g.textAlign = 'left'; }
   P(g, 2196, 306, 48, 14, '#3b2a1e'); P(g, 2198, 307, 44, 12, '#5a4632'); g.fillStyle = '#c9a27a'; g.font = '3px "Press Start 2P", monospace'; g.textAlign = 'center'; g.fillText('VELKOMMEN', 2220, 315); g.textAlign = 'left';
   // gården: græsplæne under sneen, pladsen ved hovedindgangen og stien ned til Dalgasgade
   P(g, 1440, 646, 590, 730, 'rgba(70,120,80,0.16)'); for (let x = 1440; x < 2030; x += 14) { P(g, x, 640, 13, 7, '#14281f'); P(g, x + 2, 638, 9, 3, '#e4ebf2'); }
@@ -2121,7 +2121,7 @@ function vanPos() {
   const w = now - d.t1 - 1400; if (w < 0) return { x: VAN_PARK, y: VAN_Y, park: true, open: w < -700 };
   const k = clamp(w / VAN_OUT, 0, 1); if (k >= 1) return null;
   const lane = clamp(k / 0.3, 0, 1), le = lane * lane * (3 - 2 * lane);
-  return { x: VAN_PARK + (WW + 160 - VAN_PARK) * k * k, y: VAN_Y + (VAN_Y2 - VAN_Y) * le, park: false, open: false, wob: true };
+  return { x: VAN_PARK - (VAN_PARK + 160) * k * k, y: VAN_Y + (VAN_Y2 - VAN_Y) * le, park: false, open: false, wob: true }; // bakker ud samme vej, som den kom
 }
 function drawCrate(g, x, y, kind) {
   if (kind === 'paper') {

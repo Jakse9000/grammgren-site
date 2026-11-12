@@ -217,6 +217,21 @@ body.screen .j-head{font-size:14px} body.screen #j-info{font-size:clamp(16px,1.5
 #barbar #b-greet{background:#fffaf0} #barbar #b-dance{background:#c49aff}
 @media (max-height: 700px) and (orientation: portrait){ #barbar{gap:6px} #barbar button{width:56px;height:56px;font-size:19px} #barbar button span{font-size:9.5px} }
 @media (orientation: landscape) and (max-height: 520px){ #barbar{flex-direction:row;right:calc(env(safe-area-inset-right, 0px) + 124px);bottom:calc(env(safe-area-inset-bottom, 0px) + 14px);gap:6px} #barbar button{width:54px;height:54px;font-size:19px} #barbar button span{font-size:9.5px} }
+#pzq{position:fixed;left:var(--gutL);right:var(--gutR);bottom:calc(env(safe-area-inset-bottom, 0px) + 14px);z-index:29;max-width:520px;margin:0 auto;background:rgba(18,10,6,.96);border:2px solid #ffb07a;border-radius:14px;padding:12px 14px 10px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+#pzq .pzq-h{font-size:12.5px;color:#ffd9b8;opacity:.9}
+#pzq .pzq-q{font-family:var(--pixel);font-size:14px;line-height:1.4;color:#fff3e0;margin:6px 0 10px}
+#pzq .pzq-o{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#pzq .pzq-o button,#pzq .pzq-o span{position:relative;overflow:hidden;min-height:46px;border-radius:10px;border:2px solid #7a4a2a;background:#2a1a10;color:#fff3e0;font:600 15px/1.2 var(--mono, monospace);padding:8px 10px;text-align:left}
+#pzq .pzq-o button:not(:disabled){cursor:pointer} #pzq .pzq-o button:not(:disabled):active{transform:translateY(1px)}
+#pzq .pzq-o .me{border-color:#ffb07a;background:#4a2a14} #pzq .pzq-o .ok{border-color:#5aff8a;background:#123a22} #pzq .pzq-o button:disabled:not(.me):not(.ok){opacity:.55}
+#pzq .pzq-o i{position:absolute;left:0;top:0;bottom:0;background:rgba(255,176,122,.22)} #pzq .pzq-o .ok i{background:rgba(90,255,138,.22)} #pzq .pzq-o b{position:relative;float:right;font-family:var(--pixel);font-size:10px;font-weight:400;margin-top:3px}
+#pzq .pzq-o em{position:relative;font-style:normal}
+#pzq .pzq-f{font-size:12.5px;line-height:1.4;color:#ffe3cc;margin-top:9px}
+#pzq .pzq-bar{height:5px;border-radius:3px;background:#3a2414;margin-top:9px;overflow:hidden} #pzq .pzq-bar i{display:block;height:100%;width:100%;background:#ffb07a;transition:width .25s linear}
+body.screen #pzq{left:max(24px, env(safe-area-inset-left, 0px));right:auto;bottom:auto;top:190px;width:min(36vw,560px);max-width:none;margin:0;padding:18px 20px 14px}
+body.screen #pzq .pzq-h{font-size:16px} body.screen #pzq .pzq-q{font-size:clamp(16px,1.5vw,24px)} body.screen #pzq .pzq-o span{font-size:18px;min-height:54px} body.screen #pzq .pzq-f{font-size:16px}
+body.gm #pzq{left:16px;right:396px;bottom:16px;max-width:none}
+@media (max-width:819px){ body.gm #pzq{right:16px} }
 #party{position:fixed;left:calc(env(safe-area-inset-left, 0px) + 16px);top:calc(env(safe-area-inset-top, 0px) + 66px);z-index:22;width:min(34vw,340px);background:rgba(10,20,19,.92);border:2px solid #ff7ae0;border-radius:12px;padding:10px 12px 9px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
 #party b{display:block;font-family:var(--pixel);font-size:10px;color:#ffb3ec;letter-spacing:.06em;margin-bottom:7px;font-weight:400}
 #party .pbar{position:relative;height:18px;border-radius:9px;background:#081110;border:1px solid var(--line);overflow:hidden}
@@ -344,6 +359,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <button id="act" class="dim" hidden aria-label="Brug eller tal">BRUG</button>
 <div id="lobbybar" hidden><button id="b-sip" type="button" aria-label="Tag en tår kaffe">☕<span>En tår</span></button><button id="b-say" type="button" aria-label="Sig noget om grammatik">💬<span>Sig noget</span></button></div>
 <div id="barbar" hidden><button id="b-beer" type="button" aria-label="Tag en øl">🍺<span>Øl</span></button><button id="b-rose" type="button" aria-label="Tag et glas rosé">🍷<span>Rosé</span></button><button id="b-skaal" type="button" aria-label="Skål med de andre">🥂<span>Skål!</span></button><button id="b-dance" type="button" aria-label="Dans på dansegulvet">💃<span>Dans</span></button><button id="b-greet" type="button" aria-label="Skriv en hilsen til storskærmen">✍<span>Hilsen</span></button></div>
+<div id="pzq" hidden aria-live="polite"><div class="pzq-h">🛵 Pizzabuddet råber i Indgangen:</div><div class="pzq-q">»HVEM HAR BESTILT PIZZA?!«</div><div class="pzq-o" id="pzq-o"></div><div class="pzq-f" id="pzq-f"></div><div class="pzq-bar"><i id="pzq-i"></i></div></div>
 <div id="party" hidden><b>STEMNINGSMÅLER</b><div class="pbar"><i id="party-i"></i><span id="party-v">0 %</span></div><small id="party-s"></small></div>
 <div id="greet" hidden aria-live="polite"><b id="greet-n"></b><span id="greet-t"></span></div>
 <div id="dlg" hidden role="dialog" aria-live="polite"><div id="dlg-name"></div><div id="dlg-text"></div><button type="button" id="dlg-esc" hidden></button><div id="dlg-hint">▼ BRUG / MELLEMRUM</div></div>
@@ -440,7 +456,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.6
+   SLAGET OM DALGASGADE · v1.7
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -711,6 +727,17 @@ const PALLET = { x: 2124, y: 300 }, DRIVER = { x: 2156, y: 312 };
 const VAN_PARK = 2112, VAN_Y = 250, VAN_Y2 = 246, VAN_IN = 9000, VAN_OUT = 5200, DEL_MAX = 150000;
 const DRIVER_LOOK = { c: '#c8323c', h: '#2a1a10', s: '#e6b48c', hs: 'hue', g: 0 };
 const BOOK_ROOMS = ['l02', 'l03', 'l04', 'l05', 'l11', 'l12', 'l13', 'l14', 'l15'];
+// pizzabuddet: kommer, når holdet har fundet tre genstande, drøner ned ad Dalgasgade og op ad stien og råber i Indgangen.
+// Svarer flertallet Christine, får holdet 14 XXL-pizzaer på bordet i Personalerummet (og +10 % skade i duellen)
+const PZ_DRIVE = 4600, PZ_ASK = 20000, PZ_RES = 4600, PZ_DROP = 3200, PZ_AWAY = 2600, PZ_SPEED = 330, PZ_N = 14;
+const PZ_OPTS = ['Christine', 'Troels', 'IT-Troldmanden', 'Frivillige-Bente'];
+const PZ_PARK = { x: 2072, y: 648 }, PZ_SPOT = { x: 2160, y: 612 }, PZ_DROPAT = { x: 1600, y: 372 }, PZ_ROAD = 1424;
+const PIZZA_LOOK = { c: '#2f8a5a', h: '#1a1008', s: '#d9a07a', hs: 'hue', g: 0 };
+const freshPz = () => ({ s: '', t0: 0, o: [0, 1, 2, 3], v: {}, ok: 0, c: 0, n: 0 });
+const normPz = z => { const o = Object.assign(freshPz(), z && typeof z === 'object' ? z : {}); o.v = Object.assign({}, o.v); o.o = asArr(o.o).length === 4 ? asArr(o.o).map(Number) : [0, 1, 2, 3]; return o; };
+const pzBusy = st => !!st.pz && ['drive', 'ask', 'res', 'deliver', 'drop'].includes(st.pz.s);
+const pzCam = st => !!st.pz && (['drive', 'ask', 'res', 'deliver', 'drop', 'leave'].includes(st.pz.s) || (st.pz.s === 'away' && !st.pz.ok));
+const pzFed = st => !!st.pz && !!st.pz.ok && (['back', 'away', 'done'].includes(st.pz.s) || (st.pz.s === 'drop' && serverNow() - st.pz.t0 > 500));
 const DELIV = {
   paper: { label: 'Printerpapir', to: 'Kopirummet', rooms: ['kopi'],
     card: n => n + ' kasser printerpapir ved bagindgangen. Bær dem til Kopirummet!',
@@ -2404,6 +2431,142 @@ function drawDriverTalk(g, t, d) {
   g.font = '4px "Press Start 2P", monospace'; g.textAlign = 'center'; const w = g.measureText('CHAUFFØREN').width;
   P(g, DRIVER.x - w / 2 - 3, DRIVER.y - 35, w + 6, 8, 'rgba(5,10,12,0.85)'); g.fillStyle = '#ff9e9e'; g.fillText('CHAUFFØREN', DRIVER.x, DRIVER.y - 29); g.textAlign = 'left';
 }
+// ═════════ PIZZABUDDET ═════════
+// alt regnes ud fra pz.s og pz.t0, så alle skærme ser det samme
+let pzqKey = '', pzMine = { t0: 0, o: -1 };
+function renderPzq() {
+  const st = S(), z = st.pz, el = $('#pzq'), age = serverNow() - z.t0, isP = ROLE === 'player';
+  const show = st.phase === 'akt1' && (z.s === 'ask' || (z.s === 'res' && age < PZ_RES)) && (!isP || !!me);
+  el.hidden = !show; if (!show) { pzqKey = ''; return; }
+  const voters = participants().length, n = Object.keys(z.v).length, mine = me && z.v[ID] !== undefined ? z.v[ID] : (pzMine.t0 === z.t0 ? pzMine.o : -1);
+  const key = [z.s, z.t0, n, mine, voters].join('|');
+  if (key !== pzqKey) {
+    pzqKey = key;
+    if (z.s === 'ask') {
+      setHtml('#pzq-o', z.o.map(v => isP ? '<button type="button" data-pzv="' + v + '"' + (mine >= 0 ? ' disabled' : '') + ' class="' + (mine === v ? 'me' : '') + '"><em>' + esc(PZ_OPTS[v]) + '</em></button>' : '<span><em>' + esc(PZ_OPTS[v]) + '</em></span>').join(''));
+      setHtml('#pzq-f', (isP && mine >= 0 ? 'Du svarede »' + esc(PZ_OPTS[mine]) + '«. ' : isP ? 'Flertallet bestemmer – svar, før han kører igen! ' : '') + n + ' af ' + voters + ' har svaret' + (isP ? '.' : ' · svar på telefonen – flertallet bestemmer!'));
+    } else {
+      const cnt = [0, 0, 0, 0]; for (const v of Object.values(z.v)) cnt[v]++; const tot = Math.max(1, z.n);
+      setHtml('#pzq-o', z.o.map(v => '<span class="' + (v === 0 ? 'ok' : mine === v ? 'me' : '') + '"><i style="width:' + Math.round(cnt[v] / tot * 100) + '%"></i><em>' + esc(PZ_OPTS[v]) + '</em><b>' + cnt[v] + '</b></span>').join(''));
+      setHtml('#pzq-f', z.ok ? '🍕 Flertallet sagde Christine! ' + PZ_N + ' STORE pizzaer kommer til Personalerummet.' : z.n ? '✗ Det var Christine, der havde bestilt … Pizzabuddet kører igen.' : '✗ Ingen svarede. Pizzabuddet kører igen med alle pizzaerne.');
+    }
+  }
+  $('#pzq-i').style.width = (z.s === 'ask' ? Math.max(0, 1 - age / PZ_ASK) * 100 : 0) + '%';
+}
+setInterval(renderPzq, 250);
+$('#pzq').addEventListener('click', e => {
+  const b = e.target.closest('button[data-pzv]'); if (!b || b.disabled) return; const st = S(); if (st.pz.s !== 'ask') return;
+  pzMine = { t0: st.pz.t0, o: +b.dataset.pzv }; Snd.unlock(); Snd.blip(); netAction({ type: 'pzvote', o: +b.dataset.pzv }); pzqKey = ''; renderPzq();
+});
+let pzWalkC = null;
+const PZ_DOOR = [{ x: 2112, y: 616 }, { x: 2086, y: 650 }];
+function pzWalk() {
+  if (pzWalkC) return pzWalkC;
+  const raw = (typeof findPath === 'function' && findPath(PZ_SPOT.x, PZ_SPOT.y, PZ_DROPAT.x, PZ_DROPAT.y)) || [];
+  const pts = [{ x: PZ_SPOT.x, y: PZ_SPOT.y }].concat(raw.map(q => ({ x: q.x, y: q.y }))); if (pts.length < 2) pts.push({ x: PZ_DROPAT.x, y: PZ_DROPAT.y });
+  const len = polyLen(pts); pzWalkC = { pts, len, ms: Math.round(len / PZ_SPEED * 1000) }; return pzWalkC;
+}
+function polyLen(pts) { let l = 0; for (let i = 1; i < pts.length; i++) l += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y); return l; }
+function along(pts, d) {
+  for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], l = Math.hypot(b.x - a.x, b.y - a.y); if (d <= l || i === pts.length - 1) { const k = l ? clamp(d / l, 0, 1) : 1; return { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, dx: b.x - a.x, dy: b.y - a.y }; } d -= l; }
+  return { x: pts[0].x, y: pts[0].y, dx: 0, dy: 1 };
+}
+const dirOf = (dx, dy) => Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 3 : 2) : (dy > 0 ? 0 : 1);
+function pzActor(st, now) {
+  const z = st.pz; if (!z || !z.s || z.s === 'done' || st.phase !== 'akt1') return null;
+  const age = now - z.t0, park = { x: PZ_PARK.x, y: PZ_PARK.y, dir: 'u', v: 0, rider: false };
+  const walkGuy = (pts, ms, tower) => { const L = polyLen(pts), q = along(pts, L * clamp(age / ms, 0, 1)); return { x: q.x, y: q.y, d: dirOf(q.dx, q.dy), m: age < ms ? 1 : 0, tower }; };
+  if (z.s === 'drive') {
+    if (age < 1000) { const k = age / 1000; return { sc: { x: 2680 - (2680 - 2082) * k, y: PZ_ROAD, dir: 'l', v: 1, rider: true, tower: 1 } }; }
+    if (age < 2400) { const k = (age - 1000) / 1400; return { sc: { x: 2082, y: PZ_ROAD - (PZ_ROAD - 670) * k, dir: 'u', v: 1, rider: true, tower: 1 } }; }
+    if (age < 2900) { const k = (age - 2400) / 500, e = 1 - Math.pow(1 - k, 3); return { sc: { x: 2082 - 10 * e + Math.sin(k * 18) * 5 * (1 - k), y: 670 - 22 * e, dir: 'u', v: 1 - k, skid: 1, rider: true, tower: 1 } }; }
+    if (age < 3200) return { sc: Object.assign({}, park, { rider: true, tower: 1 }) };
+    const pts = [{ x: 2086, y: 650 }, PZ_DOOR[0], { x: PZ_SPOT.x, y: PZ_SPOT.y }];
+    if (age < 3400) return { sc: park, guy: { x: 2086, y: 650, d: 3, m: 0, tower: 1 } };
+    const g2 = { x: 0, y: 0 }; const L = polyLen(pts), q = along(pts, L * clamp((age - 3400) / 800, 0, 1));
+    return { sc: park, guy: { x: q.x, y: q.y, d: age < 4200 ? dirOf(q.dx, q.dy) : 0, m: age < 4200 ? 1 : 0, tower: 1 } };
+  }
+  if (z.s === 'ask' || z.s === 'res') return { sc: park, guy: { x: PZ_SPOT.x, y: PZ_SPOT.y, d: 0, m: 0, tower: 1, shout: z.s === 'ask' } };
+  if (z.s === 'deliver') { const w = pzWalk(); return { sc: park, guy: walkGuy(w.pts, w.ms, 1) }; }
+  if (z.s === 'drop') return { sc: park, guy: { x: PZ_DROPAT.x, y: PZ_DROPAT.y, d: age < 600 ? 1 : 0, m: 0, tower: age < 500 ? 1 : 0 } };
+  if (z.s === 'back') { const w = pzWalk(), pts = w.pts.slice().reverse().concat(PZ_DOOR), L = polyLen(pts); return { sc: park, guy: walkGuy(pts, L / PZ_SPEED * 1000, 0) }; }
+  if (z.s === 'leave') return { sc: park, guy: walkGuy([{ x: PZ_SPOT.x, y: PZ_SPOT.y }].concat(PZ_DOOR), 900, 1) };
+  if (z.s === 'away') {
+    const tw = z.ok ? 0 : 1;
+    if (age < 350) return { sc: { x: PZ_PARK.x + (Math.random() - 0.5) * 0.8, y: PZ_PARK.y, dir: 'd', v: 0.4, burn: 1, rider: true, tower: tw } };
+    if (age < 1450) { const k = (age - 350) / 1100; return { sc: { x: PZ_PARK.x + (2082 - PZ_PARK.x) * k, y: PZ_PARK.y + (PZ_ROAD - PZ_PARK.y) * k * k, dir: 'd', v: 1, rider: true, tower: tw } }; }
+    const k = Math.min(1, (age - 1450) / 1000); return { sc: { x: 2082 + (2720 - 2082) * k * k, y: PZ_ROAD, dir: 'r', v: 1, rider: true, tower: tw } };
+  }
+  return null;
+}
+// tårnet af pizzabakker: jo højere, jo mere vakler det
+function drawTower(g, x, y, n, t, wob) {
+  for (let k = 0; k < n; k++) {
+    const sw = reduceMotion ? 0 : Math.sin(t * 0.011 + k * 0.45) * k * 0.22 * wob, bx = x - 7 + sw, by = y - (k + 1) * 2.6;
+    P(g, bx - 0.4, by - 0.4, 14.8, 3.2, '#5a4632'); P(g, bx, by, 14, 2.4, k % 3 === 1 ? '#fff6e0' : '#f2e6c8'); P(g, bx, by, 14, 0.6, '#ffffff');
+    if (k % 3 === 0) P(g, bx + 2, by + 1, 10, 0.8, '#c8323c'); else if (k % 3 === 2) P(g, bx + 4, by + 0.8, 6, 1, '#2f8a5a');
+  }
+}
+function drawScooter(g, t, sc) {
+  const x = Math.round(sc.x), y = sc.y, fast = sc.v > 0.5;
+  g.fillStyle = 'rgba(0,0,0,0.38)'; g.beginPath(); g.ellipse(x, y, sc.dir === 'l' || sc.dir === 'r' ? 13 : 7, 3, 0, 0, Math.PI * 2); g.fill();
+  if (!reduceMotion && (fast || sc.skid || sc.burn) && Math.random() < 0.6) emit({ x: x + (sc.dir === 'l' ? 12 : sc.dir === 'r' ? -12 : 0) + rand(-2, 2), y: y + (sc.dir === 'u' ? 4 : sc.dir === 'd' ? -6 : -1), vx: sc.dir === 'l' ? rand(10, 30) : sc.dir === 'r' ? -rand(10, 30) : rand(-12, 12), vy: sc.dir === 'u' ? rand(6, 16) : sc.dir === 'd' ? -rand(4, 12) : -rand(2, 6), drag: 0.6, life: rand(0.4, 0.9), fade: 0.6, s: rand(1.6, 2.6), grow: 2.4, c: 'rgba(200,204,210,0.5)', L: 'w' });
+  if (fast && !reduceMotion) { g.globalAlpha = 0.45; for (let i = 0; i < 5; i++) { const o = (i - 2) * 3.4, l = 16 + hash(i + Math.floor(t / 70)) * 18; if (sc.dir === 'l') P(g, x + 14, y - 16 + o, l, 0.7, '#ffffff'); else if (sc.dir === 'r') P(g, x - 14 - l, y - 16 + o, l, 0.7, '#ffffff'); else if (sc.dir === 'u') P(g, x - 9 + i * 4.5, y + 3, 0.7, l, '#ffffff'); else P(g, x - 9 + i * 4.5, y - 44 - l, 0.7, l, '#ffffff'); } g.globalAlpha = 1; }
+  const rider = sc.rider ? charSprite(PIZZA_LOOK, sc.dir === 'l' ? 2 : sc.dir === 'r' ? 3 : sc.dir === 'u' ? 1 : 0, 0) : null;
+  if (sc.dir === 'l' || sc.dir === 'r') {
+    g.save(); g.translate(x, 0); if (sc.dir === 'r') g.scale(-1, 1);
+    for (const wx of [-8, 7]) { g.fillStyle = '#151515'; g.beginPath(); g.arc(wx, y - 3, 3.2, 0, Math.PI * 2); g.fill(); P(g, wx - 1, y - 4, 2, 2, '#8a8f94'); }
+    if (sc.tower) { P(g, 4, y - 12, 12, 1.4, '#3a3f45'); drawTower(g, 10, y - 12, 12, t, sc.v > 0.5 ? 1.6 : 1); }
+    if (rider) g.drawImage(charSprite(PIZZA_LOOK, 2, 0), -10, y - 34);
+    P(g, -6, y - 7, 13, 2.4, '#8a1f26'); P(g, 0, y - 12, 9, 6, '#c8323c'); P(g, 1, y - 12, 7, 1, '#e0474f'); P(g, 1, y - 13.4, 7, 1.6, '#1d1d1d');
+    P(g, -10, y - 15, 3.4, 9, '#c8323c'); P(g, -10, y - 15, 1, 9, '#e0474f'); P(g, -11.6, y - 17, 5, 1.4, '#3a3f45'); P(g, -12.4, y - 13, 1.6, 2.2, '#ffe08a');
+    g.restore(); return;
+  }
+  // forfra / bagfra
+  const back = sc.dir === 'u';
+  P(g, x - 1.6, y - 6, 3.2, 6, '#151515'); P(g, x - 0.6, y - 5, 1.2, 3, '#4a4f55');
+  if (!back && sc.tower) drawTower(g, x, y - 18, 12, t, sc.v > 0.5 ? 1.6 : 1);
+  if (rider) g.drawImage(rider, x - 9, y - 35);
+  P(g, x - 5, y - 13, 10, 8, '#c8323c'); P(g, x - 5, y - 13, 10, 1.2, '#e0474f'); P(g, x - 6.5, y - 16.4, 13, 1.4, '#3a3f45');
+  if (back) { P(g, x - 1.5, y - 11, 3, 1.6, '#ff3b3b'); if (sc.tower) { P(g, x - 7, y - 15, 14, 1.4, '#3a3f45'); drawTower(g, x, y - 15, 12, t, sc.v > 0.5 ? 1.6 : 1); } }
+  else P(g, x - 1.5, y - 11, 3, 2.2, '#ffe08a');
+}
+function drawPizzaGuy(g, t, gy) {
+  const x = Math.round(gy.x), y = Math.round(gy.y), fr = gy.m ? Math.floor(t / 70) % 4 : 0, bob = gy.m ? 0 : (Math.floor(t / 500) % 2);
+  g.fillStyle = 'rgba(0,0,0,0.35)'; g.beginPath(); g.ellipse(x, y, 7, 2.6, 0, 0, Math.PI * 2); g.fill();
+  const tx = x + (gy.d === 2 ? -7 : gy.d === 3 ? 7 : 0);
+  if (gy.tower && gy.d === 1) drawTower(g, tx, y - 10, 10, t, gy.m ? 1.4 : 0.8);
+  g.drawImage(charSprite(PIZZA_LOOK, gy.d, fr), x - 9, y - 25 + bob);
+  if (gy.tower && gy.d !== 1) drawTower(g, tx, y - 8 + bob, 10, t, gy.m ? 1.4 : 0.8);
+}
+// Christines pizzaer på bordet i Personalerummet: tre høje stabler og en åben bakke
+function drawPizzaTable(g, t) {
+  for (const [sx, n] of [[1498, 6], [1514, 5], [1636, 6], [1652, 4]]) drawTower(g, sx, 348, n, t, 0);
+  const bx = 1532, by = 339;
+  P(g, bx - 0.4, by - 9.4, 16.8, 9.4, '#5a4632'); P(g, bx, by - 9, 16, 9, '#f2e6c8'); P(g, bx + 3, by - 6, 10, 1, '#c8323c'); g.fillStyle = '#2f8a5a'; g.font = '2px "Press Start 2P", monospace'; g.fillText('XXL', bx + 5, by - 2.4);
+  P(g, bx - 0.4, by - 0.4, 16.8, 10.8, '#5a4632'); P(g, bx, by, 16, 10, '#efe3c2');
+  g.fillStyle = '#e0a84a'; g.beginPath(); g.arc(bx + 8, by + 5, 6.6, 0, Math.PI * 2); g.fill(); g.fillStyle = '#d8452f'; g.beginPath(); g.arc(bx + 8, by + 5, 5.4, 0, Math.PI * 2); g.fill();
+  for (let i = 0; i < 9; i++) P(g, bx + 4 + hash(i * 2.1) * 8, by + 1.8 + hash(i * 3.7) * 6.4, 1.6, 1.2, '#ffe9a8');
+  for (const [px, py] of [[5, 3], [10, 2.6], [7.6, 6.4], [11, 6]]) { g.fillStyle = '#8a1f26'; g.beginPath(); g.arc(bx + px, by + py, 1, 0, Math.PI * 2); g.fill(); }
+  g.strokeStyle = 'rgba(90,40,20,0.5)'; g.lineWidth = 0.4; g.beginPath(); g.moveTo(bx + 2, by + 5); g.lineTo(bx + 14, by + 5); g.moveTo(bx + 8, by - 1.4); g.lineTo(bx + 8, by + 11.4); g.stroke();
+  if (!reduceMotion && Math.random() < 0.05) emit({ x: bx + 8 + rand(-4, 4), y: by + 3, vx: rand(-2, 2), vy: -rand(4, 7), drag: 0.3, life: rand(1.2, 1.8), fade: 1, s: 1.2, grow: 1.6, c: 'rgba(240,240,240,0.4)', L: 'w' });
+}
+const PIZZA_NPC = { id: 'pizzaer', name: 'Christines pizzaer', x: 1580, y: 368, lines: [PZ_N + ' familiepizzaer i XXL med ekstra ost. Christine har tænkt på alle – og på alle deres venner.', 'Du tager et stykke. Det er på størrelse med et A4-ark.', 'Pizzakraft! Holdet giver 10 % mere skade i duellen mod djævlen.'] };
+const PZ_LINES = ['HVEM HAR BESTILT PIZZA?!', 'Det er en ret STOR ordre …', PZ_N + ' familiepizzaer. XXL. Med ekstra ost.', 'På bonen står der bare: »Til hele huset – og lidt ekstra«.', 'HVEM HAR BESTILT PIZZA?! De bliver kolde!'];
+function drawPizzaTalk(g, t, st, pa) {
+  const z = st.pz, age = serverNow() - z.t0, gy = pa.guy; if (!gy) return;
+  if (gy.x < curView.x - 40 || gy.x > curView.x + curView.w + 40 || gy.y < curView.y - 20 || gy.y - 80 > curView.y + curView.h) return;
+  let text = '';
+  if (z.s === 'drive' && age > 3400) text = 'Pizza! PIZZA!';
+  else if (z.s === 'ask') text = PZ_LINES[Math.floor(age / 4000) % PZ_LINES.length];
+  else if (z.s === 'res') text = z.ok ? (age < 2300 ? 'CHRISTINE! Selvfølgelig! Det er ALTID Christine!' : 'Jeg stiller dem i Personalerummet. Jeg kender vejen!') : (age < 2300 ? 'Nej, nej. På bonen står der CHRISTINE. Med STORE bogstaver – ligesom pizzaerne.' : 'Så kører jeg dem tilbage. Christine bliver ikke glad …');
+  else if (z.s === 'deliver') text = 'Pas på! Varme pizzaer!';
+  else if (z.s === 'drop') text = 'Velbekomme! Hilsen Christine – man kan aldrig få for mange pizzaer!';
+  else if (z.s === 'back') text = 'Vi ses i næste uge, Christine!';
+  if (text) drawBubble(g, gy.x + 40, gy.y - 44, text, 1, gy.x + 4);
+  g.font = '4px "Press Start 2P", monospace'; g.textAlign = 'center'; const w = g.measureText('PIZZABUDDET').width;
+  P(g, gy.x - w / 2 - 3, gy.y - (gy.tower ? 45 : 35), w + 6, 8, 'rgba(5,10,12,0.85)'); g.fillStyle = '#ffb07a'; g.fillText('PIZZABUDDET', gy.x, gy.y - (gy.tower ? 39 : 29)); g.textAlign = 'left';
+}
 // stablerne, der bliver stående: papir i Kopirummet og bøger i klasselokalerne
 function shelfItems(st, view, list) {
   const sh = st.shelf || {};
@@ -2677,7 +2840,7 @@ function drawInked(g, p, t, st) {
 }
 function freshBoss() { return { hp: 100, max: 100, stage: 'intro', t0: 0, round: 0, order: [], qi: -1, opts: [], ci: 0, dur: 0, ans: {}, rev: null, say: '', press: {}, tries: 0, hanne: 0, p2: 0, rt: 0, wave: 0, order2: [], blobs: [], inked: {}, ink1: {}, vol: [], ar: '' }; }
 function freshState() { return { phase: 'lobby', plates: { p1: false, p2: false, p3: false }, pcount: { p1: 0, p2: 0, p3: 0 }, pneed: 1, seats: {}, talk: [], doors: { arkiv: false, paper: false, ret: false, ord: false, tr: false }, items: {}, boss: freshBoss(), score: {}, jam: null, jamCd: 0, bonus: {}, msg: null, fx: null, rev: 0, del: null, dl: { paper: 0, books: 0 }, shelf: {}, a1: 0, dlEnd: 0,
-  ret: { got: 0, need: 8 }, it: { on: 0, got: 0, need: 5 }, ord: newOrd(), code: newCode(), f0: 0, fcr: 0, disco: 0, mt: {}, wk: 0, greets: [], party: freshParty() }; }
+  ret: { got: 0, need: 8 }, it: { on: 0, got: 0, need: 5 }, ord: newOrd(), code: newCode(), f0: 0, fcr: 0, disco: 0, mt: {}, wk: 0, greets: [], party: freshParty(), pz: freshPz() }; }
 const asArr = v => Array.isArray(v) ? v : Object.keys(v || {}).sort((a, b) => a - b).map(k => v[k]);
 function normBoss(b) {
   const o = Object.assign(freshBoss(), b || {});
@@ -2691,7 +2854,7 @@ function normState(s) {
   return { phase: PHASES[s.phase] ? s.phase : 'lobby', plates: Object.assign({ p1: false, p2: false, p3: false }, s.plates), pcount: Object.assign({ p1: 0, p2: 0, p3: 0 }, s.pcount), pneed: s.pneed || 1, seats: Object.assign({}, s.seats), talk: asArr(s.talk), doors: Object.assign({ arkiv: false, paper: false, ret: false, ord: false, tr: false }, s.doors),
     items: Object.assign({}, s.items), boss: normBoss(s.boss), score: Object.assign({}, s.score), jam: s.jam ? Object.assign({ prog: {} }, s.jam, { prog: s.jam.prog || {}, vmap: s.jam.vmap || {} }) : null, jamCd: s.jamCd || 0, bonus: Object.assign({}, s.bonus), msg: s.msg || null, fx: s.fx || null, rev: s.rev || 0,
     del: s.del ? Object.assign({}, s.del, { carry: Object.assign({}, s.del.carry) }) : null, dl: Object.assign({ paper: 0, books: 0 }, s.dl), shelf: Object.assign({}, s.shelf), a1: s.a1 || 0, dlEnd: s.dlEnd || 0,
-    ret: Object.assign({ got: 0, need: 8 }, s.ret), it: Object.assign({ on: 0, got: 0, need: 5 }, s.it), ord: normOrd(s.ord), code: normCode(s.code), f0: s.f0 || 0, fcr: s.fcr || 0, disco: s.disco ? 1 : 0, mt: Object.assign({}, s.mt), wk: s.wk || 0, greets: asArr(s.greets), party: normParty(s.party) };
+    ret: Object.assign({ got: 0, need: 8 }, s.ret), it: Object.assign({ on: 0, got: 0, need: 5 }, s.it), ord: normOrd(s.ord), code: normCode(s.code), f0: s.f0 || 0, fcr: s.fcr || 0, disco: s.disco ? 1 : 0, mt: Object.assign({}, s.mt), wk: s.wk || 0, greets: asArr(s.greets), party: normParty(s.party), pz: normPz(s.pz) };
 }
 function normOrd(o) {
   if (!o) return { r: 0, v: [0, 0, 0], perm: ORD[0][0].map((_, i) => i), lit: 0, pp: null, pr: 0, dt: 0, bad: 0 };
@@ -2847,8 +3010,37 @@ function setPhase(st, ph) {
   if (ph !== 'lobby' && ph !== 'akt1') st.jam = null;
   if (ph === 'akt1') st.a1 = serverNow();
   if (ph === 'finale') { st.f0 = serverNow(); st.fcr = 0; st.talk = []; st.party = freshParty(); }
+  if (ph !== 'akt1' && st.pz && st.pz.s && st.pz.s !== 'done') { if (st.pz.s === 'drive' || st.pz.s === 'ask') pzTally(st); st.pz.s = 'done'; } // skifter fasen midt i pizzaen, tæller stemmerne alligevel
   else if (st.del) { if (st.dl[st.del.kind] === 1) st.dl[st.del.kind] = 0; st.del = null; }
   if (ph === 'djaevel') { st.boss = freshBoss(); st.boss.t0 = serverNow(); st.boss.ar = rid(); st.boss.order = makeOrder(); st.score = {}; if (st.bonus && st.bonus.books) { st.boss.hp = 85; st.boss.bk = 1; } }
+}
+// ═════════ PIZZABUDDET (værten styrer) ═════════
+let pzWaitAt = 0;
+function pzStart(st) { const o = [0, 1, 2, 3]; for (let i = 3; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [o[i], o[j]] = [o[j], o[i]]; } st.pz = { s: 'drive', t0: serverNow(), o, v: {}, ok: 0, c: 0, n: 0 }; st.fx = { id: rid(), type: 'pizza' }; pzWaitAt = 0; }
+function pzTally(st) { const v = Object.values(st.pz.v); st.pz.n = v.length; st.pz.c = v.filter(o => o === 0).length; st.pz.ok = st.pz.n > 0 && st.pz.c * 2 > st.pz.n ? 1 : 0; }
+function pizzaTick(st) {
+  const z = st.pz, now = serverNow(), age = now - z.t0;
+  if (!z.s) {
+    if (foundCount(st) < 3 || st.jam || (st.del && st.del.stage === 'in')) { pzWaitAt = 0; return false; }
+    if (!pzWaitAt) pzWaitAt = Date.now() + 5000; // lidt pause, så fejringen af genstanden lige kan nå at slutte
+    if (Date.now() < pzWaitAt) return false;
+    pzStart(st); return true;
+  }
+  const go = (s2, fx) => { z.s = s2; z.t0 = now; if (fx) st.fx = fx; return true; };
+  if (z.s === 'drive') return age > PZ_DRIVE ? go('ask', { id: rid(), type: 'pzask' }) : false;
+  if (z.s === 'ask') {
+    const ps = participants(); let ch = false;
+    for (const b of ps) if (b.r === 'bot' && z.v[b.id] === undefined && age > 2000 + (b.id.charCodeAt(b.id.length - 1) % 9) * 900) { z.v[b.id] = Math.random() < 0.7 ? 0 : 1 + Math.floor(Math.random() * 3); ch = true; }
+    if (age > PZ_ASK || (age > 4000 && ps.length && ps.every(p => z.v[p.id] !== undefined))) { pzTally(st); return go('res', { id: rid(), type: 'pzres', ok: z.ok, c: z.c, n: z.n }); }
+    return ch;
+  }
+  if (z.s === 'res') return age > PZ_RES ? go(z.ok ? 'deliver' : 'leave') : false;
+  if (z.s === 'deliver') return age > pzWalk().ms ? go('drop', { id: rid(), type: 'pzdrop' }) : false;
+  if (z.s === 'drop') return age > PZ_DROP ? go('back') : false;
+  if (z.s === 'back') return age > pzWalk().ms + 900 ? go('away') : false;
+  if (z.s === 'leave') return age > 900 ? go('away') : false;
+  if (z.s === 'away') return age > PZ_AWAY ? go('done') : false;
+  return false;
 }
 // ═════════ FESTEN (værten styrer stemningsmåleren) ═════════
 // hver skål og hver dans giver stemning (mindre pr. person, jo flere I er), og den falder langsomt. Når den rammer 100 %, kommer der fyrværkeri.
@@ -3038,7 +3230,7 @@ function revealQuestion(st) {
     heal = Math.min(6, nInk) + (!answered ? 8 : frac < 0.6 ? 5 : 0); if (st.items.skjold) heal = Math.round(heal / 2);
   } else if (answered && frac >= 0.5) dmg = Math.round(6 + 8 * frac + (fast && fast.ms < 3000 ? 2 : 0));
   else if (answered) heal = st.items.skjold ? 0 : 4;
-  if (dmg && st.bonus) dmg = Math.round(dmg * (1 + (st.bonus.guitar ? 0.25 : 0) + 0.1 * hiddenCount(st)));
+  if (dmg && st.bonus) dmg = Math.round(dmg * (1 + (st.bonus.guitar ? 0.25 : 0) + 0.1 * hiddenCount(st) + (st.pz && st.pz.ok ? 0.1 : 0)));
   b.hp = clamp(b.hp - dmg + heal, p2 ? 0 : 10, b.max);
   if (q.k === 'B' && q.to === 'Hanne') b.hanne = (b.hanne || 0) + 1;
   const fp = fast && players.get(fast.pid);
@@ -3146,7 +3338,8 @@ function hostLoop() {
     if (!st.bonus.bente && [...players.values()].filter(p => p.r === 'player' && p.bn && serverNow() - p.bn < 5000).length >= benteNeed()) { st.bonus.bente = 1; st.fx = { id: rid(), type: 'hidden', k: 'bente' }; ch = true; }
     if (!st.bonus.modul && Object.keys(st.mt).length >= mtNeed()) { st.bonus.modul = 1; st.fx = { id: rid(), type: 'hidden', k: 'modul' }; ch = true; }
     if (!st.doors.tr && st.it.on) { const n = itNeed(); if (st.it.need !== n) { st.it.need = n; ch = true; } if (st.it.got >= st.it.need) { solveIt(st); ch = true; } }
-    if (foundCount(st) === 5 && !st.del && st.dl.books === 2 && !st.jam) { // djævlen venter høfligt, til sangen er færdig
+    ch = pizzaTick(st) || ch;
+    if (foundCount(st) === 5 && !st.del && st.dl.books === 2 && !st.jam && !pzBusy(st)) { // djævlen venter høfligt, til sangen (og pizzaen) er færdig
       if (!autoDevilAt) autoDevilAt = Date.now() + 4500;
       else if (Date.now() > autoDevilAt) { setPhase(st, 'djaevel'); autoDevilAt = 0; ch = true; }
     } else autoDevilAt = 0;
@@ -3221,6 +3414,7 @@ function handleAction(a) {
     greetT[a.from] = now; st.greets = (st.greets || []).concat([{ n: String(from.n || '?').slice(0, 14), t: txt }]).slice(-40);
     st.party.gr++; st.party.v = clamp(st.party.v + 3 * clamp(14 / Math.max(4, participants().length), 0.5, 4), 0, 99.5); commit(); return;
   }
+  if (a.type === 'pzvote') { const o = a.o | 0; if (st.pz.s !== 'ask' || o < 0 || o > 3 || st.pz.v[a.from] !== undefined) return; st.pz.v[a.from] = o; commit(); return; }
   if (a.type === 'disco') { if (st.phase === 'lobby' || st.disco || pwNorm(a.pw) !== PW_OK) return; st.disco = 1; st.fx = { id: rid(), type: 'disco', by: String(a.name || (from && from.n) || 'Nogen').slice(0, 14) }; commit(); return; }
   if (a.type === 'it') {
     if (st.phase !== 'akt1' || st.doors.tr || !st.it.on || !from) return;
@@ -3273,6 +3467,7 @@ function handleAction(a) {
         break;
       case 'gather': st.fx = { id: rid(), type: 'gather' }; commit(); break;
       case 'credits': if (st.phase === 'finale') { st.fcr = 1; st.fx = { id: rid(), type: 'credits' }; commit(); } break;
+      case 'pizza': if (st.phase === 'akt1' && (!st.pz.s || (st.pz.s === 'done' && !st.pz.ok))) { pzStart(st); commit(); } break; // en ny chance, hvis han kørte igen
       case 'fw': if (st.phase === 'finale') { st.party.fw = serverNow(); st.fx = { id: rid(), type: 'fw' }; commit(); } break;
       case 'mus': if (st.phase === 'finale') { st.party.mu = Math.max(serverNow(), st.party.mu || 0) + 120000; st.fx = { id: rid(), type: 'mus' }; commit(); } break;
       case 'bots': addBots(6); break;
@@ -3425,6 +3620,9 @@ const Snd = {
   plane() { this.tone(120, 2.4, 'sawtooth', 0.03, 0, 260); },
   horn() { this.noise(2.6, 0.05); [0, 0.62].forEach(d => { this.tone(311, 0.48, 'sawtooth', 0.026, d); this.tone(392, 0.48, 'sawtooth', 0.02, d); }); },
   stairs() { [392, 440, 494, 523].forEach((f, i) => this.tone(f, 0.06, 'square', 0.025, i * 0.05)); },
+  scooter() { this.tone(140, 2.5, 'sawtooth', 0.035, 0, 260); this.tone(280, 2.5, 'square', 0.012, 0, 520); this.noise(2.4, 0.03); },
+  screech() { this.tone(1900, 0.55, 'sawtooth', 0.02, 0, 1300); this.tone(2300, 0.5, 'square', 0.012, 0.03, 1700); this.noise(0.6, 0.08); },
+  beepbeep() { [0, 0.2].forEach(d => this.tone(880, 0.14, 'square', 0.04, d)); },
   whistle() { this.tone(520, 0.75, 'sine', 0.018, 0, 1700); },
   bang() { this.noise(0.7, 0.22); this.tone(68, 0.45, 'sine', 0.09, 0, 38); for (let i = 0; i < 6; i++) this.tone(rand(2400, 4200), 0.03, 'square', 0.012, 0.25 + i * rand(0.04, 0.09)); },
   riser() { this.tone(180, 1.4, 'sawtooth', 0.02, 0, 1100); this.noise(1.4, 0.04); },
@@ -3503,6 +3701,16 @@ function runFx(fx) {
     banner('💰 Alarmen er slået fra! Fredagskassen ligger klar i Chefens kontor.', 'teal', 6500); Snd.pickup(); shake(300, 2);
     const it = ITEMS.skjold; burst(it.x, it.y, 40, 'confetti'); fxLights.push({ x: it.x, y: it.y - 6, r: 100, i: 0.9, c: 'gold', g: 0.5, life: 1.4, max: 1.4 });
   } else if (fx.type === 'credits') { showCredits();
+  } else if (fx.type === 'pizza') {
+    banner('🛵 Hvad var DET?! Et pizzabud drøner ned ad Dalgasgade!', '', 4500); Snd.scooter(); setTimeout(() => Snd.screech(), 2350);
+  } else if (fx.type === 'pzask') {
+    Snd.beepbeep(); if (ROLE === 'player' && me && navigator.vibrate) try { navigator.vibrate([120, 80, 120]); } catch (e) {}
+  } else if (fx.type === 'pzres') {
+    if (fx.ok) { banner('🍕 Christine! Selvfølgelig. ' + PZ_N + ' STORE pizzaer er på vej til Personalerummet!', 'teal', 6000); Snd.right(); }
+    else { banner('🛵 Det var Christine, der havde bestilt! Pizzabuddet kører igen med alle ' + PZ_N + ' pizzaer …', '', 6500); Snd.wrong(); }
+  } else if (fx.type === 'pzdrop') {
+    banner('🍕 ' + PZ_N + ' familiepizzaer i XXL fra Christine står i Personalerummet. Pizzakraft: +10 % skade mod djævlen!', 'teal', 7000); Snd.thud(); shake(250, 2);
+    burst(1570, 340, 26, 'confetti'); fxLights.push({ x: 1570, y: 345, r: 70, i: 0.6, c: 'warm', g: 0.3, life: 0.8, max: 0.8 });
   } else if (fx.type === 'bigskaal') {
     banner('🥂 KÆMPESKÅL! ' + fx.n + ' kollegaer skålede på samme tid!', '', 4500); Snd.clink(); setTimeout(() => Snd.clink(), 170); setTimeout(() => Snd.clink(), 340);
     confettiRain(70); fxLights.push({ x: 1890, y: 350, r: 150, i: 0.6, c: 'gold', g: 0.35, life: 1.2, max: 1.2 });
@@ -4109,7 +4317,7 @@ function interact() { if (pzOpen) return; if (dlgOpen) advanceDlg(); else if (ne
 // interaktive punkter: faste NPC'er, opgavepunkter og (i Akt 1) ordkortene i Lokale 1.1
 let ordPoiKey = '', ordPoiCache = [];
 function interactables() {
-  const st = S(), out = NPCS.concat(st.phase === 'finale' ? PZ_NPCS : PZ_NPCS.filter(n => !n.fin));
+  const st = S(), out = NPCS.concat(st.phase === 'finale' ? PZ_NPCS : PZ_NPCS.filter(n => !n.fin)).concat(pzFed(st) && st.phase !== 'finale' ? [PIZZA_NPC] : []);
   if (st.phase === 'akt1' && st.ord.r < 3) {
     const k = st.ord.r + ':' + st.ord.perm.join(',');
     if (k !== ordPoiKey) {
@@ -4315,7 +4523,7 @@ function taskRows(st) {
     ['📚', '»Vi taler dansk«', st.dl.books === 2 ? 'Djævlen starter med 85 HP' : st.dl.books === 1 ? delTxt('books') : 'Leveringsbilen kommer senere', st.dl.books === 2, null, 1],
     ['🎸', 'Karins guitar', st.bonus.guitar ? '+25 % skade i duellen' : 'Lokale 0.1 · spil i takt sammen', !!st.bonus.guitar, null, 1],
     ['⭐', 'Skjulte bonusser', hiddenCount(st) + '/3 fundet · hver giver +10 % skade', hiddenCount(st) === 3, null, 1],
-  ];
+  ].concat(st.pz && st.pz.s ? [['🍕', st.pz.ok ? 'Christines pizzaer' : 'Pizzabuddet', st.pz.ok ? 'Personalerummet · +10 % skade i duellen' : st.pz.s === 'ask' ? 'Hvem har bestilt pizza? Svar på telefonen!' : pzBusy(st) ? 'Pizzabuddet er her!' : 'Kørte igen med alle pizzaerne …', !!st.pz.ok, null, 1]] : []);
 }
 function taskHtml(st) {
   return taskRows(st).map(([ic, t, s, done, item, bonus]) => {
@@ -4461,13 +4669,14 @@ function frame(t) {
   if (jm) drawJam();
   requestAnimationFrame(frame);
 }
+let camFast = false;
 function draw(t, dt) {
   const dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
   const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
   if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#05090b'; ctx.fillRect(0, 0, cw, ch);
   const vr = viewRect(), mp = me && players.get(ID);
-  let z, tx, ty;
+  let z, tx, ty; camFast = false;
   if (mp) {
     z = clamp(Math.min(W / 330, H / 290), 1.6, 3.4);
     const hw = vr.w / 2 / z, hh = vr.h / 2 / z, bs = S().boss, cine = S().phase === 'djaevel' && bs.stage === 'win' && serverNow() - bs.t0 < 8000;
@@ -4491,6 +4700,12 @@ function draw(t, dt) {
   } else if (ROLE === 'screen' && S().phase === 'djaevel') {
     z = Math.min(vr.w / 520, vr.h / 340); const hw = vr.w / 2 / z, hh = vr.h / 2 / z;
     const p2c = S().boss.p2; tx = clamp(p2c ? 1440 : 1475, hw, WW - hw); ty = clamp(p2c ? 372 : 345, hh, WH - hh);
+  } else if (ROLE === 'screen' && S().phase === 'akt1' && pzCam(S())) {
+    // pizzabuddet: storskærmen zoomer ind og følger ham (og lader ham stå til højre for spørgsmålskortet)
+    const st = S(), tb = $('#tasks'), bw = tb && !tb.hidden ? tb.offsetWidth + 28 : 0, vw = Math.max(240, vr.w - bw), pa = pzActor(st, serverNow()), f = (pa && (pa.guy || pa.sc)) || PZ_SPOT, ps = st.pz.s, age = serverNow() - st.pz.t0;
+    z = clamp(Math.min(vw / 300, vr.h / 210), 1, 6); const hw = vw / 2 / z, hh = vr.h / 2 / z, qe = $('#pzq'), card = qe.hidden ? 0 : (qe.offsetWidth + 24) / 2 / z;
+    tx = clamp(f.x - card, hw, WW - hw) + bw / 2 / z; ty = clamp(f.y - (ps === 'ask' || ps === 'res' ? 46 : 22), hh, WH - hh + 80);
+    camFast = ps === 'drive' || ps === 'deliver' || ps === 'away' ? (age > 500 ? 2 : 1) : 0;
   } else if (ROLE === 'screen' && S().phase === 'akt1') {
     // storskærmen følger holdet: zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles
     const tb = $('#tasks'), bw = tb && !tb.hidden ? tb.offsetWidth + 28 : 0, vw = Math.max(240, vr.w - bw);
@@ -4506,7 +4721,8 @@ function draw(t, dt) {
     tx += bw / 2 / z;
   } else { z = Math.min(vr.w / (WW + 12), vr.h / (WH + 12)); tx = WW / 2; ty = WH / 2; }
   if (cam.snap || !cam.z) { cam.x = tx; cam.y = ty; cam.z = z; cam.snap = false; }
-  else { const kk = Math.min(1, dt * (ROLE === 'screen' ? 1.6 : 4)); cam.x += (tx - cam.x) * kk; cam.y += (ty - cam.y) * kk; cam.z *= Math.pow(z / cam.z, kk); if (Math.abs(cam.z - z) < 0.002) cam.z = z; }
+  else if (camFast === 2) { cam.x = tx; cam.y = ty; cam.z *= Math.pow(z / cam.z, Math.min(1, dt * 7)); }
+  else { const kk = Math.min(1, dt * (camFast ? 7 : ROLE === 'screen' ? 1.6 : 4)); cam.x += (tx - cam.x) * kk; cam.y += (ty - cam.y) * kk; cam.z *= Math.pow(z / cam.z, kk); if (Math.abs(cam.z - z) < 0.002) cam.z = z; }
   z = cam.z;
   let sx = 0, sy = 0;
   if (t < shakeUntil && !reduceMotion) { sx = (Math.random() - 0.5) * shakeMag; sy = (Math.random() - 0.5) * shakeMag; }
@@ -4599,6 +4815,7 @@ function drawWorld(t, mp, view) {
   list.push([898.2, 8, null]);
   NOTE_POS.forEach((n, i) => list.push([n.b, 9, i]));
   list.push([SERVER.y + 1, 10, null]); list.push([FLAG.y + 2, 12, null]); list.push([WRECK.y + 31, 13, null]); list.push([BENTE.y, 14, null]); KURS.forEach(k => list.push([k.y, 15, k])); list.push([612, 16, null]); list.push([ROOF.y + ROOF.h, 17, null]);
+  const pa = pzActor(st, serverNow()); if (pa) { if (pa.sc) list.push([pa.sc.y, 18, pa.sc]); if (pa.guy) list.push([pa.guy.y, 20, pa.guy]); } if (pzFed(st)) list.push([361, 19, null]);
   if (devil) list.push([DEVIL.y, 3, null]);
   if (st.phase === 'finale') list.push([BOTTLE.y + 3, 11, null]);
   list.sort((a, b) => a[0] - b[0]);
@@ -4621,6 +4838,9 @@ function drawWorld(t, mp, view) {
     else if (type === 15) drawKursist(g, t, o);
     else if (type === 16) drawDisco(g, t, st);
     else if (type === 17) drawRoof(g);
+    else if (type === 18) drawScooter(g, t, o);
+    else if (type === 19) drawPizzaTable(g, t);
+    else if (type === 20) drawPizzaGuy(g, t, o);
     else if (type === 11) drawBottle(g, t);
     else if (type === 2) {
       const it = ITEMS[o], bob = reduceMotion ? 0 : Math.sin(t * 0.004 + it.x) * 2;
@@ -4652,6 +4872,7 @@ function drawWorld(t, mp, view) {
     g.textAlign = 'left';
   }
   if (active && st.del) drawDriverTalk(g, t, st.del);
+  if (pa) drawPizzaTalk(g, t, st, pa);
   // navneskilte
   const ns = ROLE === 'player' ? 1 : clamp(1.3 / cam.z, 1, 2.6); // navneskiltene vokser, når storskærmen zoomer ud
   g.font = '5px "Press Start 2P", monospace';
@@ -4826,6 +5047,7 @@ function renderGm() {
   if (st.bonus && st.bonus.guitar) status.push(['Bonus', 'Guitar-bonus aktiv (+25 % skade)']);
   if (st.bonus && st.bonus.books) status.push(['Bogbonus', 'Djævlen starter med 85 HP']);
   status.push(['Skjulte bonusser', hiddenCount(st) + '/3 (modultest ' + Object.keys(st.mt).length + '/' + mtNeed() + ' · Bente ' + (st.bonus.bente ? '✓' : '–') + ' · Troels\' plads ' + (st.bonus.troels ? '✓' : '–') + ')']);
+  if (st.pz && st.pz.s) status.push(['Pizzabuddet', st.pz.s === 'ask' ? 'Spørger nu · ' + Object.keys(st.pz.v).length + ' har svaret' : st.pz.s === 'done' || st.pz.n ? (st.pz.ok ? '✓ Christine! Pizzaerne står i Personalerummet (+10 % skade)' : '✗ ' + st.pz.c + ' af ' + st.pz.n + ' svarede Christine – han kørte igen') : 'På vej …']);
   status.push(['Pengeboksens kode', '<b>' + codeOf(st) + '</b> (dagens ret: ' + esc(DISHES[st.code.v[0]]) + ', bakke ' + st.code.b + ')']);
   if (st.del) { const d = st.del; status.push(['Levering', esc(DELIV[d.kind].label) + ': ' + ({ in: 'bilen kører ind', unload: d.got + '/' + d.n + ' båret ind, ' + Object.keys(d.carry).length + ' på vej', out: 'færdig, bilen kører' })[d.stage]]); }
   else if (st.phase === 'akt1') status.push(['Levering', ['paper', 'books'].map(k => DELIV[k].label + ' ' + ['venter', 'i gang', '✓'][st.dl[k] || 0]).join(' · ')]);
@@ -4840,6 +5062,7 @@ function renderGm() {
   for (const b of document.querySelectorAll('[data-cmd="solve"]')) b.disabled = st.phase !== 'akt1' || !!st.doors[b.dataset.k];
   for (const b of document.querySelectorAll('[data-cmd="open"]')) b.disabled = !!st.doors.arkiv;
   for (const b of document.querySelectorAll('[data-cmd="credits"],[data-cmd="fw"],[data-cmd="mus"]')) b.disabled = st.phase !== 'finale';
+  for (const b of document.querySelectorAll('[data-cmd="pizza"]')) b.disabled = st.phase !== 'akt1' || (!!st.pz.s && !(st.pz.s === 'done' && !st.pz.ok));
   for (const b of document.querySelectorAll('[data-cmd="jam"]')) b.disabled = !!st.jam || st.phase === 'djaevel';
   for (const b of document.querySelectorAll('[data-cmd="rage"]')) b.disabled = st.phase !== 'djaevel' || !!st.boss.p2 || st.boss.stage === 'win';
 }
@@ -4854,7 +5077,7 @@ function buildControls(el, prefix) {
     '<h2>Besked til alle skærme</h2><textarea id="' + prefix + '-msg" maxlength="160" placeholder="Fx: Hej fra Costa Rica! Husk at dele kaffekanden…"></textarea>' +
     '<div class="row"><button type="button" data-cmd="msg">Send fra Costa Rica</button></div>' +
     '<h2>Værktøjer</h2><div class="row">' +
-    '<button type="button" data-cmd="gather">Saml alle ved indgangen</button><button type="button" data-cmd="credits">Rulletekster nu (finale)</button><button type="button" data-cmd="fw">🎆 Fyrværkeri nu (finale)</button><button type="button" data-cmd="mus">🪩 2 min mere discomusik</button>' +
+    '<button type="button" data-cmd="gather">Saml alle ved indgangen</button><button type="button" data-cmd="credits">Rulletekster nu (finale)</button><button type="button" data-cmd="fw">🎆 Fyrværkeri nu (finale)</button><button type="button" data-cmd="pizza">🍕 Send pizzabuddet nu (Akt 1)</button><button type="button" data-cmd="mus">🪩 2 min mere discomusik</button>' +
     '<button type="button" data-cmd="rage">🔥 Fase 2 nu</button><button type="button" data-cmd="rehearse">🎬 Generalprøve (5 min)</button><button type="button" data-cmd="bots">+6 test-kollegaer</button><button type="button" data-cmd="nobots">Fjern test-kollegaer</button>' +
     '<button type="button" data-cmd="reset" class="danger">Nulstil spillet</button></div>';
   let armTimer = 0;

@@ -1,4 +1,4 @@
-# Slaget om Dalgasgade · v1.6
+# Slaget om Dalgasgade · v1.7
 
 Multiplayer-pixelspil til UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026.
 
@@ -33,6 +33,12 @@ Til generalprøver lægger du `&spil=test` på alle adresser, fx `?skaerm&spil=t
    - **1000 × »Vi taler dansk«** (bonus): leveringsbilen kommer igen senere, og kasserne skal ud i klasselokalerne på begge etager. Djævlen starter så med 85 HP.
    - Bliver kasserne ikke båret ind, bærer chaufføren selv resten efter 2½ minut.
    - Starter nogen en jam-session, holder leveringerne pause: bilen kommer ikke midt i en sang, og en bil, der allerede er her, venter med kasserne, til musikken er slut. Chaufførens ur står stille imens.
+   - **🍕 Pizzabuddet**: når holdet har fundet tre af de fem genstande, drøner et pizzabud i vanvittig fart ned ad Dalgasgade og op ad stien på sin røde scooter med et vaklende tårn af pizzabakker. Storskærmen zoomer ind og følger ham. Han hopper af ved hovedindgangen, går ind i Indgangen og råber **»Hvem har bestilt pizza?!«**.
+     - Alle får spørgsmålet på telefonen med fire svar: Christine, Troels, IT-Troldmanden og Frivillige-Bente. Der er 20 sekunder til at svare, og spørgsmålet slutter før, hvis alle har svaret. Storskærmen viser, hvor mange der har svaret, og til sidst, hvordan stemmerne fordelte sig.
+     - **Svarer flertallet Christine**, løber han med pizzaerne gennem gangen til Personalerummet og stiller **14 familiepizzaer i XXL** på bordet (Christine bestiller altid mange STORE pizzaer). Pizzaerne bliver stående, kan undersøges, og holdet får **Pizzakraft: +10 % skade** i duellen.
+     - Svarer flertallet forkert (eller svarer ingen), kører han igen med alle pizzaerne.
+     - Pizzabuddet venter, hvis en jam-session er i gang, eller hvis leveringsbilen er ved at køre ind. Djævlen venter også høfligt, til pizzaerne er leveret.
+     - Game Master kan sende ham med **🍕 Send pizzabuddet nu**, før holdet har fundet tre genstande. Kørte han igen, kan GM give holdet en ny chance med samme knap.
    - **Tre skjulte bonusser** giver hver +10 % skade i duellen. Opgavetavlen nævner dem ikke, men GM-panelet viser, hvor langt holdet er:
      - **Modultesten** i Modultest-træningsrummet: fem spørgsmål med 8 sekunder til hvert. Tre rigtige er bestået, og et par kollegaer skal bestå (cirka hver tredje).
      - **Lyt til Bente sammen**: falder 2–3 kollegaer i snak med Frivillige-Bente på samme tid, hepper hun på holdet. Hun siger selv, at historien er bedst, når flere lytter.
@@ -89,6 +95,9 @@ Rummene fordeler sig sådan:
 Rum, døre, trapper, møbler, trykplader, genstande og opgavepunkter er data øverst i scriptet i `index.html` (`ROOMS`, `DOORS`, `STAIR_ENDS`, `FURN`, `PLATES`, `ITEMS`, `NPCS`, `PZ_NPCS`, `NOTE_POS`, `SERVER` (pengeboksen), `PALLET`, `DEL_DEST`). Ledetråden "Tæl …" til pengeboksens kode tælles direkte i møbellisten, så den passer også, hvis møblerne flyttes.
 
 Storskærmen følger holdet i Akt 1: den zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles. Navneskiltene vokser, når der er zoomet ud.
+
+## Ændringer i v1.7
+- **Pizzabuddet** kommer, når holdet har fundet tre genstande: scooter i fuld fart, storskærmen zoomer ind, og han råber »Hvem har bestilt pizza?!«. Svarer flertallet Christine, får holdet 14 XXL-pizzaer i Personalerummet og +10 % skade i duellen. Ny GM-knap: 🍕 Send pizzabuddet nu.
 
 ## Ændringer i v1.6
 - **IT-Troldmandens kontor**: Testkontoret og IT-kontoret er slået sammen til ét rum med troldmandstema. Kodeordet står ikke længere på en lap på væggen, men på en gul lap bag diplomet for gennemført IT-sikkerhedskursus.

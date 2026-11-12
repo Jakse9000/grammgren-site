@@ -214,11 +214,22 @@ body.screen .j-head{font-size:14px} body.screen #j-info{font-size:clamp(16px,1.5
 #barbar button span{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.01em}
 #barbar button:active{transform:scale(.94)} #barbar button:disabled{opacity:.45}
 #barbar #b-rose{background:#f4a3b4} #barbar #b-skaal{background:var(--teal)}
-#barbar #b-greet{background:#fffaf0}
+#barbar #b-greet{background:#fffaf0} #barbar #b-dance{background:#c49aff}
+@media (max-height: 700px) and (orientation: portrait){ #barbar{gap:6px} #barbar button{width:56px;height:56px;font-size:19px} #barbar button span{font-size:9.5px} }
+@media (orientation: landscape) and (max-height: 520px){ #barbar{flex-direction:row;right:calc(env(safe-area-inset-right, 0px) + 124px);bottom:calc(env(safe-area-inset-bottom, 0px) + 14px);gap:6px} #barbar button{width:54px;height:54px;font-size:19px} #barbar button span{font-size:9.5px} }
+#party{position:fixed;left:calc(env(safe-area-inset-left, 0px) + 16px);top:calc(env(safe-area-inset-top, 0px) + 66px);z-index:22;width:min(34vw,340px);background:rgba(10,20,19,.92);border:2px solid #ff7ae0;border-radius:12px;padding:10px 12px 9px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#party b{display:block;font-family:var(--pixel);font-size:10px;color:#ffb3ec;letter-spacing:.06em;margin-bottom:7px;font-weight:400}
+#party .pbar{position:relative;height:18px;border-radius:9px;background:#081110;border:1px solid var(--line);overflow:hidden}
+#party .pbar i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#3fb8a8,#f4d06a 55%,#ff7ae0);transition:width .6s ease}
+#party .pbar span{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:var(--pixel);font-size:9px;color:#fff;text-shadow:0 1px 0 #000}
+#party small{display:block;margin-top:7px;font-size:12px;line-height:1.4;color:var(--cream);opacity:.92}
+#party.hot{animation:partyhot .48s ease-in-out infinite alternate}
+@keyframes partyhot{from{box-shadow:0 0 0 rgba(255,122,224,0)}to{box-shadow:0 0 26px rgba(255,122,224,.8)}}
+@media (prefers-reduced-motion: reduce){ #party.hot{animation:none} }
 #greet{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;z-index:24;max-width:min(70vw,900px);background:rgba(10,20,19,.94);border:2px solid var(--gold);border-radius:14px;padding:14px 22px;text-align:center}
 #greet b{display:block;font-family:var(--pixel);font-size:11px;color:var(--gold);margin-bottom:8px;font-weight:400}
 #greet span{font-size:clamp(18px,1.7vw,30px);color:var(--cream);line-height:1.35}
-#greet-in{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:11px 12px;border-radius:9px;border:1px solid var(--line);background:#081110;color:var(--cream)}
+#greet-in,#pw-in{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:11px 12px;border-radius:9px;border:1px solid var(--line);background:#081110;color:var(--cream)}
 #barbar button.cur{box-shadow:0 0 0 3px #fffaf0,0 8px 20px rgba(0,0,0,.45)}
 
 /* ── tilmelding ── */
@@ -332,7 +343,8 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <div id="where" hidden></div>
 <button id="act" class="dim" hidden aria-label="Brug eller tal">BRUG</button>
 <div id="lobbybar" hidden><button id="b-sip" type="button" aria-label="Tag en tår kaffe">☕<span>En tår</span></button><button id="b-say" type="button" aria-label="Sig noget om grammatik">💬<span>Sig noget</span></button></div>
-<div id="barbar" hidden><button id="b-beer" type="button" aria-label="Tag en øl">🍺<span>Øl</span></button><button id="b-rose" type="button" aria-label="Tag et glas rosé">🍷<span>Rosé</span></button><button id="b-skaal" type="button" aria-label="Skål med de andre">🥂<span>Skål!</span></button><button id="b-greet" type="button" aria-label="Skriv en hilsen til storskærmen">✍<span>Hilsen</span></button></div>
+<div id="barbar" hidden><button id="b-beer" type="button" aria-label="Tag en øl">🍺<span>Øl</span></button><button id="b-rose" type="button" aria-label="Tag et glas rosé">🍷<span>Rosé</span></button><button id="b-skaal" type="button" aria-label="Skål med de andre">🥂<span>Skål!</span></button><button id="b-dance" type="button" aria-label="Dans på dansegulvet">💃<span>Dans</span></button><button id="b-greet" type="button" aria-label="Skriv en hilsen til storskærmen">✍<span>Hilsen</span></button></div>
+<div id="party" hidden><b>STEMNINGSMÅLER</b><div class="pbar"><i id="party-i"></i><span id="party-v">0 %</span></div><small id="party-s"></small></div>
 <div id="greet" hidden aria-live="polite"><b id="greet-n"></b><span id="greet-t"></span></div>
 <div id="dlg" hidden role="dialog" aria-live="polite"><div id="dlg-name"></div><div id="dlg-text"></div><button type="button" id="dlg-esc" hidden></button><div id="dlg-hint">▼ BRUG / MELLEMRUM</div></div>
 <div id="hint" hidden></div>
@@ -428,7 +440,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.5.2
+   SLAGET OM DALGASGADE · v1.6
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -489,6 +501,7 @@ const RT = {
   depot:     { pat: 'check',  f: ['#5e564b', '#575045'], wall: '#9a907e' },
   wc:        { pat: 'check',  f: ['#b8c8cc', '#aabbc0'], wall: '#d6e2e4' },
   trappe:    { pat: 'stairs', f: ['#8a8f94', '#7d8287'], wall: '#b9c3bd' },
+  garderobe: { pat: 'plank',  f: ['#9a7350', '#8f6a49'], wall: '#d2ae8c' },
   morfar:    { pat: 'carpet', f: ['#6b5444', '#634d3f'], wall: '#cdb994' },
   it:        { pat: 'check',  f: ['#2f3540', '#2a3039'], wall: '#9aa6b2' },
 };
@@ -525,14 +538,14 @@ R('kantine', 'Kursistkantinen', 830, 1083, 170, 267, 'kantine', 1);
 R('kantine', 'Kursistkantinen', 1000, 1222, 120, 128, 'kantine', 1, { sub: 1 });
 // stuen (højre)
 R('personale', 'Personalerummet', 1430, 262, 270, 170, 'personale', 0);
+R('garderobe', 'Garderoben', 1370, 262, 60, 78, 'garderobe', 0, { nolab: 1 });   // indhakket ved Personalerummet, hvor jakkerne hænger
 R('test0a', 'Testlokalet', 1700, 262, 80, 170, 'klasse', 0);
 R('l01', 'Lokale 0.1', 1780, 262, 220, 170, 'fest', 0);
 R('trappe0a', 'Trappen', 2000, 262, 90, 170, 'trappe', 0);
 R('gang0', 'Gangen', 1430, 432, 700, 56, 'gang', 0);
-R('koekken', 'Personalekøkkenet', 1430, 488, 130, 122, 'koekken', 0, { lab: [1464, 572, 88] });   // navnet står på gulvet mellem bordet og køkkenbordet
-R('testk', 'Testkontoret', 1560, 488, 85, 122, 'kontor', 0);
-R('depot0', 'IT-kontoret', 1645, 488, 55, 122, 'kontor', 0);   // IT-mandens kedelige kontor – med en hemmelighed
-R('test0b', 'Testlokalet', 1700, 488, 145, 122, 'klasse', 0);
+R('koekken', 'Personalekøkkenet', 1430, 488, 130, 122, 'koekken', 0, { lab: [1461, 601, 72] });   // navnet står på gulvet mellem de to køleskabe
+R('itk', 'IT-Troldmandens kontor', 1560, 488, 140, 122, 'kontor', 0);   // det gamle Testkontor og IT-kontoret er slået sammen. Kontoret gemmer på en hemmelighed …
+R('test0b', 'Testlokalet', 1700, 488, 145, 122, 'klasse', 0, { lab: [1726, 599, 80] });
 R('kopi', 'Kopirummet', 1845, 488, 110, 122, 'kopi', 0);
 R('wc0a', 'Toiletterne', 1955, 488, 75, 122, 'wc', 0);
 R('indgang', 'Indgangen', 2130, 330, 240, 390, 'indgang', 0);
@@ -546,10 +559,12 @@ R('wc0b', 'Toiletterne', 2370, 720, 120, 82, 'wc', 0);
 R('l02', 'Lokale 0.2', 2370, 802, 120, 160, 'klasse', 0);
 R('l03', 'Lokale 0.3', 2370, 962, 120, 195, 'klasse', 0);
 R('trappe0b', 'Trappen', 2370, 1157, 120, 65, 'trappe', 0);
-R('gr1', 'Grupperum 1', 2370, 1222, 120, 98, 'klasse', 0);
+R('gr1', 'Grupperum 1', 2370, 1222, 120, 98, 'klasse', 0, { lab: [2400, 1283, 62] });   // navnet står på gulvet mellem sofaerne
 const roomById = id => ROOMS.find(r => r.id === id);
 // udendørs arealer man kan gå på: parkeringspladsen og bagindgangen mod nord, pladsen ved hovedindgangen, stien og fortovet ved Dalgasgade
-const OUTS = [{ x: 1384, y: 218, w: WW - 1392, h: 34 }, { x: 2096, y: 250, w: 270, h: 72 }, { x: 2040, y: 524, w: 86, h: 194 }, { x: 1496, y: 648, w: 548, h: 20 }, { x: 2044, y: 716, w: 76, h: 700 }, { x: 1384, y: 1394, w: WW - 1392, h: 20 }];
+// Pausehaven: det overdækkede område vest for personalegangen. Bygget til afslapning – i dag mest personalets rygeområde
+const SMOKE = { x: 1316, y: 420, w: 110, h: 188 }, ROOF = { x: 1318, y: 440, w: 106, h: 146, ht: 22 };
+const OUTS = [{ x: 1318, y: 424, w: 108, h: 180 }, { x: 1384, y: 218, w: WW - 1392, h: 34 }, { x: 2096, y: 250, w: 270, h: 72 }, { x: 2040, y: 524, w: 86, h: 194 }, { x: 1496, y: 648, w: 548, h: 20 }, { x: 2044, y: 716, w: 76, h: 700 }, { x: 1384, y: 1394, w: WW - 1392, h: 20 }];
 const ENTRANCE = { x: 2200, y: 325, w: 40 };
 // døre: DH = i en vandret væg (væglinje wy), DV = i en lodret væg (væglinje wx)
 const DOORS = [];
@@ -564,8 +579,8 @@ DV(1000, 752, 34); DV(1000, 827, 34, { closed: 1 }); DV(1000, 898, 34); DV(1000,
 DH(955, 1083, 40); DV(1000, 1110, 40); DV(1000, 1184, 32); DV(1000, 1250, 92);
 // stuen
 DH(1488, 432, 36); DH(1630, 432, 36); DH(1722, 432, 36); DH(1866, 432, 46); DH(2027, 432, 36);
-DH(1478, 488, 36); DH(1585, 488, 36); DH(1655, 488, 34); DH(1755, 488, 36); DH(1880, 488, 36); DH(1975, 488, 34);
-DV(2130, 458, 26); DH(2325, 720, 40);
+DV(1430, 290, 44); DH(1478, 488, 36); DH(1585, 488, 36); DH(1755, 488, 36); DH(1880, 488, 36); DH(1975, 488, 34);
+DV(2130, 458, 26); DV(1430, 458, 26); DH(2325, 720, 40);   // døren for enden af gangen fører ud til Pausehaven
 DV(2320, 752, 36); DV(2320, 930, 40); DV(2320, 1080, 44); DV(2320, 1250, 44);
 DV(2370, 752, 36); DV(2370, 900, 44); DV(2370, 1080, 44); DV(2370, 1184, 32); DV(2370, 1262, 44);
 DOORS.push(Object.assign({ entrance: true }, ENTRANCE));   // bagindgangen
@@ -599,23 +614,30 @@ function classroom(id, o) {
     FURN.push({ t: 'chair', x: gx + c * sp + dw / 2 - 6, y: y0 + 14 + rr * 40, w: 12, h: 5, ht: 4 });
   }
 }
-['l13', 'l12', 'l15', 'l02', 'l03', 'l05', 'l04', 'test0b'].forEach(id => classroom(id));
+['l13', 'l12', 'l15', 'l02', 'l03', 'l05', 'l04'].forEach(id => classroom(id));
+// Testlokalet bruges af kontorfolkene: to computere over for hinanden, skabe og reoler i venstre side
+F('shelf', 1708, 516, 22, 10, 24, { v: 'books' }); F('locker', 1732, 516, 20, 10, 24);
+F('sidebooks', 1706, 540, 12, 32, 24); F('sidebooks', 1706, 576, 12, 26, 18, { v: 'binders' });
+F('desk2', 1772, 548, 56, 26, 8);
+FURN.push({ t: 'ochair', x: 1782, y: 536, w: 12, h: 6, ht: 4, v: 's' }, { t: 'ochair', x: 1806, y: 579, w: 12, h: 6, ht: 4, v: 'n' });
 classroom('l14', { tx: 20 });              // døren fra gangen sidder i hjørnet ved tavlen
 F('radiator', 540, 513, 36, 6, 10); F('radiator', 656, 513, 36, 6, 10);
 classroom('l11', { rows: 3, y0: 220 });          // Lokale 1.1: ordstillingen foroven, pulte forneden
 classroom('test0a', { noTeacher: 1, rows: 2, cols: 1 });
 // grupperum: ét stort bord
-F('table', 2392, 1262, 76, 20, 7, { v: 'gruppe' }); F('table', 1022, 1110, 76, 20, 7, { v: 'gruppe' });
+F('table', 1022, 1110, 76, 20, 7, { v: 'gruppe' });
+// Grupperum 1 er Frivillige-Bentes hyggehjørne: to sofaer over for hinanden og potteplanter
+F('sofa', 2402, 1250, 56, 16, 6); F('sofaN', 2396, 1298, 56, 16, 6, { blanket: 1 });
+F('plant', 2378, 1252, 12, 8, 7, { top: 22 }); F('plant', 2470, 1252, 12, 8, 7, { top: 22 }); F('plant', 2476, 1305, 12, 8, 7, { top: 22 });
 // Personalerummet (stuen): her holdes kaffepausen, og her vågner djævlen
 F('counter', 1442, 290, 122, 12, 12);
 FURN.push({ t: 'coffee', x: 1452, y: 290, w: 14, h: 10, ht: 14, z: 1 }, { t: 'micro', x: 1504, y: 290, w: 20, h: 10, ht: 10, z: 1 });
-F('fridge', 1572, 290, 20, 12, 20);
-F('table', 1480, 336, 120, 24, 7, { cake: 1 });
+F('table', 1480, 336, 200, 24, 7, { cake: 1 }); F('sidebooks', 1436, 368, 12, 42, 26);
+F('coats', 1376, 288, 48, 6, 20, { top: 32 }); F('shoes', 1376, 326, 44, 6, 4, { top: 22 });
 F('sofa', 1550, 404, 56, 16, 6); F('plant', 1680, 296, 12, 8, 7, { top: 22 });
 // Personalekøkkenet
-F('counter', 1468, 586, 84, 14, 12, { label: 'KØKKEN' }); FURN.push({ t: 'coffee', x: 1474, y: 586, w: 14, h: 10, ht: 14, z: 1 }, { t: 'micro', x: 1522, y: 586, w: 20, h: 10, ht: 10, z: 1 });
-F('fridge', 1440, 584, 20, 12, 20);   // det ekstra køleskab
-F('table', 1498, 538, 48, 18, 7); F('fridge', 1440, 516, 20, 12, 20);
+// køkkenbordet langs højre væg helt op til toppen, et køleskab i forlængelse af det og et køleskab over for, langs venstre væg
+F('vcounter', 1532, 514, 22, 60, 12); F('sfridge', 1536, 578, 18, 16, 20, { face: 'w' }); F('sfridge', 1437, 578, 18, 16, 20, { face: 'e' });
 // Lokale 0.1: et klasselokale, der i dag er lavet om til festlokale
 F('counter', 1792, 296, 90, 14, 10, { label: 'BAR' }); F('crates', 1890, 298, 26, 12, 9);
 F('chairs', 1958, 292, 12, 8, 26); F('chairs', 1976, 292, 12, 8, 22);
@@ -626,7 +648,10 @@ F('cooler', 1446, 449, 12, 8, 10, { top: 22 }); F('bench', 1780, 449, 50, 8, 5);
 F('plant', 2110, 450, 12, 8, 7, { top: 22 }); F('plant', 312, 449, 12, 8, 7, { top: 22 });
 // Kopirummet (stuen) og kontorerne
 F('copier', 1852, 512, 40, 16, 14); F('shelf', 1926, 540, 24, 10, 22, { v: 'paper' }); F('boxes', 1852, 576, 24, 18, 12);
-F('tdesk', 1582, 576, 40, 14, 8); F('shelf', 1651, 540, 20, 8, 16, { v: 'books' }); F('tdesk', 1656, 588, 36, 12, 8);   // Testkontoret og IT-kontoret
+// IT-Troldmandens kontor: helpdesk med nummerautomat til venstre, troldmandens skrivebord med tre skærme til højre og et åbent gulv i midten (til diskoteket …)
+F('ticket', 1566, 524, 8, 5, 4, { top: 20 }); F('counter', 1566, 548, 44, 12, 12, { label: 'HELPDESK' }); F('cabinet', 1566, 580, 18, 10, 14);
+F('shelf', 1660, 516, 24, 10, 18, { v: 'spell' }); F('wizhat', 1687, 518, 8, 5, 2, { top: 30, px: 3 });
+F('tdesk', 1632, 578, 60, 14, 8, { v: 'wiz' }); FURN.push({ t: 'ochair', x: 1656, y: 562, w: 12, h: 6, ht: 4, v: 's' });
 F('tdesk', 2215, 828, 60, 16, 8);
 // Kontoret: nøglebundtet ligger herinde bag den låste dør
 F('tdesk', 2215, 940, 60, 18, 8); F('shelf', 2212, 896, 40, 12, 22, { v: 'books' }); F('plant', 2296, 902, 12, 8, 7, { top: 22 });
@@ -657,6 +682,10 @@ F('lamppost', 1548, 670, 3, 3, 1, { top: 44, px: 3 });   // flisestien langs den
 F('hedge', 1436, 1364, 596, 8, 10, { top: 14 }); F('hedge', 2132, 1364, 424, 8, 10, { top: 14 });
 F('ucsign', 2002, 728, 30, 3, 1, { top: 26 }); F('nopark', 2033, 1356, 3, 3, 1, { top: 26, px: 6 }); F('lamppost', 2128, 878, 3, 3, 1, { top: 44, px: 3 });
 for (let x = 140; x < WW; x += 330) F('lamp', x, 216, 4, 4, 2, { top: 48 });
+// Pausehaven: to borde-bænkesæt, en plantekasse fra de gode gamle dage, skiltet, askebægeret, sandspanden og en terrassevarmer uden gas
+F('deadplanter', 1326, 432, 30, 10, 8);
+F('picnic', 1330, 466, 44, 28, 6, { v: 'ash' }); F('picnic', 1330, 530, 44, 28, 6);
+F('ashpole', 1404, 498, 6, 6, 2, { top: 18 }); F('sandbucket', 1400, 552, 10, 8, 6); F('heater', 1404, 588, 8, 8, 2, { top: 36, px: 5 });
 // den havarerede bil holder på Troels' plads, lige uden for Personalerummet
 const WRECK = { x: 2252, y: 214 }, FLAG = { x: 2062, y: 606 };
 F('blocker', WRECK.x + 4, WRECK.y + 18, 62, 13, 1); F('psign', WRECK.x + 82, 240, 3, 3, 1, { top: 26, px: 10 });
@@ -668,7 +697,7 @@ const PLATES = [
   { id: 'p3', x: 180, y: 588, r: 12, room: 'Lokale 1.4' },
 ];
 const ITEMS = {
-  kande:   { name: 'Den Gyldne Kaffekande',    short: 'Kaffekanden',  x: 1486, y: 574, desc: 'heler holdet', locked: 'ret' },
+  kande:   { name: 'Den Gyldne Kaffekande',    short: 'Kaffekanden',  x: 1494, y: 560, desc: 'heler holdet', locked: 'ret' },
   roedpen: { name: 'Rødpennen',                short: 'Rødpennen',    x: 1120, y: 680, desc: 'kritiske slag mod dårlig grammatik', locked: 'ord' },
   printer: { name: 'Printeren der virker',     short: 'Printeren',    x: 1936, y: 592, desc: 'skyder papir tilbage', locked: 'paper' },
   skjold:  { name: 'Fredagskassen',            short: 'Fredagskassen', x: 2258, y: 984, desc: 'beskytter hele holdet', locked: 'tr' },
@@ -700,7 +729,12 @@ function delDest(kind, x, y) {
   return best;
 }
 // ── fredagsbaren efter sejren ──
-const BOTTLE = { x: 1950, y: 412 }, BOTTLE_DROP = 2600, BOTTLE_FALL = 900, BOTTLE_POP = 5200, CREDITS_AT = 60000;
+const BOTTLE = { x: 1950, y: 412 }, BOTTLE_DROP = 2600, BOTTLE_FALL = 900, BOTTLE_POP = 5200, CREDITS_AT = 78000;
+// festen: diskoen tænder, når flasken er åbnet; fyrværkeri lige før rulleteksterne; musikken spiller et par minutter (GM kan give mere)
+const DISCO_AT = 10000, BEAT_MS = 480, FW_AT = 64000, FW_MS = 11000, PEAK_FW_MS = 7000, DANCE_MS = 8000, MUSIC_MS = 125000;
+const DFLOOR = { x: 1822, y: 384, c: 6, r: 3, w: 18, h: 14 }, DBALL = { x: 1875, y: 336 };
+const freshParty = () => ({ v: 0, pk: 0, big: 0, sk: 0, dn: 0, gr: 0, bs: '', bsc: 0, bd: '', bdc: 0, mu: 0, fw: 0 });
+const normParty = p => { const o = Object.assign(freshParty(), p && typeof p === 'object' ? p : {}); for (const k of Object.keys(o)) if (k !== 'bs' && k !== 'bd') o[k] = +o[k] || 0; o.bs = String(o.bs || ''); o.bd = String(o.bd || ''); return o; };
 const SKAAL = ['Skål!', 'Skål for Dalgasgade!', 'Skål for UCplus Silkeborg!', 'Skål og tak for alt, kollegaer!', 'Mere rosé til bord tre!', 'Hvem har taget den sidste Classic?',
   'Skål for Winnie og hendes rosé!', 'Samme tid næste år – nyt sted!', 'En øl, øllen, øllene. Skål!', 'Skål for kursisterne – de var de bedste!', 'Skål for Costa Rica!',
   'Inversion: Nu drikker vi rosé!', 'Skål i bund – med stød!', 'Hvem rydder op i Lokale 0.1 bagefter?', 'Djævlen fik aldrig noget rosé.', 'Det står i overenskomsten: fredagsbar er obligatorisk.'];
@@ -806,7 +840,7 @@ const NPCS = [
   { id: 'kaffe', name: 'Kaffemaskinen', x: 1459, y: 312, lines: () => ['BRRRRRRR… *hoste* …PSSSHHH.', 'Jeg har brygget 41.000 kopper siden 2021. Ingen har nogensinde afkalket mig.', S().doors.ret ? 'Den Gyldne Kaffekande står i Personalekøkkenet lige overfor. Tag den med, hvis I skal slås mod noget ondt i dag!' : 'Den Gyldne Kaffekande? Den kommer først frem, når rettebunken i Lærerværelset på 1. sal er væk. Ingen kaffe, før arbejdet er gjort!'] },
   { id: 'koel', name: 'Køleskabet', x: 1582, y: 312, lines: ['Indhold: tre madpakker uden navn, én yoghurt fra 2023 og en gryde, som ingen tør åbne.', 'Sedlen på døren siger: "RYD OP INDEN JUL!!!" Nogen har skrevet "hvilken jul?" nedenunder.'] },
   { id: 'post', name: 'Postkasserne', x: 1640, y: 300, lines: ['Din postkasse indeholder: ét kursusbevis, tre gamle skemaer og en kuglepen, der ikke virker.'] },
-  { id: 'kage', name: 'Fredagskagen', x: 1540, y: 330, lines: ['En lagkage med ét enkelt lys. På kortet står der: "Tak for alt – personalet".', 'Nogen har allerede taget et stykke. Sporene fører mod sofaen.'] },
+  { id: 'kage', name: 'Fredagskagen', x: 1580, y: 330, lines: ['En lagkage med ét enkelt lys. På kortet står der: "Tak for alt – personalet".', 'Nogen har allerede taget et stykke. Sporene fører mod sofaen.'] },
   { id: 'printer', name: 'Den gamle printer', x: 1872, y: 540, note: 2, lines: () => { const b = S().code.b, top = ['Der sidder en gul seddel på printeren: »' + noteText(2) + '«'];
     return top.concat(S().doors.paper ? ['PAPIRSTOP I BAKKE ' + b + '. Stadig. Selvom der nu er masser af papir.', 'Printeren DER VIRKER er dukket op henne i hjørnet!'] : ['PAPIRSTOP I BAKKE ' + b + '.', 'Og i øvrigt: intet papir. Der er bestilt nyt. Når leveringsbilen kommer, skal det bæres herind.', 'Der går rygter om en printer, der faktisk VIRKER …']); } },
   { id: 'fremmoede', name: 'Fremmødelisten', x: 2232, y: 780, lines: ['Husk at skrive dig på!', 'Status i dag: 100 % fremmøde. Første gang siden 2021.'] },
@@ -821,6 +855,7 @@ const NPCS = [
   { id: 'guitar', name: GUITAR_NAME, x: 1808, y: 392, jam: 1, lines: ['Karins guitar! Velspillet, fuld af klistermærker og altid stemt.', 'Den står klar, hver gang der skal synges.', 'Du slår en akkord… og hele huset spidser ører!'] },
   { id: 'musik', name: 'Højttaleren', x: 1808, y: 418, lines: ['Playlisten hedder "Fredagsbar – sidste gang". Den er ni timer lang.', 'Lige nu: dansktop. Om lidt: mere dansktop.'] },
 
+  { id: 'jakker', name: 'Garderoben', x: 1400, y: 316, lines: ['Et lille indhak fuld af jakker, huer og våde støvler.', 'Tolv jakker, tre paraplyer og én enlig handske, som ingen har savnet siden 2019.'] },
   { id: 'cykler', name: 'Cykelskuret', x: 1640, y: 664, lines: ['Cykelskuret foran den lange længe. Det stejle tag er dækket af sne, og vedbenden kravler op ad væggen.', 'Derinde står seks cykler. To med punktering, én uden sadel, og én, der har stået her siden 2022.', 'På porten hænger en seddel: »Husk lygter! Det er mørkt allerede klokken 16.«'] },
   { id: 'ucskilt', name: 'Indgangsskiltet', x: 2040, y: 724, lines: ['UCplus · Indgang ›', 'Pilen peger mod hoveddøren. Det er husets eneste skilt, som alle kursister forstår på første dag.'] },
   { id: 'pforbud', name: 'Parkering forbudt', x: 2040, y: 1372, lines: ['Et rundt skilt: blå skive, rød ring og én skrå streg. PARKERING FORBUDT.', 'Under skiltet sidder en gul seddel: »Undtagen Troels?« Med spørgsmålstegn. Den har siddet der i tre år.'] },
@@ -838,8 +873,14 @@ const NPCS = [
 
   { id: 'lk3', name: 'Kontoret (låst)', x: 978, y: 844, lines: ['Døren er låst. Der hænger et skilt: »Ude af drift«.', 'Hvad der er ude af drift, står der ikke.'] },
   { id: 'rvindue', name: 'Receptionsvinduet', x: 2289, y: 708, lines: ['Et lille vindue ind til receptionen. Herfra kan man se, hvem der kommer ind ad hoveddøren.', 'På karmen står en klokke: »Ring, så kommer vi.«'] },
-  { id: 'itpc', name: 'IT-mandens computer', x: 1674, y: 580, act: 'pw' },
-  { id: 'itlap', name: 'Den gule lap', x: 1692, y: 522, lines: ['En gul lap på væggen: »HUSK! Kodeordet er kaffe123. Sig det ikke til nogen.«', 'Nedenunder med mindre skrift: »IT-sikkerhed er alles ansvar.«'] },
+  { id: 'itpc', name: 'IT-Troldmandens computer', x: 1662, y: 562, act: 'pw' },
+  { id: 'diplom', name: 'Diplomet', x: 1641, y: 518, lines: ['Et indrammet diplom: »Gennemført IT-sikkerhedskursus. Bestået med udmærkelse.«', 'Diplomet hænger lidt skævt. Du retter forsigtigt på rammen …', 'Bag diplomet sidder en gul lap: »Kodeord: kaffe123. Sig det ikke til nogen!«'] },
+  { id: 'troldhat', name: 'Troldmandshatten', x: 1688, y: 534, lines: ['En lilla troldmandshat med guldstjerner hænger på knagen ved siden af en kappe.', 'I foret står der med kuglepen: »Kun til særligt svære printerproblemer.«'] },
+  { id: 'pauseskilt', name: 'Skiltet i Pausehaven', x: 1371, y: 598, lines: ['Et gammelt træskilt med malede blomster: »PAUSEHAVEN · Slap af, og nyd den friske luft.«', 'Hen over det er der tapet et lamineret ark med store røde bogstaver: »RYGEOMRÅDE«.', 'Nogen har tegnet en lille sur blomst i hjørnet af arket.'] },
+  { id: 'askebaeger', name: 'Askebægeret', x: 1407, y: 512, lines: ['Askebægeret er fyldt til randen. På bordet står en kaffekop, der også er blevet til et askebæger.', 'Herude er det, at de bedste idéer til undervisningen opstår. Siger rygerne i hvert fald.'] },
+  { id: 'plantekasse', name: 'Plantekassen', x: 1342, y: 448, lines: ['En plantekasse fra dengang, Pausehaven var ny. Et lille skilt siger stadig: »Basilikum – plantet med kærlighed«.', 'Basilikummen har givet op. Til gengæld vokser der cigaretskodder.'] },
+  { id: 'varmer', name: 'Terrassevarmeren', x: 1394, y: 596, lines: ['En terrassevarmer fra Pausehavens storhedstid.', 'Gasflasken har været tom i flere år. Rygerne klarer sig med dunjakker.'] },
+  { id: 'nummer', name: 'Nummerautomaten', x: 1572, y: 532, lines: ['Du trækker et nummer: 4712.', 'Skærmen over helpdesken viser: »Nu betjenes nr. 12«.', 'På automaten sidder en seddel: »Har du prøvet at slukke og tænde?«'] },
   { id: 'modul', name: 'Modultesten', x: 1060, y: 1140, act: 'mt', lines: ['Modultest-træningsrummet. Uret på væggen tæller ned fra 30 minutter.', 'På tavlen står der: »Ingen hjælpemidler. Ingen telefoner. Ingen panik.«', 'Under bordet ligger en glemt blyant, der er bidt helt flad.'] },
   { id: 'k0', name: 'Oksana', x: 896, y: 1196, lines: ['DanskPlus — це просто фантастика! Я вчу граматику щодня в автобусі.', 'Тепер я знаю, що дієслово стоїть на другому місці. Дякую, DanskPlus!', '(På dansk, med et stort smil:) »DanskPlus er … helt fantastisk!«'] },
   { id: 'k1', name: 'Ahmad', x: 962, y: 1180, lines: ['تطبيق DanskPlus رائع جداً! أتعلّم القواعد كل يوم.', 'الآن أعرف أن الفعل يأتي في المكان الثاني. شكراً DanskPlus!', '(På dansk:) »Verbet på plads to! Det har jeg lært i DanskPlus.«'] },
@@ -892,16 +933,16 @@ const KURS = [
 const MT_Q = [['I går ___ jeg i Netto.', 'gik', 'går', 'gået'], ['Hun har to ___.', 'børn', 'barner', 'børner'], ['Jeg bor ___ Silkeborg.', 'i', 'på', 'til'], ['Vi ses ___ mandag!', 'på', 'i', 'til'],
   ['Jeg ved, at han ___.', 'ikke kommer', 'kommer ikke', 'ikke komme'], ['Et hus – to ___.', 'huse', 'huser', 'hus'], ['Det er ___ bil.', 'min', 'mit', 'mine'], ['I morgen ___ vi til fredagsbar.', 'skal', 'skulle', 'skullet'],
   ['Bogen ligger ___ bordet.', 'på', 'i', 'ad'], ['Om fredagen ___ vi altid kage.', 'spiser', 'spise', 'spist'], ['Jeg har boet her ___ fem år.', 'i', 'siden', 'for'], ['Hun er ___ end mig.', 'højere', 'mere høj', 'højest']];
-const PW_OPTS = ['123456', 'kodeord', 'kaffe123', 'Sommer2026!'], DISCO = { x: 1672, y: 512 };
+const PW_OK = 'kaffe123', pwNorm = v => String(v || '').toLowerCase().replace(/[\s\-_.]/g, ''), DISCO = { x: 1625, y: 528 }, PONG = { x: 1657, y: 565 };
 const MATTRESS = { x: 515, y: 318 }, NAP_MS = 8000, HOT = roomById('l15'), RACKS = FURN.filter(f => f.t === 'rack'), DARK_ROOMS = ROOMS.filter(r => r.dark);
 // Kaffepausen: faste pladser i Personalerummet (bordet først, så sofa, køkkenbordet og resten af rummet)
 const SEATS = [];
-[1492, 1512, 1532, 1552, 1572, 1592].forEach(x => SEATS.push({ x, y: 332, d: 0 }));
-[1492, 1512, 1532, 1552, 1572, 1592].forEach(x => SEATS.push({ x, y: 375, d: 1 }));
-SEATS.push({ x: 1470, y: 352, d: 3 }, { x: 1612, y: 352, d: 2 }, { x: 1562, y: 413, d: 0 }, { x: 1578, y: 413, d: 0 }, { x: 1594, y: 413, d: 0 },
+[1492, 1512, 1532, 1552, 1572, 1592, 1612, 1632, 1652, 1672].forEach(x => SEATS.push({ x, y: 332, d: 0 }));
+[1492, 1512, 1532, 1552, 1572, 1592, 1612, 1632, 1652, 1672].forEach(x => SEATS.push({ x, y: 375, d: 1 }));
+SEATS.push({ x: 1470, y: 352, d: 3 }, { x: 1689, y: 352, d: 2 }, { x: 1562, y: 413, d: 0 }, { x: 1578, y: 413, d: 0 }, { x: 1594, y: 413, d: 0 },
   { x: 1452, y: 318, d: 1 }, { x: 1476, y: 318, d: 1 }, { x: 1530, y: 318, d: 1 }, { x: 1554, y: 316, d: 1 }, { x: 1606, y: 316, d: 1 },
-  { x: 1640, y: 326, d: 2 }, { x: 1662, y: 346, d: 2 }, { x: 1684, y: 326, d: 2 }, { x: 1640, y: 398, d: 2 }, { x: 1664, y: 414, d: 1 }, { x: 1686, y: 392, d: 2 },
-  { x: 1516, y: 410, d: 1 }, { x: 1540, y: 420, d: 1 }, { x: 1564, y: 410, d: 1 }, { x: 1588, y: 420, d: 1 }, { x: 1612, y: 410, d: 1 });
+  { x: 1640, y: 398, d: 2 }, { x: 1664, y: 414, d: 1 }, { x: 1686, y: 392, d: 2 },
+  { x: 1516, y: 410, d: 1 }, { x: 1540, y: 420, d: 1 }, { x: 1468, y: 402, d: 1 }, { x: 1492, y: 420, d: 1 }, { x: 1620, y: 420, d: 1 });
 for (let i = 0; i < 10; i++) SEATS.push({ x: 1450 + i * 24, y: 466 + (i % 2) * 12, d: 1 });
 // Grammatiksnak i kaffepausen (værten lader skiftende figurer sige replikkerne)
 const TALKS = [
@@ -1040,7 +1081,7 @@ const STYLES = [['kort', 'Kort'], ['langt', 'Langt'], ['knold', 'Knold'], ['krol
 const BOT_NAMES = ['Test-Tove', 'Test-Bent', 'Test-Hanne', 'Test-Ole', 'Test-Mette', 'Test-Søren', 'Test-Lise', 'Test-Kim', 'Test-Anne', 'Test-Lars'];
 
 function roomAt(x, y) { for (const r of ROOMS) if (x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) return r; return null; }
-function roomName(x, y) { const r = roomAt(x, y); return r ? r.name : (y < 330 ? 'Parkeringspladsen' : 'Udenfor'); }
+function roomName(x, y) { const r = roomAt(x, y); return r ? r.name : inRect(x, y, SMOKE) ? 'Pausehaven (rygeområdet)' : (y < 330 ? 'Parkeringspladsen' : 'Udenfor'); }
 function roomLabel(x, y) { const r = roomAt(x, y); return r ? r.name + ' (' + FLOOR_NAME[r.fl] + ')' : roomName(x, y); }
 
 // ───────── gå-gitter (kollision) og sti-gitter (bots). Trapperne er "teleport-kanter" i sti-gitteret. ─────────
@@ -1178,6 +1219,7 @@ for (let i = 0; i < 900 && TREES.length < 150; i++) {
   const x = 20 + hash(i * 3.17) * (WW - 40), y = 290 + hash(i * 5.71 + 2) * (WH - 310);
   if (ROOMS.some(r => x > r.x - 26 && x < r.x + r.w + 26 && y > r.y - 26 && y < r.y + r.h + 48)) continue;
   if ((x > 250 && x < 640 && y > 820 && y < 960) || (x > 1610 && x < 2010 && y > 820 && y < 960)) continue; // plads til etage-skiltene
+  if (x > 1284 && x < 1446 && y > 392 && y < 640) continue; // Pausehaven
   if ((x > 2020 && x < 2200 && y > 505) || (x > 1975 && y > 640 && y < 770) || (x > 1470 && x < 1745 && y > 630 && y < 800) || y > 1340) continue; // pladsen, stierne, cykelskuret, hækken og fortovet
   if (TREES.some(q => Math.abs(q.x - x) < 26 && Math.abs(q.y - y) < 22)) continue;
   TREES.push({ x, y });
@@ -1205,6 +1247,11 @@ function renderMap() {
   P(g, 1494, 646, 548, 24, '#8f8c86'); for (let x = 1494; x < 2042; x += 9) P(g, x, 646, 1, 24, '#85827c'); for (let y = 652; y < 670; y += 6) P(g, 1494, y, 548, 1, '#85827c');
   P(g, 1494, 646, 548, 1, '#6d6a64'); P(g, 1494, 669, 548, 1, '#6d6a64'); for (let i = 0; i < 46; i++) P(g, 1498 + hash(i + 41) * 540, 648 + hash(i + 73) * 19, 3 + hash(i) * 8, 1, 'rgba(235,242,250,0.5)');
   for (const t of TREES) tree(g, t.x, t.y);
+  // Pausehaven: fliser, tør under taget og sne udenfor, og skodder ved døren og askebægeret
+  { const { x, y, w, h } = SMOKE; P(g, x, y, w, h, '#7a776f'); for (let xx = x; xx < x + w; xx += 12) P(g, xx, y, 1, h, '#6f6c65'); for (let yy = y; yy < y + h; yy += 12) P(g, x, yy, w, 1, '#6f6c65');
+    P(g, ROOF.x, ROOF.y, ROOF.w, ROOF.h, 'rgba(0,0,0,0.1)'); P(g, x, y, w, 2, '#6d6a64'); P(g, x, y + h - 2, w, 2, '#6d6a64'); P(g, x, y, 2, h, '#6d6a64');
+    for (let i = 0; i < 24; i++) { const sx = x + hash(i * 1.7) * (w - 8), sy = hash(i * 2.3) < 0.5 ? y + 2 + hash(i * 3.1) * 14 : y + h - 18 + hash(i * 3.1) * 14; P(g, sx, sy, 3 + hash(i) * 8, 1.5, 'rgba(235,242,250,0.55)'); }
+    for (let i = 0; i < 26; i++) { const bx = 1384 + hash(i * 5.3) * 38, by = 470 + hash(i * 6.7) * 90; P(g, bx, by, 1.6, 0.7, '#e8e4da'); P(g, bx + 1.6, by, 0.5, 0.7, '#c87a3a'); } }
   // etage-skiltene i sneen
   g.textAlign = 'center';
   [[445, '1. SAL', 'Trapperne fører ned til stuen'], [1810, 'STUEN', 'Hovedindgangen vender ud mod gården']].forEach(([x, big, small]) => {
@@ -1214,7 +1261,7 @@ function renderMap() {
   g.textAlign = 'left';
   // gulve og tæpper
   for (const r of ROOMS) drawFloor(g, r);
-  rug(g, 1470, 324, 140, 50, '#6e3434', '#a85a5a'); rug(g, 2160, 380, 120, 70, '#2f4a3e', '#5a8a72'); rug(g, 790, 500, 130, 70, '#2f4a3e', '#5a8a72'); rug(g, 2214, 944, 90, 40, '#7a5a2a', '#b88a4a');
+  rug(g, 1470, 324, 220, 50, '#6e3434', '#a85a5a'); rug(g, 2160, 380, 120, 70, '#2f4a3e', '#5a8a72'); rug(g, 790, 500, 130, 70, '#2f4a3e', '#5a8a72'); rug(g, 2214, 944, 90, 40, '#7a5a2a', '#b88a4a');
   for (const s of STAIR_ENDS) drawStairs(g, s);
   // facaderne mod syd, vægfronter med indretning, vægkroner og døråbninger
   drawFacade(g);
@@ -1226,7 +1273,7 @@ function renderMap() {
   // rumnavne
   g.textAlign = 'left';
   for (const r of ROOMS) {
-    if (r.sub || r.k === 'trappe' || (r.k === 'gang' && r.w < 80)) continue;
+    if (r.sub || r.nolab || r.k === 'trappe' || (r.k === 'gang' && r.w < 80)) continue;
     const nm = r.name.toUpperCase(), maxw = r.lab ? r.lab[2] : r.w - 18; let fs = 6;
     g.font = fs + 'px "Press Start 2P", monospace'; const tw = g.measureText(nm).width;
     if (tw > maxw) { fs = Math.max(3.4, Math.floor(6 * maxw / tw * 10) / 10); g.font = fs + 'px "Press Start 2P", monospace'; }
@@ -1435,6 +1482,12 @@ function faceDecor(g) {
   // Personalekøkkenet: fliser og en seddel
   P(g, 1435, 499, 120, 10, '#e8efe9'); for (let x = 1435; x < 1555; x += 6) P(g, x, 499, 1, 10, '#c9d3cc'); P(g, 1435, 504, 120, 1, '#c9d3cc');
   P(g, 1518, 496, 34, 10, '#fffaf0'); T('TØM', 1535, 500.5, '#c8323c', 2.8, 'center'); T('OPVASKEREN!', 1535, 504.5, '#2f4f9a', 2.4, 'center');
+  // IT-Troldmandens kontor: nummerskærm over helpdesken og diplomet (med et gult hjørne, der stikker frem bag rammen …)
+  P(g, 1563, 494, 20, 11, '#1a1d22'); P(g, 1564, 495, 18, 9, '#0b0d10'); T('NU', 1566, 499.5, '#ff6b72', 2.2); T('12', 1574, 502.5, '#ff3b3b', 4.4);
+  P(g, 1625, 492, 4, 3, '#f4d06a'); P(g, 1625, 492, 4, 0.6, '#fff2b0');
+  P(g, 1627, 492, 28, 15, '#8a5a18'); P(g, 1628, 493, 26, 13, '#d8a74a'); P(g, 1629, 494, 24, 11, '#fffaf0');
+  T('DIPLOM', 1641, 498, '#2f4f9a', 2.8, 'center'); T('IT-SIKKERHED', 1641, 501.6, '#3a2408', 1.9, 'center'); P(g, 1632, 503, 11, 0.6, '#9aa3a8');
+  g.fillStyle = '#c8323c'; g.beginPath(); g.arc(1649, 503, 1.8, 0, Math.PI * 2); g.fill(); P(g, 1648, 504.4, 0.8, 2, '#c8323c'); P(g, 1649.4, 504.4, 0.8, 2, '#c8323c');
   // gangen i stuen: opslagstavle, ur, knager med jakker, nødudgang
   P(g, 1539, 438, 42, 14, '#6b4a2b'); P(g, 1540, 439, 40, 12, '#c49a5e');
   [['#f4d06a', 1542, 440], ['#7fe0d3', 1550, 442], ['#ff9eb0', 1559, 440], ['#fffaf0', 1568, 441], ['#9fd06a', 1573, 443]].forEach(([c, x, y]) => { P(g, x, y, 6, 6, c); P(g, x + 2, y, 2, 1, '#c33'); });
@@ -1479,7 +1532,7 @@ function faceDecor(g) {
 
   // lærerværelserne, kontorerne og biblioteket
   const topDoor = r => DOORS.find(d => !d.v && Math.abs(d.y + 5 - r.y) < 1 && d.x < r.x + r.w && d.x + d.w > r.x);
-  ['laerer1', 'laerer2', 'laerer3', 'kontor1a', 'kontor1b', 'kontor1c', 'forb', 'kontor0', 'testk', 'moede1'].forEach((id, i) => {
+  ['laerer1', 'laerer2', 'laerer3', 'kontor1a', 'kontor1b', 'kontor1c', 'forb', 'kontor0', 'moede1'].forEach((id, i) => {
     const r = RM(id), dr = topDoor(r); let x = r.x + r.w - 40;
     if (dr) { if (dr.x - r.x > 42) x = r.x + 8; else if (r.x + r.w - dr.x - dr.w > 42) x = r.x + r.w - 38; else return; }
     P(g, x, r.y + 8, 30, 13, '#6b4a2b'); P(g, x + 1, r.y + 9, 28, 11, '#c49a5e');
@@ -1513,6 +1566,19 @@ function buildFurnSprite(f) {
     case 'chair': P(g, X + 1, Y + d, w, 1, 'rgba(0,0,0,0.25)'); P(g, X + 1, Y + d - 3, 1, 3, '#222'); P(g, X + w - 2, Y + d - 3, 1, 3, '#222'); P(g, X, Y - 2, w, d, '#3d5a8a'); P(g, X, Y - 2, w, 1, '#5a7ab0'); P(g, X, Y + d - 8, w, 6, '#2c4268'); P(g, X, Y + d - 8, w, 1, '#4a6aa0'); break;
     case 'tdesk':
       box(g, X, Y, w, d, ht, '#a8743f', '#6e4626'); P(g, X + 3, Y + d - ht + 2, w - 6, 1, 'rgba(0,0,0,0.2)');
+      if (f.v === 'wiz') {
+        // IT-Troldmandens kommandocentral: tre skærme, et tårn af kaffekopper og en plasmakugle
+        [[X + 9, '#0b2a14', '#5fd38a'], [X + 24, '#123a4a', '#7fd0ff'], [X + 39, '#1a1030', '#c49aff']].forEach(([mx, bg, fg], k) => {
+          P(g, mx, T - 6, 14, 10, '#1d2228'); P(g, mx + 1, T - 5, 12, 7, bg);
+          for (let r = 0; r < 3; r++) P(g, mx + 2, T - 4 + r * 2, 3 + ((k * 3 + r * 5) % 8), 1, fg);
+          P(g, mx + 6, T + 4, 2, 2, '#1d2228'); P(g, mx + 4, T + 5, 6, 1, '#1d2228');
+        });
+        P(g, X + 20, T + 8, 22, 3, '#2a2e35'); P(g, X + 21, T + 8, 20, 1, '#5a5f66');
+        for (let k = 0; k < 5; k++) { const yy = T + 9 - k * 2.6; P(g, X + 2, yy, 5, 2.4, k % 2 ? '#e8e0cc' : '#fffaf0'); P(g, X + 2, yy, 5, 0.7, '#6b3a1a'); P(g, X + 7, yy + 0.6, 1, 1.2, '#e8e0cc'); }
+        P(g, X + w - 8, T + 8, 6, 3, '#2a2e35'); g.fillStyle = '#2a1050'; g.beginPath(); g.arc(X + w - 5, T + 4.5, 3.6, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = '#ff7ae0'; g.lineWidth = 0.5; for (let k = 0; k < 5; k++) { const a = k * 1.3 + 0.4; g.beginPath(); g.moveTo(X + w - 5, T + 4.5); g.lineTo(X + w - 5 + Math.cos(a) * 3.3, T + 4.5 + Math.sin(a) * 3.3); g.stroke(); }
+        P(g, X + w - 6, T + 3.5, 2, 2, '#ffd6f4'); break;
+      }
       if (f.v === 'server') { P(g, X + 3, T + 2, 9, 7, '#2a2e35'); P(g, X + 20, T + 3, 8, 6, '#3a3f45'); P(g, X + 21, T + 4, 6, 1, '#5fd38a'); break; }
       if (f.v === 'it') { for (const mx of [X + 3, X + 18]) { P(g, mx, T - 4, 13, 9, '#2a2e35'); P(g, mx + 1, T - 3, 11, 6, '#123a4a'); P(g, mx + 2, T - 2, 6, 1, '#5fd38a'); P(g, mx + 2, T, 8, 1, '#7fd0ff'); P(g, mx + 5, T + 5, 3, 3, '#3a3f45'); } P(g, X + 8, T + 9, 16, 2, '#3a3f45'); break; }
       if (f.v === 'ret') { P(g, X + w - 16, T + 2, 10, 7, '#fffaf0'); P(g, X + w - 15, T + 3, 8, 1, '#d23c3c'); P(g, X + 4, T + 3, 7, 8, '#2f4f9a'); P(g, X + 5, T + 4, 5, 1, '#f4d06a'); break; }
@@ -1522,7 +1588,8 @@ function buildFurnSprite(f) {
     case 'table': {
       box(g, X, Y, w, d, ht, '#b07a48', '#7d5230');
       if (f.v === 'gruppe') { for (let i = 0; i < 4; i++) { P(g, X + 6 + i * 17, T + 3 + (i % 2) * 6, 9, 7, '#fffaf0'); P(g, X + 7 + i * 17, T + 5 + (i % 2) * 6, 6, 1, '#9aa3a8'); } P(g, X + w / 2 - 6, T + 4, 12, 8, '#3a3f45'); P(g, X + w / 2 - 5, T + 5, 10, 5, '#7fd0ff'); break; }
-      for (let i = 0; i < Math.min(5, Math.floor((w - 6) / 22) + 1); i++) { const cx = X + 8 + i * 22, cy = T + 4 + (i % 2) * 12; if (i === 2 && f.cake) continue; P(g, cx, cy, 5, 5, '#fffaf0'); P(g, cx + 1, cy + 1, 3, 2, '#5a3418'); P(g, cx + 5, cy + 1, 1, 2, '#fffaf0'); }
+      const cs = Math.round((w / 2 - 8) / 22);
+      for (let i = 0; i < Math.min(w > 150 ? 9 : 5, Math.floor((w - 6) / 22) + 1); i++) { const cx = X + 8 + i * 22, cy = T + 4 + (i % 2) * 12; if (i === cs && f.cake) continue; P(g, cx, cy, 5, 5, '#fffaf0'); P(g, cx + 1, cy + 1, 3, 2, '#5a3418'); P(g, cx + 5, cy + 1, 1, 2, '#fffaf0'); }
       if (!f.cake) break;
       const cx = X + w / 2;
       g.fillStyle = '#f4f1ea'; g.beginPath(); g.ellipse(cx, T + 13, 11, 5, 0, 0, Math.PI * 2); g.fill();
@@ -1561,6 +1628,71 @@ function buildFurnSprite(f) {
       P(g, X + w - 4, Y + d - ht + 2, 1, 4, '#9aa3a8'); P(g, X + w - 4, Y + d - ht + 10, 1, 7, '#9aa3a8');
       P(g, X + 3, Y + d - ht + 1, 7, 6, '#fffaf0'); P(g, X + 4, Y + d - ht + 2, 5, 1, '#c8323c'); P(g, X + 4, Y + d - ht + 4, 4, 1, '#555');
       P(g, X + 4, Y + d - ht + 11, 3, 3, '#e0474f'); P(g, X + 9, Y + d - ht + 13, 3, 2, '#f4d06a'); P(g, X + 6, Y + d - ht + 15, 2, 2, '#3fb8a8'); break;
+    case 'vcounter': {
+      // køkkenbord langs væggen, set ovenfra: vask, kogeplader og kaffemaskine på bordpladen
+      box(g, X, Y, w, d, ht, '#c2a984', '#6d5a48');
+      P(g, X, T, 2, d, '#a88f6c'); P(g, X, T, 1, d, '#d8c4a0');   // forkanten mod rummet
+      for (let k = 0; k < 3; k++) P(g, X + 1, T + 8 + k * 18, 1, 4, '#5a4a3a');   // håndtag på skabslågerne
+      P(g, X + 5, T + 5, 14, 12, '#9aa3a8'); P(g, X + 6, T + 6, 12, 10, '#cfd8dc'); P(g, X + 7, T + 7, 10, 8, '#b9c3c8'); P(g, X + 17, T + 10, 3, 2, '#7d858a'); P(g, X + 18, T + 8, 1, 6, '#7d858a');
+      P(g, X + 4, T + 22, 15, 16, '#2a2e35');
+      for (const [bx, by, hot] of [[X + 8, T + 26, 0], [X + 15, T + 26, 1], [X + 8, T + 33, 0], [X + 15, T + 33, 0]]) { g.strokeStyle = hot ? '#e0603a' : '#5a5f66'; g.lineWidth = 1; g.beginPath(); g.arc(bx, by, 2.4, 0, Math.PI * 2); g.stroke(); }
+      P(g, X + 11, T + 42, 9, 9, '#3a3f45'); P(g, X + 12, T + 43, 7, 3, '#5a5f66'); P(g, X + 13, T + 47, 3, 3, '#1a1d21'); P(g, X + 18, T + 44, 1, 1, '#e0474f');
+      P(g, X + 5, T + 44, 4, 4, '#fffaf0'); P(g, X + 6, T + 45, 2, 2, '#5a3418');
+      P(g, X + 4, T + 52, 14, 5, '#a8784a'); P(g, X + 6, T + 53, 6, 2, '#f2d7b0');
+      P(g, X + w - 2, Y + d - ht + 2, 1, ht - 3, 'rgba(0,0,0,0.25)');
+      break; }
+    case 'sfridge': {
+      // køleskab på tværs, så lågen vender ind mod rummet (vest eller øst); man ser siden med magneter og sedler
+      box(g, X, Y, w, d, ht, '#f4f6f7', '#dfe4e6');
+      const fy = Y + d - ht, hx = f.face === 'w' ? X - 1 : X + w, sx = f.face === 'w' ? X + 3 : X + w - 4;
+      P(g, X, fy + 7, w, 1, '#b9c0c4'); P(g, sx, fy, 1, ht, '#c3c9cd');
+      P(g, hx, fy + 2, 1, 4, '#9aa3a8'); P(g, hx, fy + 10, 1, 8, '#9aa3a8'); P(g, hx, T + 2, 1, d - 4, '#cfd5d8');
+      const ox = f.face === 'w' ? X + 6 : X + 2;
+      P(g, ox, fy + 9, 7, 6, '#fffaf0'); P(g, ox + 1, fy + 10, 5, 1, '#c8323c'); P(g, ox + 1, fy + 12, 4, 1, '#555');
+      P(g, ox + 8, fy + 11, 3, 3, f.face === 'w' ? '#3fb8a8' : '#e0474f'); P(g, ox + 2, fy + 2, 3, 2, '#f4d06a'); P(g, ox + 7, fy + 3, 2, 2, '#2f4f9a');
+      break; }
+    case 'sofaN': {
+      // sofa set bagfra: ryglænet vender mod os, sædet bagved
+      box(g, X, Y, w, d - 5, ht, '#5a9a7a', '#3a6a52');
+      P(g, X + 3, Y - ht + 1, w / 2 - 4, d - 8, '#66a886'); P(g, X + w / 2 + 1, Y - ht + 1, w / 2 - 4, d - 8, '#66a886');
+      box(g, X, Y + d - 5, w, 5, 14, '#4f8a6c', '#3f7a5c');
+      P(g, X - 3, Y - 2, 4, d + 2, '#2f5544'); P(g, X + w - 1, Y - 2, 4, d + 2, '#2f5544');
+      if (f.blanket) { P(g, X + 8, Y + d - 19, 18, 13, '#e88aa8'); for (let k = 0; k < 4; k++) P(g, X + 9 + k * 4, Y + d - 18, 2, 11, '#f4b3c6'); for (let k = 0; k < 5; k++) P(g, X + 9 + k * 4, Y + d - 6, 1, 2, '#e88aa8'); }
+      P(g, X + w - 16, Y - 8, 8, 6, '#c86a9a');
+      break; }
+    case 'desk2': {
+      // to skriveborde skubbet sammen: to computere over for hinanden
+      box(g, X, Y, w, d, ht, '#d6a96c', '#a07443'); P(g, X, T + d / 2, w, 1, '#b8894f');
+      P(g, X + 8, T + 2, 14, 3, '#2a2e35'); P(g, X + 9, T + 3, 12, 1, '#5a5f66'); P(g, X + 26, T + 2, 4, 4, '#fffaf0'); P(g, X + 27, T + 3, 2, 2, '#5a3418');
+      P(g, X + 8, T + 5, 16, 9, '#3a3f45'); P(g, X + 9, T + 6, 14, 6, '#4a5058'); P(g, X + 15, T + 14, 2, 2, '#3a3f45');
+      P(g, X + 30, T + 10, 16, 10, '#1d2228'); P(g, X + 31, T + 11, 14, 7, '#7fd0ff'); P(g, X + 32, T + 12, 7, 1, '#e8f6ff'); P(g, X + 32, T + 14, 10, 1, '#c3e6ff'); P(g, X + 37, T + 20, 2, 2, '#1d2228');
+      P(g, X + 31, T + d - 4, 14, 3, '#2a2e35'); P(g, X + 32, T + d - 3, 12, 1, '#5a5f66'); P(g, X + 8, T + d - 7, 9, 6, '#fffaf0'); P(g, X + 9, T + d - 6, 6, 1, '#9aa3a8'); P(g, X + 9, T + d - 4, 5, 1, '#9aa3a8');
+      break; }
+    case 'ochair': {
+      // kontorstol på hjul; v 's' vender mod syd (ryggen mod nord), v 'n' vender mod nord
+      P(g, X + 1, Y + d, w - 2, 1, 'rgba(0,0,0,0.3)'); P(g, X + 1, Y + d - 1, 2, 1, '#222'); P(g, X + w - 3, Y + d - 1, 2, 1, '#222'); P(g, X + w / 2 - 1, Y + d - 1, 2, 1, '#222');
+      P(g, X + w / 2 - 1, Y + d - 4, 2, 3, '#3a3a3a'); P(g, X + 1, Y - 2, w - 2, d - 1, '#2a2e35'); P(g, X + 2, Y - 1, w - 4, d - 3, '#3a3f45');
+      if (f.v === 's') { P(g, X, Y - 9, w, 7, '#22262b'); P(g, X + 1, Y - 8, w - 2, 1, '#4a5058'); } else { P(g, X, Y + d - 8, w, 7, '#22262b'); P(g, X + 1, Y + d - 8, w - 2, 1, '#4a5058'); }
+      break; }
+    case 'ticket':
+      // nummerautomat på stander: »Tag et nummer«
+      P(g, X + 1, Y + d - 1, w - 2, 1, 'rgba(0,0,0,0.3)'); P(g, X + w / 2 - 0.7, Y - top + 13, 1.4, top - 11, '#7d858a'); P(g, X, Y + d - 2, w, 2, '#5a5f66');
+      P(g, X - 1, Y - top + 3, w + 2, 11, '#b8262f'); P(g, X, Y - top + 4, w, 9, '#e0474f'); P(g, X + 1, Y - top + 5, w - 2, 2, '#fffaf0');
+      P(g, X + 1.5, Y - top + 9, w - 3, 3, '#2a2e35'); P(g, X + 3, Y - top + 11, 2, 3, '#fffaf0'); break;
+    case 'wizhat': {
+      // knagerække med troldmandshat og en lilla kappe med stjerner
+      const y0 = Y - top + 4;
+      P(g, X + 1, Y + d - 1, w - 2, 1, 'rgba(0,0,0,0.3)'); P(g, X + w / 2 - 0.7, y0 + 6, 1.4, Y + d - y0 - 7, '#5a3e24'); P(g, X, Y + d - 2, w, 2, '#3a2a18');
+      P(g, X - 1, y0 + 9, w + 2, 17, '#2a1450'); P(g, X, y0 + 10, w, 15, '#5a32a0'); P(g, X, y0 + 10, 2, 15, '#6e44b8');
+      for (const [sx, sy] of [[1, 3], [5, 7], [2, 11], [6, 13]]) P(g, X + sx, y0 + 9 + sy, 1, 1, '#f4d06a');
+      g.fillStyle = '#4a2a8a'; g.beginPath(); g.moveTo(X + w / 2 + 4, y0 - 5); g.lineTo(X - 1, y0 + 8); g.lineTo(X + w + 1, y0 + 8); g.closePath(); g.fill();
+      P(g, X - 3, y0 + 7, w + 6, 2, '#2a1450'); P(g, X - 3, y0 + 7, w + 6, 0.6, '#6e44b8');
+      P(g, X + 2, y0 + 3, 1, 1, '#f4d06a'); P(g, X + 5, y0 + 5, 1, 1, '#f4d06a'); P(g, X + w / 2 + 3, y0 - 3, 1, 1, '#fff2b0'); break; }
+    case 'locker':
+      // højt kontorskab med to låger
+      box(g, X, Y, w, d, ht, '#8a9298', '#b9c0c4'); P(g, X + w / 2 - 0.5, Y + d - ht + 1, 1, ht - 2, '#8a9298');
+      P(g, X + w / 2 - 3, Y + d - ht + 10, 1, 4, '#5a5f66'); P(g, X + w / 2 + 2, Y + d - ht + 10, 1, 4, '#5a5f66'); P(g, X + 2, Y + d - ht + 3, 5, 3, '#fffaf0'); P(g, X + 3, Y + d - ht + 4, 3, 1, '#2f5fb3');
+      break;
     case 'sofa':
       box(g, X, Y, w, 5, 14, '#4f8a6c', '#3f7a5c'); box(g, X, Y + 5, w, d - 5, ht, '#5a9a7a', '#3a6a52');
       P(g, X + 3, Y + 5 - ht + 1, w / 2 - 4, d - 7, '#66a886'); P(g, X + w / 2 + 1, Y + 5 - ht + 1, w / 2 - 4, d - 7, '#66a886');
@@ -1574,6 +1706,37 @@ function buildFurnSprite(f) {
     case 'cooler':
       box(g, X + 1, Y, 10, d, ht, '#e8ecee', '#cfd5d8'); P(g, X + 3, Y + d - ht + 3, 2, 2, '#3f8fd8'); P(g, X + 7, Y + d - ht + 3, 2, 2, '#e0474f');
       P(g, X + 2, T - 12, 8, 12, 'rgba(122,200,255,0.85)'); P(g, X + 3, T - 13, 6, 1, 'rgba(122,200,255,0.85)'); P(g, X + 3, T - 11, 2, 9, 'rgba(255,255,255,0.45)'); P(g, X + 4, T - 15, 4, 2, '#3f8fd8'); break;
+    case 'picnic': {
+      // borde-bænkesæt: bordplade i midten og en bænk på hver side
+      box(g, X + 2, Y, w - 4, 5, 3, '#b8864e', '#6e4626');
+      box(g, X, Y + 8, w, 12, ht, '#b8864e', '#8a5a30'); for (let k = 1; k < 4; k++) P(g, X, Y + 8 - ht + k * 3, w, 0.6, 'rgba(0,0,0,0.2)');
+      box(g, X + 2, Y + d - 5, w - 4, 5, 3, '#b8864e', '#6e4626');
+      if (f.v === 'ash') { P(g, X + 8, Y + 5, 7, 4, '#7d858a'); P(g, X + 9, Y + 5.6, 5, 2.6, '#a6aeb4'); for (const [bx, by] of [[9.5, 6], [12, 6.6], [10.4, 7.2]]) { P(g, X + bx, Y + by, 2, 0.7, '#f2efe6'); P(g, X + bx + 2, Y + by, 0.6, 0.7, '#d88a3a'); } }
+      P(g, X + w - 12, Y + 4, 4, 4, '#f2efe6'); P(g, X + w - 12, Y + 4, 4, 1, '#6b3a1a'); if (f.v === 'ash') { P(g, X + w - 11.4, Y + 4.3, 2, 0.6, '#f2efe6'); P(g, X + w - 9.6, Y + 4.3, 0.6, 0.6, '#3a3a3a'); }
+      break; }
+    case 'ashpole': {
+      // askebæger på stander med sand og skodder
+      const y0 = Y - top + 6;
+      P(g, X, Y + d - 1, w, 1, 'rgba(0,0,0,0.3)'); P(g, X, y0, w, Y + d - 1 - y0, '#4a5058'); P(g, X, y0, 1, Y + d - 1 - y0, '#6a7078'); P(g, X - 1, Y + d - 3, w + 2, 2, '#3a3f45');
+      P(g, X - 1, y0 - 2, w + 2, 3, '#2a2e35'); P(g, X, y0 - 1.6, w, 2, '#d8c49a');
+      for (const [bx, by] of [[0.6, -2.2], [3, -1.8], [1.6, -1.2], [3.8, -2.6]]) { P(g, X + bx, y0 + by, 1.8, 0.6, '#f2efe6'); P(g, X + bx + 1.8, y0 + by, 0.5, 0.6, '#d88a3a'); }
+      break; }
+    case 'sandbucket':
+      box(g, X, Y, w, d, ht, '#d8c49a', '#c8323c'); P(g, X, Y + d - ht + 2, w, 1, '#e0474f');
+      for (const [bx, by] of [[1.5, 1], [4, 2.5], [6.5, 1.4], [2.6, 4], [6, 4.4]]) { P(g, X + bx, T + by, 1.8, 0.6, '#f2efe6'); P(g, X + bx + 1.8, T + by, 0.5, 0.6, '#d88a3a'); }
+      break;
+    case 'deadplanter':
+      box(g, X, Y, w, d, ht, '#3a2a18', '#8a6038'); P(g, X, Y + d - ht + 3, w, 1, 'rgba(0,0,0,0.2)');
+      g.strokeStyle = '#7a6040'; g.lineWidth = 0.6; for (let k = 0; k < 7; k++) { const sx = X + 3 + k * 3.8; g.beginPath(); g.moveTo(sx, T + 6); g.lineTo(sx + (k % 2 ? 2 : -1.5), T - 2 - (k % 3) * 1.5); g.stroke(); }
+      P(g, X + w - 8, T - 1, 6, 4, '#fffaf0'); P(g, X + w - 5.4, T + 3, 0.8, 4, '#c9a27a'); P(g, X + w - 7.4, T + 0.6, 4, 0.6, '#4f8a3a');
+      for (const [bx, by] of [[5, 6], [12, 4.5], [17, 6.4]]) { P(g, X + bx, T + by, 0.7, 2, '#f2efe6'); P(g, X + bx, T + by - 0.6, 0.7, 0.6, '#d88a3a'); }
+      break;
+    case 'heater': {
+      // terrassevarmer: gasflaske i foden, stang og en skærm foroven
+      const y0 = Y - top + 4;
+      box(g, X, Y, w, d, 8, '#5a5f66', '#7d858a'); P(g, X + w / 2 - 0.7, y0 + 3, 1.4, Y - 8 - y0 - 3, '#9aa3a8');
+      P(g, X - 5, y0, w + 10, 3, '#aeb6bc'); P(g, X - 5, y0 + 2, w + 10, 1, '#7d858a'); P(g, X - 1, y0 + 3, w + 2, 3, '#5a5f66');
+      P(g, X + 1, Y - 4, w - 2, 3, '#fffaf0'); g.fillStyle = '#c8323c'; g.font = '1.8px "Press Start 2P", monospace'; g.fillText('TOM', X + 1.4, Y - 1.8); break; }
     case 'bench': box(g, X, Y, w, d, ht, '#8a6440', '#5e4329'); for (let k = 1; k < 3; k++) P(g, X, T + k * 3, w, 1, 'rgba(0,0,0,0.18)'); break;
     case 'copier':
       box(g, X, Y, w, d, ht, '#d9dde1', '#aeb3b8'); P(g, X + 3, T + 2, w - 6, 6, '#5a6068'); P(g, X + 5, T + 3, 9, 3, '#7fe0d3'); P(g, X + w - 7, T + 3, 2, 2, '#ff4a4a');
@@ -1584,7 +1747,7 @@ function buildFurnSprite(f) {
         const ry = Y + d - ht + 2 + r * 7;
         P(g, X + 1, ry + 6, w - 2, 1, '#2a1c10');
         if (f.v === 'paper') { for (let b = 0; b < 3; b++) { P(g, X + 2 + b * 8, ry + 1, 7, 5, '#fffaf0'); P(g, X + 2 + b * 8, ry + 3, 7, 1, '#cfd5d8'); } }
-        else for (let b = 0; b < (w - 3) / 3; b++) { const col = ['#c8323c', '#2f4f9a', '#4f8a6c', '#d8a74a', '#6b4a8a', '#f2efe6'][(b * 7 + r * 3) % 6]; P(g, X + 2 + b * 3, ry + (b % 4 === 0 ? 2 : 0), 2, 6 - (b % 4 === 0 ? 2 : 0), col); }
+        else for (let b = 0; b < (w - 3) / 3; b++) { const col = (f.v === 'spell' ? ['#5a32a0', '#2f4f9a', '#d8a74a', '#3a1f6a', '#7fd0ff', '#c8323c'] : ['#c8323c', '#2f4f9a', '#4f8a6c', '#d8a74a', '#6b4a8a', '#f2efe6'])[(b * 7 + r * 3) % 6]; P(g, X + 2 + b * 3, ry + (b % 4 === 0 ? 2 : 0), 2, 6 - (b % 4 === 0 ? 2 : 0), col); }
       }
       if (!f.v) { g.fillStyle = '#f4d06a'; g.font = '3px "Press Start 2P", monospace'; g.fillText('§ OVERENSKOMSTER §', X - 1, T + 4); }
       break;
@@ -1667,6 +1830,38 @@ function buildFurnSprite(f) {
     case 'psign':
       P(g, X + 1, Y - top + 2, 1, top + 1, '#7d858a'); P(g, X - 9, Y - top + 1, 20, 13, '#163f7a'); P(g, X - 8, Y - top + 2, 18, 11, '#1d5fb0');
       g.fillStyle = '#ffffff'; g.font = '5px "Press Start 2P", monospace'; g.textAlign = 'center'; g.fillText('P', X + 1, Y - top + 8); g.font = '2.2px "Press Start 2P", monospace'; g.fillText('TROELS', X + 1, Y - top + 11.6); g.textAlign = 'left'; break;
+    case 'sidebooks': {
+      // reol langs væggen, set skråt ovenfra: hylder med bøger hele vejen ned
+      box(g, X, Y, w, d, ht, '#4a3220', '#3a2a18');
+      P(g, X + 1, T + 1, w - 2, d - 2, '#22160c');
+      for (let yy = T + 2, k = 0; yy < T + d - 2; k++) {
+        if (k % 5 === 4) { P(g, X + 1, yy, w - 2, 1, '#6b4a2b'); yy += 2; continue; }
+        const col = f.v === 'binders' ? ['#2f4f9a', '#2f4f9a', '#c8323c', '#3a3f45', '#4f8a6c'][k % 5] : ['#c8323c', '#2f4f9a', '#4f8a6c', '#d8a74a', '#6b4a8a', '#f2efe6', '#3d6fb0'][(k * 5 + 2) % 7], ln = w - 4 - (f.v === 'binders' ? 0 : Math.floor(hash(k * 1.7 + X) * 4)), th = f.v === 'binders' ? 3 : 2;
+        P(g, X + 2, yy, ln, th, col); P(g, X + 1 + ln, yy, 1, th, 'rgba(255,255,255,0.35)'); if (f.v === 'binders') P(g, X + ln - 3, yy + 1, 2, 1, '#fffaf0'); yy += th + (hash(k * 2.3) > 0.8 ? 1 : 0);
+      }
+      for (let r = 1; r < 4; r++) P(g, X, Y + d - ht + r * 6, w, 1, '#2a1c10');
+      break; }
+    case 'coats': {
+      // knagerække med jakker, huer og et halstørklæde
+      const top0 = Y - top + 3;
+      P(g, X - 1, top0, w + 2, 2, '#7d5230'); P(g, X - 1, top0 + 2, w + 2, 1, '#4a3220');
+      for (const [hx, hc] of [[X + 4, '#c8323c'], [X + 17, '#2f4f9a'], [X + 33, '#d8a74a']]) { P(g, hx, top0 - 3, 7, 3, hc); P(g, hx + 1, top0 - 4, 5, 1, hc); P(g, hx + 3, top0 - 5, 1, 1, '#f2efe6'); }
+      P(g, X, top0 + 7, w, 1, '#9aa3a8');
+      const C = ['#2f4f9a', '#3a3f45', '#c8323c', '#4f8a6c', '#8a5a2a', '#d8a74a', '#6b4a8a', '#e8ecee'];
+      for (let k = 0, x = X + 1; x < X + w - 5; k++, x += 6 + (k % 3 === 0 ? 1 : 0)) {
+        const c = C[k % C.length], len = 15 + Math.floor(hash(k * 3.3) * 6);
+        P(g, x + 2, top0 + 6, 1, 2, '#c9cdd1'); P(g, x, top0 + 8, 6, len, c); P(g, x, top0 + 8, 1, len, 'rgba(0,0,0,0.25)'); P(g, x + 5, top0 + 8, 1, len, 'rgba(0,0,0,0.3)');
+        P(g, x + 1, top0 + 8, 4, 2, 'rgba(255,255,255,0.18)'); P(g, x + 3, top0 + 10, 1, len - 4, 'rgba(0,0,0,0.25)');
+      }
+      P(g, X + 21, top0 + 9, 2, 16, '#e0474f'); P(g, X + 23, top0 + 9, 2, 13, '#f2efe6');
+      break; }
+    case 'shoes': {
+      // skohylde med støvler og en paraplystander
+      box(g, X, Y, w - 10, d, 4, '#7d5230', '#5a3e24');
+      for (let k = 0; k < 4; k++) { const sx = X + 2 + k * 8, c = ['#2a2e35', '#5a3418', '#3a3f45', '#7a1f2a'][k]; P(g, sx, Y - 9, 3, 6, c); P(g, sx + 3, Y - 9, 3, 6, c); P(g, sx, Y - 4, 7, 2, c); }
+      P(g, X + w - 8, Y - 9, 7, 12, '#3a3f45'); P(g, X + w - 8, Y - 9, 7, 1, '#6b7078');
+      for (const [ux, uc, uh] of [[X + w - 7, '#2f4f9a', 18], [X + w - 5, '#c8323c', 15], [X + w - 3, '#2a2e35', 20]]) { P(g, ux, Y - 9 - uh + 9, 1, uh - 6, uc); P(g, ux - 1, Y - 9 - uh + 8, 2, 2, '#9aa3a8'); }
+      break; }
     case 'shed': {
       // cykelskuret: langt, med rygningen på langs, et stejlt mørkt tag med sne og en åben cykelport mod gården
       const yN = Y - ht, yR = Y + d / 2 - ht - 12, yS = Y + d - ht, yB = Y + d;
@@ -1795,11 +1990,17 @@ function charSprite(lk, dir, fr) {
 let jamBob = 0;
 function drawChar(g, p, t) {
   if (p.np && serverNow() - p.np < NAP_MS && serverNow() >= p.np) { drawNapper(g, p, t); return; }
-  const mv = !!p.m, fr = mv ? Math.floor((t + ((p.x * 13) | 0)) / 120) % 4 : 0;
-  const bob = jamBob ? (mv ? 0 : jamBob) : mv ? 0 : (Math.floor((t + (p.id ? p.id.charCodeAt(0) * 97 : 0)) / 650) % 2);
-  g.fillStyle = 'rgba(0,0,0,0.35)'; g.beginPath(); g.ellipse(p.rx, p.ry, 7, 2.6, 0, 0, Math.PI * 2); g.fill();
-  g.drawImage(charSprite(p, p.d || 0, fr), Math.round(p.rx) - 9, Math.round(p.ry) - 25 + bob);
-  if (S().phase === 'finale') drawDrink(g, p, t, bob);
+  const mv = !!p.m, now = serverNow(), dancing = danceOf(p, now);
+  let fr = mv ? Math.floor((t + ((p.x * 13) | 0)) / 120) % 4 : 0, dir = p.d || 0;
+  let bob = jamBob ? (mv ? 0 : jamBob) : mv ? 0 : (Math.floor((t + (p.id ? p.id.charCodeAt(0) * 97 : 0)) / 650) % 2);
+  if (dancing) {
+    const st = S(), bb = beatOf(st) >= 0 ? beatOf(st) : (now - p.dn) / BEAT_MS, bi = Math.floor(bb), ph = bb - bi, sd = (p.id ? p.id.charCodeAt(p.id.length - 1) : 0) % 4;
+    dir = [[0, 3, 0, 2], [3, 2, 3, 2], [0, 1, 0, 1], [2, 0, 3, 0]][sd][bi % 4]; fr = bi % 2 ? 1 : 3; bob = reduceMotion ? 0 : -Math.round(3 * Math.sin(ph * Math.PI));
+    if (!reduceMotion && Math.random() < 0.035) emit({ x: p.rx + rand(-6, 6), y: p.ry - 30, vx: rand(-8, 8), vy: -rand(10, 18), life: rand(1, 1.6), fade: 0.6, s: 1, note: 1, c: pick(DF_COL), L: 'g' });
+  }
+  g.fillStyle = 'rgba(0,0,0,0.35)'; g.beginPath(); g.ellipse(p.rx, p.ry, dancing ? 7 + bob * 0.4 : 7, 2.6, 0, 0, Math.PI * 2); g.fill();
+  g.drawImage(charSprite(p, dir, fr), Math.round(p.rx) - 9, Math.round(p.ry) - 25 + bob);
+  if (S().phase === 'finale' && !dancing) drawDrink(g, p, t, bob);
   if (S().phase === 'lobby' && !mv) {
     const seed = p.id ? p.id.charCodeAt(0) * 131 + p.id.charCodeAt(p.id.length - 1) * 17 : 0;
     const sip = (serverNow() - (p.sp || 0) < 1300) || ((t + seed * 37) % 9000 < 1100), d = p.d || 0;
@@ -1918,14 +2119,15 @@ for (const r of ROOMS) {
   const ih = r.h - FACE - 5, nx = Math.max(1, Math.round(r.w / 130)), ny = Math.max(1, Math.round(ih / 130));
   const c = r.id === 'l15' ? 'sodium' : r.k === 'kopi' || r.k === 'wc' || r.k === 'it' ? 'cool' : 'warm', fl = r.k === 'kopi' ? 'tube' : r.k === 'morfar' || r.k === 'depot' ? 'bulb' : undefined;
   const rad = clamp(Math.max(r.w / nx, ih / ny) * 0.62 + 24, 46, 112), ii = r.k === 'morfar' ? 0.55 : r.k === 'depot' ? 0.62 : 0.9;
-  for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) LAMPS.push({ x: r.x + (i + 0.5) * r.w / nx, y: r.y + FACE + (j + 0.5) * ih / ny, r: rad, i: ii, c, g: r.id === 'l15' ? 0.16 : 0.07, fl });
+  for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) LAMPS.push({ x: r.x + (i + 0.5) * r.w / nx, y: r.y + FACE + (j + 0.5) * ih / ny, r: rad, i: ii, c, g: r.id === 'l15' ? 0.16 : 0.07, fl, rid: r.id });
 }
 for (const f of FURN) if (f.t === 'lamp') LAMPS.push({ x: f.x + 8, y: f.y - 8, r: 120, i: 0.97, c: 'sodium', g: 0.17, out: 1 });
 LAMPS.push(
   { x: ENTRANCE.x + 20, y: 300, r: 64, i: 0.85, c: 'warm', g: 0.16, out: 1 }, { x: 2104, y: 612, r: 70, i: 0.9, c: 'warm', g: 0.16, out: 1 }, { x: 2129, y: 850, r: 60, i: 0.85, c: 'warm', g: 0.15, out: 1 }, { x: 1549, y: 650, r: 58, i: 0.85, c: 'warm', g: 0.15, out: 1 }, { x: 1800, y: 662, r: 40, i: 0.45, c: 'warm', g: 0.06, out: 1 }, { x: 2017, y: 712, r: 26, i: 0.5, c: 'cool', g: 0.12, out: 1 }, { x: 1503, y: 630, r: 46, i: 0.55, c: 'cool', g: 0.1, out: 1 }, { x: 2082, y: 1000, r: 90, i: 0.8, c: 'sodium', g: 0.12, out: 1 }, { x: 2082, y: 1300, r: 90, i: 0.8, c: 'sodium', g: 0.12, out: 1 }, { x: FLAG.x + 14, y: FLAG.y - 64, r: 46, i: 0.7, c: 'cool', g: 0.12, out: 1 },
   { x: 558, y: 510, r: 30, i: 0.6, c: 'red', g: 0.3, fl: 'candle' }, { x: 674, y: 510, r: 30, i: 0.6, c: 'red', g: 0.3, fl: 'candle' }, { x: 612, y: 312, r: 22, i: 0.5, c: 'screen', g: 0.25 }, { x: 647, y: 386, r: 20, i: 0.45, c: 'screen', g: 0.2 },
   { x: 520, y: 296, r: 26, i: 0.5, c: 'candle', g: 0.25, fl: 'candle' },
-  { x: 1540, y: 330, r: 16, i: 0.6, c: 'candle', g: 0.32, fl: 'candle' },
+  { x: 1580, y: 330, r: 16, i: 0.6, c: 'candle', g: 0.32, fl: 'candle' },
+  { x: 1687, y: 574, r: 11, i: 0.45, c: 'c4', g: 0.4, fl: 'candle' }, { x: 1372, y: 506, r: 74, i: 0.8, c: 'warm', g: 0.1, out: 1 }, { x: 1407, y: 479, r: 7, i: 0.4, c: 'candle', g: 0.45, fl: 'candle' }, { x: 1663, y: 566, r: 22, i: 0.4, c: 'screen', g: 0.16 },
   { x: 2103, y: 446, r: 14, i: 0.4, c: 'green', g: 0.25 }, { x: 2295, y: 736, r: 16, i: 0.45, c: 'screen', g: 0.2 },
   { x: 1886, y: 500, r: 9, i: 0.4, c: 'red', g: 0.3, fl: 'blink' }, { x: 1797, y: 380, r: 22, i: 0.45, c: 'pink', g: 0.2, fl: 'bulb' },
 );
@@ -1955,14 +2157,21 @@ function drawLighting(g, t, vx, vy, vw, vh, mp) {
   const blackout = devil && dt0 < 1900;
   const lights = [];
   const add = (x, y, r, i, c, ga, sy) => { if (x + r < x0 || x - r > x1 || y + r < y0 || y - r > y1) return; lights.push([x, y, r, i, c, ga, sy || 1]); };
-  if (!blackout) for (const L of LAMPS) add(L.x, L.y, L.r, lampLevel(L, t, devil), L.c, L.g, L.sy);
+  const dk = discoK(st);
+  if (!blackout) for (const L of LAMPS) add(L.x, L.y, L.r, lampLevel(L, t, devil) * (dk && L.rid === 'l01' ? 1 - 0.72 * dk : 1), L.c, L.g, L.sy);
+  if (dk) {
+    const b = Math.max(0, beatOf(st)), bi = Math.floor(b), pl = Math.pow(1 - (b - bi), 2);
+    for (let r = 0; r < DFLOOR.r; r++) for (let c = 0; c < DFLOOR.c; c++) if (dfTileOn(c, r, bi)) add(DFLOOR.x + (c + 0.5) * DFLOOR.w, DFLOOR.y + (r + 0.5) * DFLOOR.h, 15, 0.5 * dk, 'c' + dfCol(c, r, bi), 0.34 * dk * (0.55 + 0.45 * pl));
+    for (let i = 0; i < 4; i++) { const a = t * 0.0008 * (i % 2 ? 1 : -1.3) + i * 1.7; add(1890 + Math.cos(a) * 82 + Math.sin(a * 2.3) * 12, 352 + Math.sin(a * 1.4) * 52, 38, 0.8 * dk, 'c' + (i + 1) % 5, 0.62 * dk * (0.6 + 0.4 * pl)); }
+    add(DBALL.x, DBALL.y, 20, 0.6 * dk, 'white', 0.22 * dk);
+  }
   for (const p of players.values()) if ((p.r === 'player' || p.r === 'bot')) add(p.rx, p.ry - 10, p.id === ID ? 48 : 36, p.id === ID ? 0.55 : 0.4, null, 0, 1);
   if (st.phase === 'akt1' || st.phase === 'djaevel') for (const k of ITEM_ORDER) if (!st.items[k] && itemShown(st, k)) { const it = ITEMS[k]; add(it.x, it.y - 6, 30, 0.55 + 0.2 * Math.sin(t * 0.006 + it.x), 'gold', 0.3); }
   if (st.phase === 'akt1') for (const pl of PLATES) if (st.plates[pl.id]) add(pl.x, pl.y, 30, 0.6, 'gold', 0.3);
   if (!st.doors.arkiv) { const ad = DOORS.find(d => d.id === 'arkiv'); add(ad.v ? ad.x : ad.x + ad.w / 2, ad.v ? ad.y + ad.h / 2 : ad.y + 6, 14, 0.4, 'gold', 0.22); }
-  if (st.disco) for (let i = 0; i < 5; i++) { const a = t * 0.002 + i * 1.257; add(DISCO.x + Math.cos(a) * 16, 556 + Math.sin(a) * 30, 18, 0.55, 'c' + i, 0.6); }
+  if (st.disco) for (let i = 0; i < 5; i++) { const a = t * 0.002 + i * 1.257; add(DISCO.x + Math.cos(a) * 18, DISCO.y + 30 + Math.sin(a) * 22, 18, 0.55, 'c' + i, 0.6); }
   if (Math.floor(t / 450) % 2) { add(wreckX() + 64, WRECK.y + 17, 20, 0.6, 'sodium', 0.45); add(wreckX() + 5, WRECK.y + 17, 16, 0.5, 'sodium', 0.4); }
-  if (!blackout) STRING_LIGHTS.forEach((s, i) => { const on = 0.55 + 0.45 * Math.sin(t * 0.005 + i * 1.3); add(s.x, s.y + 4, 12, 0.3 * on, 'c' + (i % 5), 0.4 * on); });
+  if (!blackout) STRING_LIGHTS.forEach((s, i) => { const on = dk ? ((Math.floor(Math.max(0, beatOf(st))) + i) % 2 ? 1 : 0.25) : 0.55 + 0.45 * Math.sin(t * 0.005 + i * 1.3); add(s.x, s.y + 4, 12, 0.3 * on, 'c' + (i % 5), 0.4 * on); });
   if (devil) { const k = devilRise(t), rk = rageK(); if (rk) add(DEVIL.x, DEVIL.y - 40, 120 + 40 * Math.sin(t * 0.01), 0.7 * rk, 'red', 0.5 * rk); add(DEVIL.x, DEVIL.y - 30, 70 + 90 * k, (blackout ? 0.6 : 0.85) * (0.85 + 0.15 * Math.sin(t * 0.006)), 'red', 0.4 * Math.max(0.3, k)); }
   for (const f of fxLights) add(f.x, f.y, f.r, f.i * Math.max(0, f.life / f.max), f.c, f.g * Math.max(0, f.life / f.max));
   const tp = trainPos(serverNow()); if (tp) { const fx = tp.dir > 0 ? tp.x + TRAIN_LEN : tp.x; add(fx + tp.dir * 46, 172, 80, 0.85, 'white', 0.2, 0.5); for (let c = 0; c < 2; c++) add(tp.x + c * (TRAIN_CAR + TRAIN_GAP) + TRAIN_CAR / 2, 162, 74, 0.55, 'warm', 0.08, 0.45); }
@@ -2007,6 +2216,7 @@ function burst(x, y, n, kind) {
 let emitAcc = { steam: 0, dust: 0, note: 0, gnote: 0, ember: 0, paper: 0, step: 0, heat: 0, sweat: 0 };
 function stepParticles(dt, t, view) {
   const st = S();
+  if (!reduceMotion && view.x < 1430 && view.x + view.w > 1380 && view.y < 520 && view.y + view.h > 440) { emitAcc.smoke = (emitAcc.smoke || 0) + dt * 1.4; while (emitAcc.smoke > 1) { emitAcc.smoke--; emit({ x: 1407 + rand(-1, 1), y: 478, vx: rand(-2, 3), vy: -rand(5, 9), drag: 0.3, life: rand(1.8, 2.8), fade: 1.6, s: 1.4, grow: 1.9, c: 'rgba(205,208,214,0.42)', L: 'w' }); } }
   emitAcc.steam += dt * 5; while (emitAcc.steam > 1) { emitAcc.steam--; emit({ x: 1459 + rand(-1, 2), y: 274, vx: rand(-3, 3), vy: -rand(8, 14), drag: 0.3, life: rand(1.4, 2.2), fade: 1.2, s: 1.5, grow: 1.6, c: 'rgba(235,235,240,0.5)', L: 'w' }); }
   emitAcc.note += dt * 1.6; while (emitAcc.note > 1) { emitAcc.note--; emit({ x: 1797 + rand(-3, 3), y: 384, vx: rand(-6, 6), vy: -rand(10, 18), life: rand(1.5, 2.3), fade: 0.8, s: 1, note: 1, c: pick(['#f4d06a', '#ff7ae0', '#7fe0d3']), L: 'g' }); }
   emitAcc.gnote += dt * (S().jam ? 6 : 0.7); while (emitAcc.gnote > 1) { emitAcc.gnote--; emit({ x: 1797 + rand(-4, 4), y: 348, vx: rand(-10, 10), vy: -rand(12, 22), life: rand(1.6, 2.4), fade: 0.8, s: 1, note: 1, c: pick(['#f4d06a', '#ff7ae0', '#7fe0d3', '#5ab4ff']), L: 'g' }); }
@@ -2052,7 +2262,7 @@ function drawParticles(g, layer, t) {
 const FLAKES = [], SNOW_T = 384;
 for (let i = 0; i < 80; i++) FLAKES.push({ x: Math.random() * SNOW_T, y: Math.random() * SNOW_T, v: rand(10, 24), ph: Math.random() * 6, s: Math.random() < 0.2 ? 2 : 1 });
 let indoor = null;
-function buildIndoor() { indoor = new Uint8Array(PW * PH); for (let j = 0; j < PH; j++) for (let i = 0; i < PW; i++) indoor[j * PW + i] = roomAt(i * PC + 4, j * PC + 4) ? 1 : 0; }
+function buildIndoor() { indoor = new Uint8Array(PW * PH); for (let j = 0; j < PH; j++) for (let i = 0; i < PW; i++) indoor[j * PW + i] = roomAt(i * PC + 4, j * PC + 4) || inRect(i * PC + 4, j * PC + 4, ROOF) ? 1 : 0; }
 function stepWeather(dt, t, view) {
   for (const f of FLAKES) { f.y = (f.y + f.v * dt) % SNOW_T; f.x = (f.x + Math.sin(t * 0.001 + f.ph) * 8 * dt + SNOW_T) % SNOW_T; }
   trainTick(view);
@@ -2309,16 +2519,33 @@ function drawKursTalk(g) {
   if (w > 4200 || k.x < curView.x - 60 || k.x > curView.x + curView.w + 60 || k.y < curView.y || k.y - 80 > curView.y + curView.h) return;
   drawBubble(g, k.x, k.y - 40, k.say, Math.min(1, (4200 - w) / 400, w / 200));
 }
-// IT-mandens hemmelighed: diskokugle, flasker og Pong på skærmen, når kodeordet er gættet
+// Pausehavens tag: lyse, gennemskinnelige plader på en træramme med stolper
+function drawRoof(g) {
+  const x = ROOF.x, y = ROOF.y - ROOF.ht, w = ROOF.w, h = ROOF.h;
+  if (x + w < curView.x || x > curView.x + curView.w || y > curView.y + curView.h || y + h + ROOF.ht < curView.y) return;
+  for (const px of [x, x + w - 3]) { P(g, px, y + h, 3, ROOF.ht, '#5a3e24'); P(g, px, y + h, 1, ROOF.ht, '#7a5a34'); P(g, px - 1, y + h + ROOF.ht - 1, 5, 1.5, 'rgba(0,0,0,0.3)'); }
+  g.globalAlpha = 0.22; P(g, x - 2, y, w + 4, h, '#d6e6ef'); g.globalAlpha = 0.1; for (let xx = x + 2; xx < x + w; xx += 6) P(g, xx, y, 2, h, '#ffffff'); g.globalAlpha = 0.45; for (let yy = y + 36; yy < y + h - 6; yy += 36) P(g, x - 2, yy, w + 4, 1.4, '#3a2a18');
+  g.globalAlpha = 0.5; for (let i = 0; i < 12; i++) P(g, x + 2 + hash(i * 3.1) * (w - 14), y + 3 + hash(i * 7.7) * (h - 10), 4 + hash(i) * 7, 1.3, '#eef3f8');
+  g.globalAlpha = 1; P(g, x - 2, y, w + 4, 2, '#5a3e24'); P(g, x - 2, y, 2, h, '#5a3e24'); P(g, x + w, y, 2, h, '#5a3e24'); P(g, x - 2, y + h - 1, w + 4, 3, '#5a3e24'); P(g, x - 2, y + h - 1, w + 4, 1, '#8a6440');
+  // det gamle skilt med malede blomster hænger under forkanten – med et lamineret ark tapet hen over
+  const bx = x + w / 2 - 19, by = y + h + 4;
+  P(g, bx + 5, y + h + 1, 0.8, 3, '#9aa3a8'); P(g, bx + 32, y + h + 1, 0.8, 3, '#9aa3a8');
+  P(g, bx - 1, by - 1, 40, 15, '#3a2a18'); P(g, bx, by, 38, 13, '#4f7a4a');
+  for (const [fx, c] of [[2, '#ff9eb0'], [6, '#f4d06a'], [10, '#c49aff']]) { P(g, bx + fx, by + 9.6, 2, 2, c); P(g, bx + fx + 0.6, by + 11.4, 0.8, 1.4, '#2f5a2a'); }
+  g.textAlign = 'left'; g.fillStyle = '#f4f1ea'; g.font = '2.6px "Press Start 2P", monospace'; g.fillText('PAUSEHAVEN', bx + 1.6, by + 4); g.font = '1.7px "Press Start 2P", monospace'; g.fillText('SLAP AF', bx + 2, by + 7.6);
+  P(g, bx + 17, by + 3.6, 20, 9.6, '#fffaf0'); P(g, bx + 16, by + 3, 3.4, 1.4, 'rgba(230,220,180,0.9)'); P(g, bx + 35, by + 11.6, 3.4, 1.4, 'rgba(230,220,180,0.9)');
+  g.fillStyle = '#c8323c'; g.font = '2.8px "Press Start 2P", monospace'; g.fillText('RYGE-', bx + 19.5, by + 7.4); g.fillText('OMRÅDE', bx + 18, by + 11.2);
+}
+// IT-Troldmandens hemmelighed: diskokugle, flasker og Pong på skærmen, når kodeordet er fundet
 function drawDisco(g, t, st) {
   if (!st.disco) return;
   const bx = DISCO.x, by = DISCO.y + (reduceMotion ? 0 : Math.sin(t * 0.003) * 1.5);
   P(g, bx - 0.5, 493, 1, by - 493 - 6, '#9aa3a8');
   g.fillStyle = '#c9ced2'; g.beginPath(); g.arc(bx, by, 7, 0, Math.PI * 2); g.fill();
   for (let k = 0; k < 14; k++) { const a = k * 0.9 + t * 0.002, r = (k % 3) * 2.2 + 1; P(g, bx + Math.cos(a) * r * 1.6 - 1, by + Math.sin(a * 1.3) * r - 1, 2, 2, ['#ffffff', '#ff7ae0', '#5ab4ff', '#ffd23f', '#5aff8a'][(k + Math.floor(t / 200)) % 5]); }
-  [['#2f6e3a', 1653], ['#c8323c', 1658], ['#e8c04a', 1663], ['#5ab4ff', 1668]].forEach(([c, x]) => { P(g, x, 515, 3, 9, c); P(g, x + 1, 512, 1, 3, c); P(g, x, 518, 3, 2, '#fffaf0'); });
-  P(g, 1661, 581, 14, 8, '#05090b'); const u = (t * 0.02) % 24, px = 1662 + (u < 12 ? u : 24 - u); P(g, px, 583 + Math.abs(((t * 0.013) % 8) - 4), 1.2, 1.2, '#5aff8a'); P(g, 1662, 583 + Math.sin(t * 0.004) * 2 + 1, 1, 3, '#ffffff'); P(g, 1673.5, 584 - Math.sin(t * 0.004) * 2, 1, 3, '#ffffff');
-  if (!reduceMotion && Math.random() < 0.05) emit({ x: bx + rand(-16, 16), y: 560, vx: rand(-6, 6), vy: -rand(10, 18), life: rand(1.5, 2.3), fade: 0.8, s: 1, note: 1, c: pick(['#f4d06a', '#ff7ae0', '#7fe0d3', '#5ab4ff']), L: 'g' });
+  [['#2f6e3a', 1663], ['#c8323c', 1668], ['#e8c04a', 1673], ['#5ab4ff', 1678]].forEach(([c, x]) => { P(g, x, 496, 3, 9, c); P(g, x + 1, 493, 1, 3, c); P(g, x, 499, 3, 2, '#fffaf0'); });
+  P(g, PONG.x, PONG.y, 12, 7, '#05090b'); const u = (t * 0.02) % 18, px = PONG.x + 1.5 + (u < 9 ? u : 18 - u); P(g, px, PONG.y + 1 + Math.abs(((t * 0.013) % 8) - 4), 1.2, 1.2, '#5aff8a'); P(g, PONG.x + 0.5, PONG.y + 1.5 + Math.sin(t * 0.004) * 1.5 + 1, 1, 2.5, '#ffffff'); P(g, PONG.x + 10.5, PONG.y + 2.5 - Math.sin(t * 0.004) * 1.5, 1, 2.5, '#ffffff');
+  if (!reduceMotion && Math.random() < 0.05) emit({ x: bx + rand(-16, 16), y: DISCO.y + 32, vx: rand(-6, 6), vy: -rand(10, 18), life: rand(1.5, 2.3), fade: 0.8, s: 1, note: 1, c: pick(['#f4d06a', '#ff7ae0', '#7fe0d3', '#5ab4ff']), L: 'g' });
 }
 function drawBenteTalk(g) {
   if (BENTE.x < curView.x - 60 || BENTE.x > curView.x + curView.w + 60 || BENTE.y < curView.y || BENTE.y - 80 > curView.y + curView.h) return;
@@ -2450,7 +2677,7 @@ function drawInked(g, p, t, st) {
 }
 function freshBoss() { return { hp: 100, max: 100, stage: 'intro', t0: 0, round: 0, order: [], qi: -1, opts: [], ci: 0, dur: 0, ans: {}, rev: null, say: '', press: {}, tries: 0, hanne: 0, p2: 0, rt: 0, wave: 0, order2: [], blobs: [], inked: {}, ink1: {}, vol: [], ar: '' }; }
 function freshState() { return { phase: 'lobby', plates: { p1: false, p2: false, p3: false }, pcount: { p1: 0, p2: 0, p3: 0 }, pneed: 1, seats: {}, talk: [], doors: { arkiv: false, paper: false, ret: false, ord: false, tr: false }, items: {}, boss: freshBoss(), score: {}, jam: null, jamCd: 0, bonus: {}, msg: null, fx: null, rev: 0, del: null, dl: { paper: 0, books: 0 }, shelf: {}, a1: 0, dlEnd: 0,
-  ret: { got: 0, need: 8 }, it: { on: 0, got: 0, need: 5 }, ord: newOrd(), code: newCode(), f0: 0, fcr: 0, disco: 0, mt: {}, wk: 0, greets: [] }; }
+  ret: { got: 0, need: 8 }, it: { on: 0, got: 0, need: 5 }, ord: newOrd(), code: newCode(), f0: 0, fcr: 0, disco: 0, mt: {}, wk: 0, greets: [], party: freshParty() }; }
 const asArr = v => Array.isArray(v) ? v : Object.keys(v || {}).sort((a, b) => a - b).map(k => v[k]);
 function normBoss(b) {
   const o = Object.assign(freshBoss(), b || {});
@@ -2464,7 +2691,7 @@ function normState(s) {
   return { phase: PHASES[s.phase] ? s.phase : 'lobby', plates: Object.assign({ p1: false, p2: false, p3: false }, s.plates), pcount: Object.assign({ p1: 0, p2: 0, p3: 0 }, s.pcount), pneed: s.pneed || 1, seats: Object.assign({}, s.seats), talk: asArr(s.talk), doors: Object.assign({ arkiv: false, paper: false, ret: false, ord: false, tr: false }, s.doors),
     items: Object.assign({}, s.items), boss: normBoss(s.boss), score: Object.assign({}, s.score), jam: s.jam ? Object.assign({ prog: {} }, s.jam, { prog: s.jam.prog || {}, vmap: s.jam.vmap || {} }) : null, jamCd: s.jamCd || 0, bonus: Object.assign({}, s.bonus), msg: s.msg || null, fx: s.fx || null, rev: s.rev || 0,
     del: s.del ? Object.assign({}, s.del, { carry: Object.assign({}, s.del.carry) }) : null, dl: Object.assign({ paper: 0, books: 0 }, s.dl), shelf: Object.assign({}, s.shelf), a1: s.a1 || 0, dlEnd: s.dlEnd || 0,
-    ret: Object.assign({ got: 0, need: 8 }, s.ret), it: Object.assign({ on: 0, got: 0, need: 5 }, s.it), ord: normOrd(s.ord), code: normCode(s.code), f0: s.f0 || 0, fcr: s.fcr || 0, disco: s.disco ? 1 : 0, mt: Object.assign({}, s.mt), wk: s.wk || 0, greets: asArr(s.greets) };
+    ret: Object.assign({ got: 0, need: 8 }, s.ret), it: Object.assign({ on: 0, got: 0, need: 5 }, s.it), ord: normOrd(s.ord), code: normCode(s.code), f0: s.f0 || 0, fcr: s.fcr || 0, disco: s.disco ? 1 : 0, mt: Object.assign({}, s.mt), wk: s.wk || 0, greets: asArr(s.greets), party: normParty(s.party) };
 }
 function normOrd(o) {
   if (!o) return { r: 0, v: [0, 0, 0], perm: ORD[0][0].map((_, i) => i), lit: 0, pp: null, pr: 0, dt: 0, bad: 0 };
@@ -2479,7 +2706,7 @@ const foundCount = st => ITEM_ORDER.filter(k => st.items[k]).length;
 function pub(p) {
   // Firebase afviser undefined, så alle felter får en standardværdi
   return { sy: p.sy | 0, sts: p.sts || 0, sp: p.sp || 0, n: String(p.n || '?').slice(0, 14), c: p.c || '#4fc3f7', h: p.h || '#5c3a1e', s: p.s || '#f5d2b0', hs: p.hs || 'kort', g: p.g ? 1 : 0,
-    w: p.w === 'online' ? 'online' : 'room', r: p.r || 'player', dk: p.dk | 0, np: p.np || 0, bn: p.bn || 0, x: Math.round(p.x || 0), y: Math.round(p.y || 0), d: p.d || 0, m: p.m ? 1 : 0, j: typeof p.j === 'number' ? p.j : 0 };
+    w: p.w === 'online' ? 'online' : 'room', r: p.r || 'player', dk: p.dk | 0, dn: p.dn || 0, np: p.np || 0, bn: p.bn || 0, x: Math.round(p.x || 0), y: Math.round(p.y || 0), d: p.d || 0, m: p.m ? 1 : 0, j: typeof p.j === 'number' ? p.j : 0 };
 }
 function upsertPlayer(id, d) {
   if (!d || typeof d !== 'object' || bots.has(id)) return;
@@ -2619,9 +2846,37 @@ function setPhase(st, ph) {
   st.phase = ph; st.fx = { id: rid(), type: 'phase', phase: ph };
   if (ph !== 'lobby' && ph !== 'akt1') st.jam = null;
   if (ph === 'akt1') st.a1 = serverNow();
-  if (ph === 'finale') { st.f0 = serverNow(); st.fcr = 0; st.talk = []; }
+  if (ph === 'finale') { st.f0 = serverNow(); st.fcr = 0; st.talk = []; st.party = freshParty(); }
   else if (st.del) { if (st.dl[st.del.kind] === 1) st.dl[st.del.kind] = 0; st.del = null; }
   if (ph === 'djaevel') { st.boss = freshBoss(); st.boss.t0 = serverNow(); st.boss.ar = rid(); st.boss.order = makeOrder(); st.score = {}; if (st.bonus && st.bonus.books) { st.boss.hp = 85; st.boss.bk = 1; } }
+}
+// ═════════ FESTEN (værten styrer stemningsmåleren) ═════════
+// hver skål og hver dans giver stemning (mindre pr. person, jo flere I er), og den falder langsomt. Når den rammer 100 %, kommer der fyrværkeri.
+// skåler mange på samme tid, bliver det en KÆMPESKÅL
+const partyMem = { f0: -1 };
+function partyTick(st) {
+  const P = st.party, now = serverNow(); if (!st.f0) return false;
+  if (partyMem.f0 !== st.f0) Object.assign(partyMem, { f0: st.f0, sts: {}, dn: {}, sc: {}, dc: {}, recent: [], lastBig: 0, lastT: now, lastCommit: 0, cv: Math.round(P.v) });
+  const ps = participants(), gain = clamp(14 / Math.max(4, ps.length), 0.5, 4); let add = 0, ev = false;
+  for (const p of ps) {
+    if (p.sts > st.f0 && p.sts !== partyMem.sts[p.id]) {
+      partyMem.sts[p.id] = p.sts;
+      if (now - p.sts < 8000) { add += gain; P.sk++; partyMem.recent.push([p.sts, p.id]); const c = partyMem.sc[p.id] = (partyMem.sc[p.id] || 0) + 1; if (c > P.bsc) { P.bsc = c; P.bs = String(p.n || '?').slice(0, 14); } ev = true; }
+    }
+    if (p.dn > st.f0 && p.dn !== partyMem.dn[p.id]) {
+      partyMem.dn[p.id] = p.dn;
+      if (now - p.dn < 8000) { add += gain; P.dn++; const c = partyMem.dc[p.id] = (partyMem.dc[p.id] || 0) + 1; if (c > P.bdc) { P.bdc = c; P.bd = String(p.n || '?').slice(0, 14); } ev = true; }
+    }
+  }
+  partyMem.recent = partyMem.recent.filter(r => now - r[0] < 4000);
+  const who = new Set(partyMem.recent.map(r => r[1])), need = Math.max(3, Math.ceil(ps.length * 0.3));
+  if (who.size >= need && now - partyMem.lastBig > 15000) { partyMem.lastBig = now; partyMem.recent = []; P.big = Math.max(P.big, who.size); add += 12; st.fx = { id: rid(), type: 'bigskaal', n: who.size }; ev = true; }
+  const dt = Math.min(2, (now - partyMem.lastT) / 1000); partyMem.lastT = now;
+  P.v = clamp(P.v + add - dt * 0.5, 0, 100);
+  if (P.v >= 100) { P.v = 35; P.pk++; P.fw = now; st.fx = { id: rid(), type: 'peak', k: P.pk }; ev = true; }
+  const vi = Math.round(P.v);
+  if (ev || (Math.abs(vi - partyMem.cv) >= 3 && now - partyMem.lastCommit > 1500) || (vi !== partyMem.cv && now - partyMem.lastCommit > 5000)) { partyMem.cv = vi; partyMem.lastCommit = now; P.v = Math.round(P.v * 10) / 10; return true; }
+  return false;
 }
 // ═════════ KAFFEPAUSE-LOBBY (værten styrer) ═════════
 let talkS = { d: -1, k: 0, sp: [], next: 0, order: [] };
@@ -2902,6 +3157,7 @@ function hostLoop() {
   } else autoStartAt = 0;
   if (st.phase === 'djaevel') ch = bossTick(st) || ch;
   if (st.phase === 'finale' && !st.fcr && !st.jam && st.f0 && serverNow() > st.f0 + CREDITS_AT) { st.fcr = 1; st.fx = { id: rid(), type: 'credits' }; ch = true; }
+  if (st.phase === 'finale') ch = partyTick(st) || ch;
   if (st.jam) ch = jamTick(st) || ch;
   if (st.phase === 'lobby') { ch = seatTick(st) || ch; ch = talkTick(st) || ch; }
   if (ch || duelDirty) { duelDirty = false; commit(); }
@@ -2962,9 +3218,10 @@ function handleAction(a) {
   if (a.type === 'greet') {
     const txt = String(a.text || '').replace(/\s+/g, ' ').trim().slice(0, 80), now = Date.now();
     if (st.phase !== 'finale' || !from || !txt || now - (greetT[a.from] || 0) < 4000) return;
-    greetT[a.from] = now; st.greets = (st.greets || []).concat([{ n: String(from.n || '?').slice(0, 14), t: txt }]).slice(-40); commit(); return;
+    greetT[a.from] = now; st.greets = (st.greets || []).concat([{ n: String(from.n || '?').slice(0, 14), t: txt }]).slice(-40);
+    st.party.gr++; st.party.v = clamp(st.party.v + 3 * clamp(14 / Math.max(4, participants().length), 0.5, 4), 0, 99.5); commit(); return;
   }
-  if (a.type === 'disco') { if (st.phase === 'lobby' || st.disco) return; st.disco = 1; st.fx = { id: rid(), type: 'disco', by: String(a.name || (from && from.n) || 'Nogen').slice(0, 14) }; commit(); return; }
+  if (a.type === 'disco') { if (st.phase === 'lobby' || st.disco || pwNorm(a.pw) !== PW_OK) return; st.disco = 1; st.fx = { id: rid(), type: 'disco', by: String(a.name || (from && from.n) || 'Nogen').slice(0, 14) }; commit(); return; }
   if (a.type === 'it') {
     if (st.phase !== 'akt1' || st.doors.tr || !st.it.on || !from) return;
     st.it.got = Math.min(st.it.got + 1, st.it.need);
@@ -3016,6 +3273,8 @@ function handleAction(a) {
         break;
       case 'gather': st.fx = { id: rid(), type: 'gather' }; commit(); break;
       case 'credits': if (st.phase === 'finale') { st.fcr = 1; st.fx = { id: rid(), type: 'credits' }; commit(); } break;
+      case 'fw': if (st.phase === 'finale') { st.party.fw = serverNow(); st.fx = { id: rid(), type: 'fw' }; commit(); } break;
+      case 'mus': if (st.phase === 'finale') { st.party.mu = Math.max(serverNow(), st.party.mu || 0) + 120000; st.fx = { id: rid(), type: 'mus' }; commit(); } break;
       case 'bots': addBots(6); break;
       case 'nobots': for (const p of [...players.values()]) if (p.r === 'bot') netRemove(p.id); break;
       case 'qnext': if (st.phase === 'djaevel') { const b = st.boss; if (b.stage === 'q') revealQuestion(st); else if (b.stage === 'rage') startQuestion(st); else if (b.stage !== 'rally' && b.stage !== 'win') { if (b.p2) { if (b.hp <= 0 || b.wave >= P2_WAVES) startRally(st, 5200); else startQuestion(st); } else if (b.round >= b.order.length) { if (PHASE2) startRage(st); else startRally(st, 6800); } else startQuestion(st); } commit(); } break;
@@ -3079,6 +3338,7 @@ function stepBots(dt) {
       if (b.finAt !== lst.f0) { b.finAt = lst.f0; const sp = barSpot(b.id); const f = boxFree(sp.x, sp.y) ? sp : (freeNear(sp.x, sp.y) || sp); b.x = f.x; b.y = f.y; b.rx = f.x; b.ry = f.y; b.path = null; b.wait = rand(3, 8); b.dk = Math.random() < 0.5 ? 1 : 2; netBot(b); }
       if (Math.random() < dt * 0.05) { b.sts = serverNow(); b.sy = Math.floor(Math.random() * SKAAL.length); netBot(b); }
       else if (Math.random() < dt * 0.08) { b.sp = serverNow(); netBot(b); }
+      else if (serverNow() - lst.f0 > DISCO_AT && serverNow() - (b.dn || 0) > DANCE_MS + 2000 && Math.random() < dt * 0.06) { b.dn = serverNow(); b.path = null; b.wait = DANCE_MS / 1000; netBot(b); }
     }
     if (lst.phase === 'djaevel' && b.arAt !== lst.boss.ar) { b.arAt = lst.boss.ar; const f = arenaSpot(b.id); b.x = f.x; b.y = f.y; b.rx = f.x; b.ry = f.y; b.path = null; b.wait = rand(0.5, 2); netBot(b); }
     const dv = S().del, dk = dv ? dv.id + dv.stage : '', bt = Date.now();
@@ -3165,6 +3425,9 @@ const Snd = {
   plane() { this.tone(120, 2.4, 'sawtooth', 0.03, 0, 260); },
   horn() { this.noise(2.6, 0.05); [0, 0.62].forEach(d => { this.tone(311, 0.48, 'sawtooth', 0.026, d); this.tone(392, 0.48, 'sawtooth', 0.02, d); }); },
   stairs() { [392, 440, 494, 523].forEach((f, i) => this.tone(f, 0.06, 'square', 0.025, i * 0.05)); },
+  whistle() { this.tone(520, 0.75, 'sine', 0.018, 0, 1700); },
+  bang() { this.noise(0.7, 0.22); this.tone(68, 0.45, 'sine', 0.09, 0, 38); for (let i = 0; i < 6; i++) this.tone(rand(2400, 4200), 0.03, 'square', 0.012, 0.25 + i * rand(0.04, 0.09)); },
+  riser() { this.tone(180, 1.4, 'sawtooth', 0.02, 0, 1100); this.noise(1.4, 0.04); },
   boom() { this.noise(1.6, 0.35); this.tone(90, 0.8, 'sawtooth', 0.08, 0, 40); [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => this.tone(f, 0.18, 'square', 0.04, 0.6 + i * 0.08)); },
 };
 
@@ -3232,7 +3495,7 @@ function runFx(fx) {
     if (fx.k === 'troels') burst(WRECK.x + 35, WRECK.y + 20, 40, 'confetti');
   } else if (fx.type === 'rehearse') { banner('🎬 Generalprøve! Spillet kører sig selv igennem på cirka fem minutter.', 'teal', 6000);
   } else if (fx.type === 'disco') {
-    banner('🪩 ' + fx.by + ' gættede IT-mandens kodeord! IT-kontoret er i virkeligheden et diskotek …', '', 6500); Snd.start(); burst(DISCO.x, DISCO.y + 30, 40, 'confetti');
+    banner('🪩 ' + fx.by + ' knækkede IT-Troldmandens kodeord! Kontoret er i virkeligheden et diskotek …', '', 6500); Snd.start(); burst(DISCO.x, DISCO.y + 30, 40, 'confetti');
   } else if (fx.type === 'itlogin') {
     banner('🔐 ' + fx.by + ' tastede koden til chefens pengeboks! Men alarmen blinker – slå den fra i Chefens kontor.', 'teal', 6500); Snd.door(); shake(200, 2);
     burst(SERVER.x, SERVER.y - 16, 24, 'confetti');
@@ -3240,6 +3503,13 @@ function runFx(fx) {
     banner('💰 Alarmen er slået fra! Fredagskassen ligger klar i Chefens kontor.', 'teal', 6500); Snd.pickup(); shake(300, 2);
     const it = ITEMS.skjold; burst(it.x, it.y, 40, 'confetti'); fxLights.push({ x: it.x, y: it.y - 6, r: 100, i: 0.9, c: 'gold', g: 0.5, life: 1.4, max: 1.4 });
   } else if (fx.type === 'credits') { showCredits();
+  } else if (fx.type === 'bigskaal') {
+    banner('🥂 KÆMPESKÅL! ' + fx.n + ' kollegaer skålede på samme tid!', '', 4500); Snd.clink(); setTimeout(() => Snd.clink(), 170); setTimeout(() => Snd.clink(), 340);
+    confettiRain(70); fxLights.push({ x: 1890, y: 350, r: 150, i: 0.6, c: 'gold', g: 0.35, life: 1.2, max: 1.2 });
+  } else if (fx.type === 'peak') {
+    titleCard('STEMNINGEN ER I TOP!', 'Fyrværkeri for hele huset – skål!'); Snd.start(); confettiRain(90); shake(400, 3);
+  } else if (fx.type === 'fw') { banner('🎆 Game Master tænder for fyrværkeriet!', '', 4000);
+  } else if (fx.type === 'mus') { banner('🪩 Game Master har bestilt to minutter mere disco!', 'teal', 4000);
   } else if (fx.type === 'van') {
     const dv = DELIV[fx.kind]; if (!dv) return;
     titleCard('LEVERING!', dv.card(fx.n)); Snd.van();
@@ -3316,6 +3586,14 @@ function startBar() {
     for (let i = 0; i < 46; i++) { const a = -Math.PI / 2 + rand(-0.9, 0.9), sp = rand(40, 130); emit({ x: tx, y: ty, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, g: 140, drag: 1, life: rand(0.8, 1.5), fade: 0.5, s: rand(1.2, 2.4), c: pick(['#f4a3b4', '#ffd1dc', '#fffaf0', '#f4d06a']), L: 'g' }); }
     fxLights.push({ x: tx, y: ty, r: 90, i: 1, c: 'pink', g: 0.6, life: 0.9, max: 0.9 });
   }, at(BOTTLE_POP)));
+  const later = ms => S().f0 + ms > serverNow() - 500; // kommer man ind midt i festen, springes de gamle øjeblikke over
+  if (later(DISCO_AT - 1400)) barTimers.push(setTimeout(() => { if (S().phase === 'finale' && partyAudio()) Snd.riser(); }, at(DISCO_AT - 1400)));
+  if (later(DISCO_AT)) barTimers.push(setTimeout(() => {
+    if (S().phase !== 'finale') return;
+    flashT = performance.now(); confettiRain(60); fxLights.push({ x: DBALL.x, y: DBALL.y + 30, r: 160, i: 0.9, c: 'white', g: 0.3, life: 0.7, max: 0.7 });
+    banner(ROLE === 'player' ? '🪩 DJ\'en skruer op! Dansegulvet er åbent – tryk på 💃 Dans!' : '🪩 DJ\'en skruer op! Dansegulvet er åbent – tryk på 💃 Dans på telefonen!', '', 6500);
+  }, at(DISCO_AT)));
+  if (later(FW_AT)) barTimers.push(setTimeout(() => { if (S().phase === 'finale') banner('🎆 Fyrværkeri over Dalgasgade! Skål for alle kollegaerne!', '', 6500); }, at(FW_AT)));
 }
 function drawBottle(g, t) {
   const st = S(), w = serverNow() - st.f0 - BOTTLE_DROP; if (st.phase !== 'finale' || w < 0) return;
@@ -3350,6 +3628,101 @@ function drawBottle(g, t) {
   g.restore();
   if (w > BOTTLE_FALL && !reduceMotion) for (let i = 0; i < 3; i++) { const a = t * 0.0021 + i * 2.1, r = 26 + 4 * Math.sin(t * 0.003 + i); P(g, C + Math.cos(a) * r, B - 60 + Math.sin(a * 1.3) * 44, 1.2, 1.2, '#fff6c8'); }
 }
+// ═════════ DISKO, DANS OG FYRVÆRKERI I FESTLOKALET ═════════
+// alt følger serverens ur, så storskærmen, telefonerne og musikken går i takt
+const finT = st => serverNow() - (st.f0 || 0);
+const discoK = st => st.phase === 'finale' && st.f0 ? clamp((finT(st) - DISCO_AT) / 900, 0, 1) : 0;
+const beatOf = st => (finT(st) - DISCO_AT) / BEAT_MS;
+const danceOf = (p, now) => S().phase === 'finale' && p.dn > 0 && !p.m && now - p.dn >= 0 && now - p.dn < DANCE_MS;
+const fwOn = st => { if (st.phase !== 'finale' || !st.f0) return false; const t = finT(st), q = serverNow() - (st.party.fw || 0); return (t > FW_AT && t < FW_AT + FW_MS) || (st.party.fw > 0 && q >= 0 && q < PEAK_FW_MS); };
+const partyAudio = () => ROLE === 'screen' || ROLE === 'gm' || (ROLE === 'player' && !!me && (players.get(ID) || {}).w === 'online'); // i lokalet spiller storskærmen musikken
+const DF_COL = ['#ff5a5a', '#5aff8a', '#5ab4ff', '#ffd23f', '#ff7ae0'];
+const dfCol = (c, r, bi) => (c * 2 + r * 3 + bi) % 5;
+function dfTileOn(c, r, bi) { const m = Math.floor(bi / 8) % 3; return m === 0 ? (c + r + bi) % 2 === 0 : m === 1 ? c === bi % DFLOOR.c || c === DFLOOR.c - 1 - (bi % DFLOOR.c) : hash(c * 7.1 + r * 3.3 + bi * 1.7) > 0.5; }
+function drawDanceFloor(g, t, st) {
+  const k = discoK(st); if (!k) return;
+  const b = Math.max(0, beatOf(st)), bi = Math.floor(b), pl = Math.pow(1 - (b - bi), 2), W = DFLOOR.c * DFLOOR.w, H = DFLOOR.r * DFLOOR.h;
+  g.globalAlpha = 0.6 * k; P(g, DFLOOR.x - 2, DFLOOR.y - 2, W + 4, H + 4, '#140a22');
+  for (let r = 0; r < DFLOOR.r; r++) for (let c = 0; c < DFLOOR.c; c++) {
+    const on = dfTileOn(c, r, bi); g.globalAlpha = k * (on ? 0.5 + 0.4 * pl : 0.16);
+    P(g, DFLOOR.x + c * DFLOOR.w + 0.6, DFLOOR.y + r * DFLOOR.h + 0.6, DFLOOR.w - 1.2, DFLOOR.h - 1.2, DF_COL[dfCol(c, r, bi)]);
+  }
+  g.globalAlpha = k; for (const [x, y, w, h] of [[-2, -2, W + 4, 1], [-2, H + 1, W + 4, 1], [-2, -2, 1, H + 4], [W + 1, -2, 1, H + 4]]) P(g, DFLOOR.x + x, DFLOOR.y + y, w, h, '#f4d06a');
+  g.globalAlpha = 1;
+}
+function drawDiscoTop(g, t, st) {
+  const k = discoK(st); if (!k) return;
+  const drop = clamp((finT(st) - DISCO_AT) / 1800, 0, 1), by = 268 + (DBALL.y - 268) * (1 - Math.pow(1 - drop, 3)) + (reduceMotion ? 0 : Math.sin(t * 0.002));
+  P(g, DBALL.x - 0.5, 266, 1, Math.max(0, by - 273), '#9aa3a8');
+  g.fillStyle = '#5a6068'; g.beginPath(); g.arc(DBALL.x, by, 8, 0, Math.PI * 2); g.fill();
+  const rot = reduceMotion ? 0 : t * 0.0025;
+  for (let yy = -6.6; yy < 6; yy += 2.2) { const hw = Math.sqrt(Math.max(0, 52 - (yy + 1.1) * (yy + 1.1))); for (let xx = -hw; xx < hw - 1.2; xx += 2.2) { const v = hash(Math.floor((xx + rot * 22) / 2.2) * 3.7 + Math.round(yy * 3) * 11.3); P(g, DBALL.x + xx, by + yy, 1.8, 1.8, v > 0.86 ? '#ffffff' : v > 0.6 ? '#dfe6ea' : v > 0.3 ? '#a6aeb4' : '#79828a'); } }
+  P(g, DBALL.x - 4, by - 5, 2, 2, '#ffffff');
+  if (!reduceMotion) for (let i = 0; i < 40; i++) {
+    const a = i * 2.39996 + t * 0.0006, rr = 24 + (i * 37) % 92, x = DBALL.x + Math.cos(a) * rr * 1.3, y = 352 + Math.sin(a) * rr * 0.62;
+    if (x < 1786 || x > 1994 || y < 282 || y > 428) continue;
+    g.globalAlpha = k * (0.3 + 0.55 * Math.abs(Math.sin(t * 0.006 + i))); P(g, x, y, 1.3, 1.3, i % 4 ? '#ffffff' : DF_COL[i % 5]);
+  }
+  g.globalAlpha = 1;
+}
+// konfetti, der daler ned over hele festlokalet
+function confettiRain(n) { for (let i = 0; i < (reduceMotion ? n / 3 : n); i++) emit({ x: rand(1786, 1994), y: rand(262, 300), vx: rand(-14, 14), vy: rand(15, 55), g: 38, drag: 0.5, life: rand(1.8, 3), fade: 0.8, s: rand(1.4, 2.4), c: pick(['#f4d06a', '#e0474f', '#3fb8a8', '#f2efe6', '#5ab4ff', '#ff7ae0']), L: 'g' }); }
+// fyrværkeri: raketter fra gangen, der springer ud over festlokalet
+const rockets = [], FW_COL = [['#ff5a5a', '#ffd1dc', 'c0'], ['#5ab4ff', '#e8f6ff', 'c2'], ['#ffd23f', '#fff2b0', 'c3'], ['#5aff8a', '#e8fff0', 'c1'], ['#ff7ae0', '#ffe0f6', 'c4'], ['#c49aff', '#f4ecff', 'pink']];
+let fwAcc = 0;
+function stepFireworks(dt) {
+  if (fwOn(S())) { fwAcc += dt * (ROLE === 'screen' ? 2.1 : 1.5); while (fwAcc > 1) { fwAcc -= rand(0.55, 1.1); launchRocket(); } } else fwAcc = 0.6;
+  for (let i = rockets.length - 1; i >= 0; i--) {
+    const r = rockets[i]; r.t += dt; const k = Math.min(1, r.t / r.dur);
+    r.x = r.x0 + (r.x1 - r.x0) * k; r.y = r.y0 + (r.y1 - r.y0) * (1 - Math.pow(1 - k, 2));
+    if (!reduceMotion && Math.random() < 0.8) emit({ x: r.x + rand(-0.5, 0.5), y: r.y + 2, vx: rand(-5, 5), vy: rand(8, 22), life: rand(0.25, 0.55), fade: 0.4, s: 1, c: '#ffd9a0', L: 'g' });
+    if (k >= 1) { rockets.splice(i, 1); fwBurst(r); }
+  }
+}
+function launchRocket() {
+  const x0 = rand(1800, 1985);
+  rockets.push({ x0, y0: 446, x1: x0 + rand(-28, 28), y1: rand(288, 362), x: x0, y: 446, t: 0, dur: rand(0.75, 1.05), col: pick(FW_COL), kind: Math.random() < 0.22 ? 'ring' : Math.random() < 0.35 ? 'willow' : 'peony' });
+  if (partyAudio()) Snd.whistle();
+}
+function fwBurst(r) {
+  const n = reduceMotion ? 16 : r.kind === 'willow' ? 40 : 50, [c1, c2, gk] = r.col;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + rand(-0.08, 0.08), sp = r.kind === 'ring' ? rand(76, 84) : rand(26, 100);
+    emit({ x: r.x, y: r.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp * 0.78, g: r.kind === 'willow' ? 55 : 26, drag: r.kind === 'willow' ? 1.6 : 1.05, life: rand(1, r.kind === 'willow' ? 2.3 : 1.6), fade: 0.8, s: rand(1.6, 2.6), c: Math.random() < 0.3 ? c2 : c1, L: 'g', tw: Math.random() * 6 });
+  }
+  emit({ x: r.x, y: r.y, vx: 0, vy: 0, life: 0.22, fade: 0.22, s: 9, grow: -30, c: '#ffffff', L: 'g' });
+  fxLights.push({ x: r.x, y: r.y, r: 100, i: 0.8, c: gk, g: 0.42, life: 0.8, max: 0.8 });
+  if (partyAudio()) Snd.bang();
+}
+// discomusikken: 125 slag i minuttet, C – Am – F – G, med kick, hihat, klap, bas, akkorder og en lille melodi hver anden runde
+const Groove = { f0: 0, next: null, out: null, nb: null };
+const G_ROOT = [65.41, 55.0, 87.31, 98.0], G_CH = [[261.6, 329.6, 392.0], [220.0, 261.6, 329.6], [174.6, 220.0, 261.6], [196.0, 246.9, 293.7]], G_MEL = [[0, 0], [3, 1], [6, 2], [10, 1], [12, 2], [14, 0]];
+function musicOn(st) { if (st.phase !== 'finale' || !st.f0 || st.jam) return false; const t = finT(st); return t > DISCO_AT - 200 && (t < DISCO_AT + MUSIC_MS || serverNow() < (st.party.mu || 0)); }
+function grooveOut() { const c = Snd.ctx; if (!Groove.out || Groove.out.context !== c) { Groove.out = c.createGain(); Groove.out.gain.value = ROLE === 'player' ? 0.55 : 0.8; Groove.out.connect(c.destination); } return Groove.out; }
+function gNoise() { const c = Snd.ctx; if (!Groove.nb || Groove.nb.sampleRate !== c.sampleRate) { const len = Math.floor(c.sampleRate * 0.25); Groove.nb = c.createBuffer(1, len, c.sampleRate); const d = Groove.nb.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1; } return Groove.nb; }
+function gVoice(at, out, type, f, v, a, d, lp) {
+  const c = Snd.ctx, o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.value = f;
+  g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(v, at + a); g.gain.exponentialRampToValueAtTime(0.0001, at + d);
+  if (lp) { const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.setValueAtTime(lp, at); fl.frequency.exponentialRampToValueAtTime(180, at + d); o.connect(fl); fl.connect(g); } else o.connect(g);
+  g.connect(out); o.start(at); o.stop(at + d + 0.02);
+}
+function gHit(at, out, type, f, v, d, q) { const c = Snd.ctx, s = c.createBufferSource(), fl = c.createBiquadFilter(), g = c.createGain(); s.buffer = gNoise(); fl.type = type; fl.frequency.value = f; if (q) fl.Q.value = q; g.gain.setValueAtTime(0.0001, at); g.gain.exponentialRampToValueAtTime(v, at + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, at + d); s.connect(fl); fl.connect(g); g.connect(out); s.start(at); s.stop(at + d + 0.02); }
+function grooveStep(i, at, out) {
+  const s = i % 16, bar = Math.floor(i / 16), ch = bar % 4, loop = Math.floor(bar / 4);
+  if (s % 4 === 0) { const c = Snd.ctx, o = c.createOscillator(), g = c.createGain(); o.frequency.setValueAtTime(140, at); o.frequency.exponentialRampToValueAtTime(45, at + 0.12); g.gain.setValueAtTime(0.3, at); g.gain.exponentialRampToValueAtTime(0.0001, at + 0.22); o.connect(g); g.connect(out); o.start(at); o.stop(at + 0.24); }
+  if (s % 4 === 2) gHit(at, out, 'highpass', 7000, 0.05, 0.09); else if (s % 2 === 1) gHit(at, out, 'highpass', 8000, 0.016, 0.03);
+  if (s === 4 || s === 12) gHit(at, out, 'bandpass', 1500, 0.15, 0.16, 0.8);
+  if (s % 2 === 0) gVoice(at, out, 'sawtooth', G_ROOT[ch] * (s % 4 === 2 ? 2 : 1), 0.12, 0.008, 0.2, 900);
+  if (s === 2 || s === 7 || s === 10 || s === 15) for (const f of G_CH[ch]) gVoice(at, out, 'square', f, 0.018, 0.006, 0.12);
+  if (loop % 2 === 1) for (const [ms, n] of G_MEL) if (ms === s) gVoice(at, out, 'triangle', G_CH[ch][n] * 2, 0.05, 0.01, 0.3);
+}
+setInterval(() => {
+  const st = S(); if (!Snd.on || !Snd.ctx || document.hidden || !musicOn(st) || !partyAudio()) { Groove.next = null; return; }
+  const c = Snd.ctx, now = serverNow(), step = BEAT_MS / 4, base = st.f0 + DISCO_AT, out = grooveOut();
+  let i = Groove.next !== null && Groove.f0 === st.f0 ? Groove.next : Math.ceil((now - base) / step);
+  for (; base + i * step < now + 400; i++) { if (i < 0) continue; const at = c.currentTime + (base + i * step - now) / 1000; if (at >= c.currentTime) grooveStep(i, at, out); }
+  Groove.next = i; Groove.f0 = st.f0;
+}, 100);
 function drawDrink(g, p, t, bob) {
   const now = serverNow(), dk = drinkOf(p), d = p.d || 0, x = Math.round(p.rx), y = Math.round(p.ry) - 25 + bob;
   const seed = p.id ? p.id.charCodeAt(0) * 131 + p.id.charCodeAt(p.id.length - 1) * 17 : 0;
@@ -3386,6 +3759,7 @@ function showCredits() {
     (() => { const top = Object.values(S().score || {}).sort((a, c) => c.c - a.c)[0]; return top ? '<h3>Dagens grammatikmester</h3><p>' + esc(top.n) + ' · ' + top.c + ' rigtige svar</p>' : ''; })() +
     (S().dl.paper === 2 || S().dl.books === 2 ? '<h3>Leveret i dag</h3><p>' + [S().dl.paper === 2 ? 'Printerpapir til Kopirummet' : '', S().dl.books === 2 ? '1000 eksemplarer af »Vi taler dansk«' : ''].filter(Boolean).join('<br>') + '</p>' : '') +
     (() => { const st = S(), l = []; if (st.doors.ret) l.push(st.ret.got + ' opgaver rettet'); if (st.doors.ord) l.push('3 sætninger i perfekt ordstilling'); if (st.doors.tr) l.push('Koden til pengeboksen var ' + codeOf(st)); return l.length ? '<h3>Opgaver løst</h3><p>' + l.join('<br>') + '</p>' : ''; })() +
+    (() => { const P = S().party, l = []; if (P.big >= 3) l.push('Dagens kæmpeskål: ' + P.big + ' kollegaer på én gang'); if (P.sk) l.push(P.sk + ' skåler og ' + P.dn + ' danse'); if (P.bs && P.bsc >= 2) l.push('Flest skåler: ' + esc(P.bs)); if (P.bd && P.bdc >= 2) l.push('Dagens dansemester: ' + esc(P.bd)); return l.length ? '<h3>Festen i tal</h3><p>' + l.join('<br>') + '</p>' : ''; })() +
     '<h3>Kode, idé og quiz master</h3><p>Jacob, live fra San José, Costa Rica</p>' +
     '<h3>Dagens vin</h3><p>Winnies Rosé, årgang 2026</p>' +
     '<p class="end">Fredagsbaren er hermed åben</p>';
@@ -3501,6 +3875,22 @@ $('#b-skaal').addEventListener('click', () => {
   netPatch({ sy: Math.floor(Math.random() * SKAAL.length), sts: serverNow() });
   $('#b-skaal').disabled = true; setTimeout(() => { $('#b-skaal').disabled = false; }, 3200);
 });
+let danceCd = 0;
+$('#b-dance').addEventListener('click', () => {
+  const st = S(), p = players.get(ID); if (!p || st.phase !== 'finale' || Date.now() < danceCd) return; Snd.unlock();
+  if (finT(st) < DISCO_AT) { banner('💃 Et øjeblik – DJ\'en er ved at sætte musikken på …', 'teal', 2600); return; }
+  danceCd = Date.now() + DANCE_MS; Snd.blip(); netPatch({ dn: serverNow(), m: 0 });
+  $('#b-dance').disabled = true; setTimeout(() => { $('#b-dance').disabled = false; }, DANCE_MS);
+});
+// stemningsmåleren på storskærmen (og hos Game Master)
+setInterval(() => {
+  const st = S(), el = $('#party'), show = (ROLE === 'screen' || ROLE === 'gm') && st.phase === 'finale' && $('#credits').hidden;
+  el.hidden = !show; if (!show) return;
+  const P = st.party, v = Math.round(P.v);
+  $('#party-i').style.width = v + '%'; $('#party-v').textContent = v + ' %';
+  $('#party-s').textContent = '🥂 ' + P.sk + ' skåler · 💃 ' + P.dn + ' danse · ✍ ' + P.gr + ' hilsner' + (P.pk ? ' · 🎆 ' + P.pk + ' × på toppen' : '');
+  el.classList.toggle('hot', v >= 80);
+}, 500);
 function renderBarBar() {
   const p = players.get(ID), show = S().phase === 'finale' && !!me && !!p;
   $('#barbar').hidden = !show; if (!show) return;
@@ -3517,7 +3907,7 @@ setInterval(() => {
 // lyde fra huset: festmusik, der bliver højere, jo tættere man er på Lokale 0.1, og kaffemaskinen, der brygger
 let ambStep = 0;
 setInterval(() => {
-  const p = me && players.get(ID), st = S(); if (!p || !Snd.on || st.phase === 'lobby' || st.jam || document.hidden) return;
+  const p = me && players.get(ID), st = S(); if (!p || !Snd.on || st.phase === 'lobby' || st.jam || document.hidden || discoK(st) > 0) return;
   const d = Math.hypot(p.x - 1797, p.y - 404), k = d < 320 ? Math.pow(1 - d / 320, 2) * (st.phase === 'finale' ? 1 : 0.6) : 0; ambStep++;
   if (k > 0.02) { if (ambStep % 2 === 0) Snd.tone(62, 0.13, 'sine', 0.11 * k, 0, 40); else Snd.tone(5200, 0.03, 'square', 0.012 * k); if (ambStep % 2 === 0) Snd.tone([98, 98, 131, 117][(ambStep >> 1) & 3], 0.22, 'triangle', 0.05 * k); }
   if (Math.hypot(p.x - 1459, p.y - 312) < 46 && ambStep % 8 === 0) Snd.noise(0.5, 0.03);
@@ -3747,7 +4137,7 @@ function useAct(n) {
   }
   if (n.act === 'pw') {
     if (!me || st.phase === 'lobby') return;
-    if (st.disco) sayNpc(n.name, ['På skærmen kører der Pong. Highscore: IT-MANDEN, 9.999.', 'Ved siden af tastaturet ligger en lap: »Jeg arbejder. Forstyr ikke.«'], n.x, n.y); else openPz('pw', n);
+    if (st.disco) sayNpc(n.name, ['På den midterste skærm kører der Pong. Highscore: TROLDMANDEN, 9.999.', 'Ved siden af tastaturet ligger en lap: »Jeg arbejder. Forstyr ikke. Abrakadabra.«'], n.x, n.y); else { openPz('pw', n); const i = $('#pw-in'); if (i && !i.disabled) try { i.focus(); } catch (e) {} }
     return;
   }
   if (n.act === 'nap') {
@@ -3848,9 +4238,10 @@ function renderPz() {
     $('#pz-sub').textContent = 'En kort hilsen til kollegaerne (højst 80 tegn). Den ruller over storskærmen under fredagsbaren.';
     if (!$('#greet-in')) setHtml('#pz-body', '<input id="greet-in" type="text" maxlength="80" autocomplete="off" placeholder="Skål og tak, kollegaer …"><div class="ret-words" style="margin-top:9px"><button type="button" data-greet="1">Send hilsen</button></div>');
   } else if (pzKind === 'pw') {
-    $('#pz-t').textContent = 'IT-mandens computer';
-    $('#pz-sub').textContent = 'Skærmen er låst. Hvad mon kodeordet er? En rigtig IT-mand skriver det aldrig ned … vel?';
-    setHtml('#pz-body', '<div class="ret-words">' + PW_OPTS.map((o, k) => '<button type="button" data-pw="' + k + '">' + esc(o) + '</button>').join('') + '</div>');
+    $('#pz-t').textContent = 'IT-Troldmandens computer';
+    $('#pz-sub').textContent = 'Skærmen er låst. Skriv kodeordet. IT-Troldmanden har bestået et kursus i IT-sikkerhed, så han har helt sikkert ikke skrevet det ned … vel?';
+    if (!$('#pw-in')) { setHtml('#pz-body', '<input id="pw-in" type="text" maxlength="24" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="Kodeord"><div class="ret-words" style="margin-top:9px"><button type="button" data-pwgo="1">Log ind</button></div>'); setHtml('#pz-foot', ''); }
+    pwLockUi();
   } else if (pzKind === 'it') {
     $('#pz-t').textContent = 'Pengeboksen · slå alarmen fra · ' + st.it.got + '/' + st.it.need;
     $('#pz-sub').textContent = st.doors.tr ? 'Alarmen er slået fra, og pengeboksen står åben.' : 'Koden var rigtig, men alarmen er gået i gang. Lamperne blinker i en bestemt rækkefølge. Tryk på dem i samme rækkefølge for at slå en lås fra. Hele holdet kan hjælpe.';
@@ -3885,13 +4276,29 @@ $('#pz-body').addEventListener('click', e => {
   else if (b.dataset.it !== undefined) itPress(+b.dataset.it);
   else if (b.dataset.mt !== undefined) mtAnswer(+b.dataset.mt);
   else if (b.dataset.greet) { const el = $('#greet-in'), v = (el.value || '').trim(); if (!v) { el.focus(); return; } netAction({ type: 'greet', text: v }); el.value = ''; Snd.right(); setHtml('#pz-foot', '<span class="ok">✓ Sendt! Kig på storskærmen.</span>'); }
-  else if (b.dataset.pw !== undefined) {
-    if (PW_OPTS[+b.dataset.pw] === 'kaffe123') { Snd.right(); netAction({ type: 'disco', name: (players.get(ID) || {}).n }); setHtml('#pz-foot', '<span class="ok">✓ Adgang givet …</span>'); setTimeout(() => { if (pzOpen && pzKind === 'pw') closePz(); }, 1200); }
-    else { Snd.wrong(); setHtml('#pz-foot', '<span class="bad">✗ Forkert kodeord.</span> Kig dig omkring i kontoret.'); }
-  }
+  else if (b.dataset.pwgo) pwSubmit();
   else if (b.dataset.song !== undefined) { const st = S(); if (st.jam || !me) return; Snd.unlock(); Snd.blip(); netAction({ type: 'jam', name: (players.get(ID) || {}).n, s: +b.dataset.song }); setHtml('#pz-foot', 'Stemmer guitaren …'); }
 });
 $('#pz-x').addEventListener('click', closePz);
+$('#pz-body').addEventListener('keydown', e => { if (e.target && e.target.id === 'pw-in' && (e.key === 'Enter' || e.keyCode === 13)) { e.preventDefault(); pwSubmit(); } });
+// IT-Troldmandens kodeord skal skrives. Hvert forkert forsøg låser computeren lidt længere, så man ikke kan gætte sig frem
+let pwTries = 0, pwLock = 0, pwTimer = 0;
+const PW_FUN = { '123456': 'Det var hans GAMLE kodeord. Han skiftede det efter kurset.', 'kodeord': 'Så nem er IT-Troldmanden heller ikke.', 'password': 'Så nem er IT-Troldmanden heller ikke.', 'abrakadabra': 'Troldmandsagtigt – men nej.', 'troldmand': 'Godt gættet. Men nej.', 'sommer2026!': 'Tæt på noget, en IT-mand ville vælge. Men nej.', 'sommer2026': 'Tæt på noget, en IT-mand ville vælge. Men nej.' };
+function pwLockUi() {
+  const el = $('#pw-in'), go = $('#pz-body button[data-pwgo]'), left = Math.ceil((pwLock - Date.now()) / 1000), locked = left > 0;
+  if (el) el.disabled = locked || !!S().disco; if (go) go.disabled = locked || !!S().disco;
+  if (locked) { const f = $('#pz-foot .lock'); if (f) f.textContent = 'Computeren er låst i ' + left + ' sekund' + (left === 1 ? '' : 'er') + '.'; }
+}
+function pwSubmit() {
+  const el = $('#pw-in'); if (!el || Date.now() < pwLock || S().disco) return;
+  const v = pwNorm(el.value); if (!v) { el.focus(); return; }
+  if (v === PW_OK) { Snd.right(); netAction({ type: 'disco', pw: v, name: (players.get(ID) || {}).n }); el.disabled = true; setHtml('#pz-foot', '<span class="ok">✓ Adgang givet. Velkommen, troldmand …</span>'); setTimeout(() => { if (pzOpen && pzKind === 'pw') closePz(); }, 1400); return; }
+  pwTries++; Snd.wrong(); el.value = '';
+  const secs = [5, 10, 20][Math.min(2, pwTries - 1)]; pwLock = Date.now() + secs * 1000;
+  setHtml('#pz-foot', '<span class="bad">✗ ' + esc(PW_FUN[v] || 'Forkert kodeord.') + '</span> <span class="lock"></span>' + (pwTries >= 2 ? '<br>Tip: Se dig godt omkring i kontoret. IT-Troldmanden er meget stolt af sit kursus.' : ''));
+  pwLockUi(); clearInterval(pwTimer);
+  pwTimer = setInterval(() => { const open = pzOpen && pzKind === 'pw'; if (open) pwLockUi(); if (Date.now() >= pwLock) { clearInterval(pwTimer); if (!open) return; const f = $('#pz-foot .lock'); if (f) f.textContent = 'Prøv igen.'; const i = $('#pw-in'); if (i) i.focus(); } }, 250);
+}
 
 // ═════════ OPGAVETAVLEN ═════════
 const myRoom = () => { const p = players.get(ID); const r = p && roomAt(p.x, p.y); return r ? r.id : ''; };
@@ -4106,7 +4513,7 @@ function draw(t, dt) {
   const ox = vr.x + vr.w / 2 - cam.x * z + sx, oy = vr.y + vr.h / 2 - cam.y * z + sy;
   const view = { x: cam.x - vr.w / 2 / z - 8, y: cam.y - vr.h / 2 / z - 8, w: vr.w / z + 16, h: vr.h / z + 16 };
   curView = view;
-  stepParticles(dt, t, view); stepWeather(dt, t, view);
+  stepParticles(dt, t, view); stepWeather(dt, t, view); stepFireworks(dt);
   if (!mp && ROLE !== 'player') { ctx.fillStyle = '#101724'; ctx.fillRect(0, 0, cw, ch); }
   ctx.setTransform(z * dpr, 0, 0, z * dpr, ox * dpr, oy * dpr); ctx.imageSmoothingEnabled = false;
   if (!mp && ROLE !== 'player') drawSurroundings(ctx, view);
@@ -4191,12 +4598,13 @@ function drawWorld(t, mp, view) {
   if (active && st.del) { list.push([PALLET.y + 4, 6, st.del]); list.push([DRIVER.y, 7, st.del]); }
   list.push([898.2, 8, null]);
   NOTE_POS.forEach((n, i) => list.push([n.b, 9, i]));
-  list.push([SERVER.y + 1, 10, null]); list.push([FLAG.y + 2, 12, null]); list.push([WRECK.y + 31, 13, null]); list.push([BENTE.y, 14, null]); KURS.forEach(k => list.push([k.y, 15, k])); list.push([612, 16, null]);
+  list.push([SERVER.y + 1, 10, null]); list.push([FLAG.y + 2, 12, null]); list.push([WRECK.y + 31, 13, null]); list.push([BENTE.y, 14, null]); KURS.forEach(k => list.push([k.y, 15, k])); list.push([612, 16, null]); list.push([ROOF.y + ROOF.h, 17, null]);
   if (devil) list.push([DEVIL.y, 3, null]);
   if (st.phase === 'finale') list.push([BOTTLE.y + 3, 11, null]);
   list.sort((a, b) => a[0] - b[0]);
   drawGuide(g, t, mp);
   drawInkFloor(g, t, st);
+  drawDanceFloor(g, t, st);
   if (mp && ROLE === 'player') { g.strokeStyle = `rgba(244,208,106,${0.55 + 0.3 * Math.sin(t * 0.006)})`; g.lineWidth = 1; g.beginPath(); g.ellipse(mp.rx, mp.ry, 10, 4, 0, 0, Math.PI * 2); g.stroke(); }
   for (const [, type, o] of list) {
     if (type === 0) g.drawImage(o.cv, o.x, o.y, o.w, o.h);
@@ -4212,6 +4620,7 @@ function drawWorld(t, mp, view) {
     else if (type === 14) drawBente(g, t);
     else if (type === 15) drawKursist(g, t, o);
     else if (type === 16) drawDisco(g, t, st);
+    else if (type === 17) drawRoof(g);
     else if (type === 11) drawBottle(g, t);
     else if (type === 2) {
       const it = ITEMS[o], bob = reduceMotion ? 0 : Math.sin(t * 0.004 + it.x) * 2;
@@ -4226,6 +4635,7 @@ function drawWorld(t, mp, view) {
   checkWinImpact(t);
   drawParticles(g, 'w', t);
   drawLighting(g, t, view.x, view.y, view.w, view.h, mp);
+  drawDiscoTop(g, t, st);
   drawSnow(g, view);
   drawParticles(g, 'g', t);
   // glimt over genstande
@@ -4355,7 +4765,7 @@ function renderHud(force) {
       s = b.stage === 'intro' ? 'Han samler kræfter… Gør jer klar!' : b.stage === 'pre' ? 'Grammatikduellen begynder!' : b.stage === 'rage' ? 'Fase 2! Svar, før det røde blæk rammer jer!' : b.p2 && (b.stage === 'q' || b.stage === 'rev') ? 'Raseri · bølge ' + b.wave + '/' + P2_WAVES + ' · undgå de røde pletter!' : (b.stage === 'q' || b.stage === 'rev') ? 'Grammatikduellen · runde ' + b.round + '/' + b.order.length
         : b.stage === 'rally' ? 'Fælles fodslag! Slå til samtidig!' : 'Hjælpen kommer fra Costa Rica!';
     }
-    else if (st.phase === 'finale') { t = 'Fredagsbar!'; s = 'Vælg øl eller rosé, og skål med kollegaerne.'; }
+    else if (st.phase === 'finale') { t = 'Fredagsbar!'; s = finT(st) < DISCO_AT ? 'Vælg øl eller rosé, og skål med kollegaerne.' : 'Stemning ' + Math.round(st.party.v) + ' % · Skål og dans!'; }
     $('#obj-t').textContent = t; $('#obj-s').textContent = s;
     $('#boss').hidden = st.phase !== 'djaevel';
   }
@@ -4429,7 +4839,7 @@ function renderGm() {
   for (const b of document.querySelectorAll('[data-cmd="vandone"]')) b.disabled = !st.del || st.del.stage === 'out';
   for (const b of document.querySelectorAll('[data-cmd="solve"]')) b.disabled = st.phase !== 'akt1' || !!st.doors[b.dataset.k];
   for (const b of document.querySelectorAll('[data-cmd="open"]')) b.disabled = !!st.doors.arkiv;
-  for (const b of document.querySelectorAll('[data-cmd="credits"]')) b.disabled = st.phase !== 'finale';
+  for (const b of document.querySelectorAll('[data-cmd="credits"],[data-cmd="fw"],[data-cmd="mus"]')) b.disabled = st.phase !== 'finale';
   for (const b of document.querySelectorAll('[data-cmd="jam"]')) b.disabled = !!st.jam || st.phase === 'djaevel';
   for (const b of document.querySelectorAll('[data-cmd="rage"]')) b.disabled = st.phase !== 'djaevel' || !!st.boss.p2 || st.boss.stage === 'win';
 }
@@ -4444,7 +4854,7 @@ function buildControls(el, prefix) {
     '<h2>Besked til alle skærme</h2><textarea id="' + prefix + '-msg" maxlength="160" placeholder="Fx: Hej fra Costa Rica! Husk at dele kaffekanden…"></textarea>' +
     '<div class="row"><button type="button" data-cmd="msg">Send fra Costa Rica</button></div>' +
     '<h2>Værktøjer</h2><div class="row">' +
-    '<button type="button" data-cmd="gather">Saml alle ved indgangen</button><button type="button" data-cmd="credits">Rulletekster nu (finale)</button>' +
+    '<button type="button" data-cmd="gather">Saml alle ved indgangen</button><button type="button" data-cmd="credits">Rulletekster nu (finale)</button><button type="button" data-cmd="fw">🎆 Fyrværkeri nu (finale)</button><button type="button" data-cmd="mus">🪩 2 min mere discomusik</button>' +
     '<button type="button" data-cmd="rage">🔥 Fase 2 nu</button><button type="button" data-cmd="rehearse">🎬 Generalprøve (5 min)</button><button type="button" data-cmd="bots">+6 test-kollegaer</button><button type="button" data-cmd="nobots">Fjern test-kollegaer</button>' +
     '<button type="button" data-cmd="reset" class="danger">Nulstil spillet</button></div>';
   let armTimer = 0;

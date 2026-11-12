@@ -456,7 +456,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.7
+   SLAGET OM DALGASGADE · v1.7.1
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -2551,7 +2551,7 @@ function drawPizzaTable(g, t) {
   g.strokeStyle = 'rgba(90,40,20,0.5)'; g.lineWidth = 0.4; g.beginPath(); g.moveTo(bx + 2, by + 5); g.lineTo(bx + 14, by + 5); g.moveTo(bx + 8, by - 1.4); g.lineTo(bx + 8, by + 11.4); g.stroke();
   if (!reduceMotion && Math.random() < 0.05) emit({ x: bx + 8 + rand(-4, 4), y: by + 3, vx: rand(-2, 2), vy: -rand(4, 7), drag: 0.3, life: rand(1.2, 1.8), fade: 1, s: 1.2, grow: 1.6, c: 'rgba(240,240,240,0.4)', L: 'w' });
 }
-const PIZZA_NPC = { id: 'pizzaer', name: 'Christines pizzaer', x: 1580, y: 368, lines: [PZ_N + ' familiepizzaer i XXL med ekstra ost. Christine har tænkt på alle – og på alle deres venner.', 'Du tager et stykke. Det er på størrelse med et A4-ark.', 'Pizzakraft! Holdet giver 10 % mere skade i duellen mod djævlen.'] };
+const PIZZA_NPC = { id: 'pizzaer', name: 'Christines pizzaer', x: 1580, y: 368, lines: [PZ_N + ' familiepizzaer i XXL med ekstra ost. Christine har tænkt på alle – og på alle deres venner.', 'Du tager et stykke. Det er på størrelse med et A4-ark.', 'Pizzakraft! Holdet giver 10 % mere skade i duellen.'] };
 const PZ_LINES = ['HVEM HAR BESTILT PIZZA?!', 'Det er en ret STOR ordre …', PZ_N + ' familiepizzaer. XXL. Med ekstra ost.', 'På bonen står der bare: »Til hele huset – og lidt ekstra«.', 'HVEM HAR BESTILT PIZZA?! De bliver kolde!'];
 function drawPizzaTalk(g, t, st, pa) {
   const z = st.pz, age = serverNow() - z.t0, gy = pa.guy; if (!gy) return;
@@ -3709,7 +3709,7 @@ function runFx(fx) {
     if (fx.ok) { banner('🍕 Christine! Selvfølgelig. ' + PZ_N + ' STORE pizzaer er på vej til Personalerummet!', 'teal', 6000); Snd.right(); }
     else { banner('🛵 Det var Christine, der havde bestilt! Pizzabuddet kører igen med alle ' + PZ_N + ' pizzaer …', '', 6500); Snd.wrong(); }
   } else if (fx.type === 'pzdrop') {
-    banner('🍕 ' + PZ_N + ' familiepizzaer i XXL fra Christine står i Personalerummet. Pizzakraft: +10 % skade mod djævlen!', 'teal', 7000); Snd.thud(); shake(250, 2);
+    banner('🍕 ' + PZ_N + ' familiepizzaer i XXL fra Christine står i Personalerummet. Pizzakraft: +10 % skade i duellen!', 'teal', 7000); Snd.thud(); shake(250, 2);
     burst(1570, 340, 26, 'confetti'); fxLights.push({ x: 1570, y: 345, r: 70, i: 0.6, c: 'warm', g: 0.3, life: 0.8, max: 0.8 });
   } else if (fx.type === 'bigskaal') {
     banner('🥂 KÆMPESKÅL! ' + fx.n + ' kollegaer skålede på samme tid!', '', 4500); Snd.clink(); setTimeout(() => Snd.clink(), 170); setTimeout(() => Snd.clink(), 340);
@@ -3726,7 +3726,7 @@ function runFx(fx) {
       banner((fx.driver ? 'Chaufføren bar selv resten ind. Suk. ' : '📄 ') + 'Printerpapiret er på plads! Printeren der virker er dukket op i Kopirummet.', 'teal', 6500);
       const it = ITEMS.printer; burst(it.x, it.y, 40, 'confetti'); fxLights.push({ x: it.x, y: it.y - 6, r: 90, i: 0.9, c: 'gold', g: 0.5, life: 1.4, max: 1.4 });
     } else {
-      banner((fx.driver ? 'Chaufføren bar selv resten ind. Suk. ' : '📚 ') + '1000 × »Vi taler dansk« er på plads i klasserne! Djævlen får det svært …', '', 6500);
+      banner((fx.driver ? 'Chaufføren bar selv resten ind. Suk. ' : '📚 ') + '1000 × »Vi taler dansk« er på plads i klasserne! Det, der lurer i personalerummet, får det svært …', '', 6500);
       for (const r of DELIV.books.rooms) burst(DEL_DEST[r].x, DEL_DEST[r].y - 110, 24, 'confetti');
     }
     Snd.pickup();
@@ -4520,7 +4520,7 @@ function taskRows(st) {
     ['🔐', 'Chefens pengeboks', st.doors.tr ? 'Åbnet!' : st.it.on ? 'Chefens kontor · slå alarmen fra ' + st.it.got + '/' + st.it.need : 'Chefens kontor, stuen · gule sedler fundet ' + seen + '/4', st.doors.tr, 'skjold'],
     ['👣', 'Trykpladerne', st.doors.arkiv ? 'Det mørke kontor er åbent!' : 'Lokale 0.3 · Kursistkantinen · Lokale 1.4', st.doors.arkiv, 'noegler'],
     ['🚚', 'Printerpapiret', st.dl.paper === 2 ? 'Båret ind!' : st.dl.paper === 1 ? delTxt('paper') : st.a1 ? 'Leveringsbilen kommer om ' + mmss(st.a1 + PAPER_AT - now) : 'Leveringsbilen kommer senere', st.dl.paper === 2, 'printer'],
-    ['📚', '»Vi taler dansk«', st.dl.books === 2 ? 'Djævlen starter med 85 HP' : st.dl.books === 1 ? delTxt('books') : 'Leveringsbilen kommer senere', st.dl.books === 2, null, 1],
+    ['📚', '»Vi taler dansk«', st.dl.books === 2 ? 'Det, der lurer, starter med 85 HP' : st.dl.books === 1 ? delTxt('books') : 'Leveringsbilen kommer senere', st.dl.books === 2, null, 1],
     ['🎸', 'Karins guitar', st.bonus.guitar ? '+25 % skade i duellen' : 'Lokale 0.1 · spil i takt sammen', !!st.bonus.guitar, null, 1],
     ['⭐', 'Skjulte bonusser', hiddenCount(st) + '/3 fundet · hver giver +10 % skade', hiddenCount(st) === 3, null, 1],
   ].concat(st.pz && st.pz.s ? [['🍕', st.pz.ok ? 'Christines pizzaer' : 'Pizzabuddet', st.pz.ok ? 'Personalerummet · +10 % skade i duellen' : st.pz.s === 'ask' ? 'Hvem har bestilt pizza? Svar på telefonen!' : pzBusy(st) ? 'Pizzabuddet er her!' : 'Kørte igen med alle pizzaerne …', !!st.pz.ok, null, 1]] : []);

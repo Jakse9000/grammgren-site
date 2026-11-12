@@ -1,4 +1,4 @@
-# Slaget om Dalgasgade · v1.7
+# Slaget om Dalgasgade · v1.7.1
 
 Multiplayer-pixelspil til UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026.
 
@@ -95,6 +95,9 @@ Rummene fordeler sig sådan:
 Rum, døre, trapper, møbler, trykplader, genstande og opgavepunkter er data øverst i scriptet i `index.html` (`ROOMS`, `DOORS`, `STAIR_ENDS`, `FURN`, `PLATES`, `ITEMS`, `NPCS`, `PZ_NPCS`, `NOTE_POS`, `SERVER` (pengeboksen), `PALLET`, `DEL_DEST`). Ledetråden "Tæl …" til pengeboksens kode tælles direkte i møbellisten, så den passer også, hvis møblerne flyttes.
 
 Storskærmen følger holdet i Akt 1: den zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles. Navneskiltene vokser, når der er zoomet ud.
+
+## Ændringer i v1.7.1
+- Ordet »djævlen« står ingen steder, før holdet møder ham i Akt 2. Opgavetavlen, bannerne og pizzaerne antyder bare, at »noget lurer i personalerummet«.
 
 ## Ændringer i v1.7
 - **Pizzabuddet** kommer, når holdet har fundet tre genstande: scooter i fuld fart, storskærmen zoomer ind, og han råber »Hvem har bestilt pizza?!«. Svarer flertallet Christine, får holdet 14 XXL-pizzaer i Personalerummet og +10 % skade i duellen. Ny GM-knap: 🍕 Send pizzabuddet nu.

@@ -1,4 +1,4 @@
-# Slaget om Dalgasgade · v1.5.1
+# Slaget om Dalgasgade · v1.5.2
 
 Multiplayer-pixelspil til UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026.
 
@@ -79,6 +79,9 @@ Rummene fordeler sig sådan:
 Rum, døre, trapper, møbler, trykplader, genstande og opgavepunkter er data øverst i scriptet i `index.html` (`ROOMS`, `DOORS`, `STAIR_ENDS`, `FURN`, `PLATES`, `ITEMS`, `NPCS`, `PZ_NPCS`, `NOTE_POS`, `SERVER` (pengeboksen), `PALLET`, `DEL_DEST`). Ledetråden "Tæl …" til pengeboksens kode tælles direkte i møbellisten, så den passer også, hvis møblerne flyttes.
 
 Storskærmen følger holdet i Akt 1: den zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles. Navneskiltene vokser, når der er zoomet ud.
+
+## Ændringer i v1.5.2
+- Personalekøkkenet: køkkenbordet er rykket til højre, der står et ekstra køleskab nederst til venstre, og rummets navn står på gulvet, så det kan læses. Den Gyldne Kaffekande dukker op mellem køleskabet og bordet.
 
 ## Ændringer i v1.5.1
 - Sofaen i Personalerummet står nu mellem de to døre, så rummets navn kan læses.

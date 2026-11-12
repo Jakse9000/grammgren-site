@@ -428,7 +428,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.5.1
+   SLAGET OM DALGASGADE · v1.5.2
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -529,7 +529,7 @@ R('test0a', 'Testlokalet', 1700, 262, 80, 170, 'klasse', 0);
 R('l01', 'Lokale 0.1', 1780, 262, 220, 170, 'fest', 0);
 R('trappe0a', 'Trappen', 2000, 262, 90, 170, 'trappe', 0);
 R('gang0', 'Gangen', 1430, 432, 700, 56, 'gang', 0);
-R('koekken', 'Personalekøkkenet', 1430, 488, 130, 122, 'koekken', 0);
+R('koekken', 'Personalekøkkenet', 1430, 488, 130, 122, 'koekken', 0, { lab: [1464, 572, 88] });   // navnet står på gulvet mellem bordet og køkkenbordet
 R('testk', 'Testkontoret', 1560, 488, 85, 122, 'kontor', 0);
 R('depot0', 'IT-kontoret', 1645, 488, 55, 122, 'kontor', 0);   // IT-mandens kedelige kontor – med en hemmelighed
 R('test0b', 'Testlokalet', 1700, 488, 145, 122, 'klasse', 0);
@@ -613,7 +613,8 @@ F('fridge', 1572, 290, 20, 12, 20);
 F('table', 1480, 336, 120, 24, 7, { cake: 1 });
 F('sofa', 1550, 404, 56, 16, 6); F('plant', 1680, 296, 12, 8, 7, { top: 22 });
 // Personalekøkkenet
-F('counter', 1440, 586, 84, 14, 12, { label: 'KØKKEN' }); FURN.push({ t: 'coffee', x: 1446, y: 586, w: 14, h: 10, ht: 14, z: 1 }, { t: 'micro', x: 1494, y: 586, w: 20, h: 10, ht: 10, z: 1 });
+F('counter', 1468, 586, 84, 14, 12, { label: 'KØKKEN' }); FURN.push({ t: 'coffee', x: 1474, y: 586, w: 14, h: 10, ht: 14, z: 1 }, { t: 'micro', x: 1522, y: 586, w: 20, h: 10, ht: 10, z: 1 });
+F('fridge', 1440, 584, 20, 12, 20);   // det ekstra køleskab
 F('table', 1498, 538, 48, 18, 7); F('fridge', 1440, 516, 20, 12, 20);
 // Lokale 0.1: et klasselokale, der i dag er lavet om til festlokale
 F('counter', 1792, 296, 90, 14, 10, { label: 'BAR' }); F('crates', 1890, 298, 26, 12, 9);
@@ -667,7 +668,7 @@ const PLATES = [
   { id: 'p3', x: 180, y: 588, r: 12, room: 'Lokale 1.4' },
 ];
 const ITEMS = {
-  kande:   { name: 'Den Gyldne Kaffekande',    short: 'Kaffekanden',  x: 1540, y: 584, desc: 'heler holdet', locked: 'ret' },
+  kande:   { name: 'Den Gyldne Kaffekande',    short: 'Kaffekanden',  x: 1486, y: 574, desc: 'heler holdet', locked: 'ret' },
   roedpen: { name: 'Rødpennen',                short: 'Rødpennen',    x: 1120, y: 680, desc: 'kritiske slag mod dårlig grammatik', locked: 'ord' },
   printer: { name: 'Printeren der virker',     short: 'Printeren',    x: 1936, y: 592, desc: 'skyder papir tilbage', locked: 'paper' },
   skjold:  { name: 'Fredagskassen',            short: 'Fredagskassen', x: 2258, y: 984, desc: 'beskytter hele holdet', locked: 'tr' },
@@ -1226,10 +1227,10 @@ function renderMap() {
   g.textAlign = 'left';
   for (const r of ROOMS) {
     if (r.sub || r.k === 'trappe' || (r.k === 'gang' && r.w < 80)) continue;
-    const nm = r.name.toUpperCase(), maxw = r.w - 18; let fs = 6;
+    const nm = r.name.toUpperCase(), maxw = r.lab ? r.lab[2] : r.w - 18; let fs = 6;
     g.font = fs + 'px "Press Start 2P", monospace'; const tw = g.measureText(nm).width;
     if (tw > maxw) { fs = Math.max(3.4, Math.floor(6 * maxw / tw * 10) / 10); g.font = fs + 'px "Press Start 2P", monospace'; }
-    const lx = r.k === 'gang' && r.h < 80 ? r.x + r.w - g.measureText(nm).width - 14 : r.x + 10, ly = r.k === 'gang' && r.h < 80 ? r.y + r.h - 10 : r.y + r.h - 11;
+    const lx = r.lab ? r.lab[0] : r.k === 'gang' && r.h < 80 ? r.x + r.w - g.measureText(nm).width - 14 : r.x + 10, ly = r.lab ? r.lab[1] : r.k === 'gang' && r.h < 80 ? r.y + r.h - 10 : r.y + r.h - 11;
     g.fillStyle = 'rgba(0,0,0,0.3)'; g.fillText(nm, lx + 1, ly + 1);
     g.fillStyle = r.dark ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.42)'; g.fillText(r.dark && !r.plate ? nm + ' · LÅST' : nm, lx, ly);
   }

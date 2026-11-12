@@ -1,4 +1,4 @@
-# Slaget om Dalgasgade · v1.5.2
+# Slaget om Dalgasgade · v1.6
 
 Multiplayer-pixelspil til UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026.
 
@@ -20,7 +20,7 @@ Til generalprøver lægger du `&spil=test` på alle adresser, fx `?skaerm&spil=t
 5. Efter festen: sæt `.write` til `false` i Firebase-reglerne, eller slet databasen, så ingen kan skrive i den bagefter.
 
 ## Firebase
-`config.js` peger på Realtime Database-projektet `ucplus-fredagsbar` (europe-west1). Reglerne ligger i `database.rules.json` og er sat ind i Firebase-konsollen under Realtime Database → Rules. Reglerne er uændrede i v1.5. Står `FIREBASE_CONFIG` som `null`, kører spillet lokalt med simulerede kollegaer.
+`config.js` peger på Realtime Database-projektet `ucplus-fredagsbar` (europe-west1). Reglerne ligger i `database.rules.json` og er sat ind i Firebase-konsollen under Realtime Database → Rules. Reglerne er uændrede i v1.6. Står `FIREBASE_CONFIG` som `null`, kører spillet lokalt med simulerede kollegaer.
 
 ## Spillets gang
 1. **Lobby · kaffepause**: når man har lavet sin figur, sætter den sig i Personalerummet med en kop kaffe. Figurerne fører grammatiksnak i talebobler, og spillerne kan tage en tår ☕ eller sige noget klogt 💬. **Karins guitar** står i Lokale 0.1 og starter en jam-session. Man vælger selv sangen: Mester Jakob (kanon), Twinkle, Twinkle, Ode til glæden, When the Saints eller Jingle Bells. I kanonen spiller holdet to stemmer, i de andre sange tager halvdelen melodien og resten akkorderne. 60 % eller mere i takt giver guitar-bonus til bosskampen.
@@ -46,7 +46,16 @@ Til generalprøver lægger du `&spil=test` på alle adresser, fx `?skaerm&spil=t
      - Djævlen heler lidt for hver, han rammer, så det betaler sig også at undvige efter svaret. Er hans raseri ikke brugt op efter seks bølger, kræver Fælles fodslag flere kollegaer.
      - Holder man telefonen på langs, står spørgsmålet i højre side og kortet til venstre.
    - **Fælles fodslag** slår ham ud, og til sidst flyver Jacob ind fra Costa Rica.
-4. **Finale · Fredagsbar**: alle figurer samles i Lokale 0.1, der som altid til fester er lavet om til festlokale med bar, lyskæde og flag. Efter et par sekunder falder en enorm flaske **Winnies Rosé** ned midt i rummet, og proppen springer. På telefonen er der tre knapper: 🍺 Øl, 🍷 Rosé og 🥂 Skål!. Figurerne holder deres drik i hånden og siger skåltaler i talebobler. Karins guitar kan bruges igen og igen i finalen, så holdet kan spille sang efter sang. Med knappen ✍ **Hilsen** kan alle skrive en kort hilsen, der vises på storskærmen. Hilsnerne skifter hvert 6. sekund. Storskærmen zoomer ind på baren. Efter 60 sekunder kører rulleteksterne hen over baren og forsvinder igen, når de er færdige. Game Master kan også starte dem med "Rulletekster nu".
+4. **Finale · Fredagsbar**: alle figurer samles i Lokale 0.1, der som altid til fester er lavet om til festlokale med bar, lyskæde og flag. Storskærmen zoomer ind på baren.
+   - Efter et par sekunder falder en enorm flaske **Winnies Rosé** ned midt i rummet, og proppen springer.
+   - Efter 10 sekunder skruer DJ'en op: lyset dæmpes, en **diskokugle** sænker sig ned fra loftet, farvede lyskegler fejer hen over rummet, og **dansegulvet** midt i lokalet blinker i takt. Storskærmen spiller **discomusik** (125 slag i minuttet) i et par minutter. Lyskæden, dansegulvet og figurernes dans følger samme takt på alle skærme.
+   - På telefonen er der fem knapper: 🍺 Øl, 🍷 Rosé, 🥂 Skål!, 💃 **Dans** og ✍ **Hilsen**. Figurerne holder deres drik i hånden og siger skåltaler i talebobler. Trykker man Dans, danser figuren i takt i otte sekunder. Hilsnerne vises på storskærmen og skifter hvert 6. sekund.
+   - **Stemningsmåleren** står øverst til venstre på storskærmen (og i GM-panelet). Hver skål, dans og hilsen giver stemning, og den falder langsomt igen. Når den rammer 100 %, er **stemningen i top**: konfetti og fyrværkeri, og måleren starter forfra fra 35 %.
+   - Skåler mange på én gang (mindst 3, eller cirka hver tredje), bliver det en **KÆMPESKÅL** med konfetti og glasklir.
+   - Efter cirka et minut kommer **fyrværkeriet** over festlokalet, og efter 78 sekunder kører rulleteksterne. De viser nu også **Festen i tal**: dagens kæmpeskål, antal skåler og danse, hvem der skålede mest, og dagens dansemester.
+   - Festen fortsætter bagefter med diskolys og dansegulv. Karins guitar kan bruges igen og igen.
+   - Game Master har knapperne "Rulletekster nu", **🎆 Fyrværkeri nu** og **🪩 2 min mere discomusik** (musikken stopper af sig selv et par minutter efter rulleteksterne, så den ikke overdøver den rigtige fredagsbar).
+   - I lokalet spiller kun storskærmen musikken. Telefoner, der er med online, spiller den selv.
 
 Game Master kan til enhver tid starte en bestemt sang på guitaren, skifte fase, løse en opgave (Løs rettebunken, Løs ordstillingen, Åbn pengeboksen, Åbn det mørke kontor), sende leveringsbilen ud, starte jam-sessionen og sende beskeder til alle skærme.
 
@@ -67,7 +76,8 @@ Rummene fordeler sig sådan:
 - **Grupperum 1** (stuen): her står **Frivillige-Bente**. Falder man i snak med hende, fortæller hun om Troels' parkeringsplads helt ved døren. Troels siger selv, at han sagtens kan gå et stykke, men Bente insisterer, og man kan ikke gå fra hende. Man slipper først væk efter tre undskyldninger. Kommer man for tæt på, begynder hun selv at snakke.
 - **Receptionen** (stuen) har et lille vindue ud til Indgangen.
 - **Personalekøkkenet** og **Kopirummet** (stuen).
-- **IT-kontoret** (stuen, ved siden af Testkontoret): IT-mandens kedelige kontor. Der er mere plads nu, hvor serveren er væk. Gætter man kodeordet til IT-mandens computer (det står på en gul lap), kommer diskokuglen, flaskerne og Pong frem.
+- **IT-Troldmandens kontor** (stuen, det gamle Testkontor og IT-kontoret slået sammen): helpdesk med nummerautomat (»Nu betjenes nr. 12«), arkivskab, troldmandshat og kappe på knagen, en reol med lilla bøger og troldmandens skrivebord med tre skærme, et tårn af kaffekopper og en plasmakugle. På væggen hænger hans diplom for gennemført IT-sikkerhedskursus – og bag diplomet sidder den gule lap med kodeordet. Kodeordet skal skrives på hans computer (store/små bogstaver og mellemrum er ligegyldige). Forkerte forsøg låser computeren i 5, 10 og derefter 20 sekunder, så man ikke kan gætte sig frem. Rigtigt kodeord: diskokugle, flasker og Pong.
+- **Pausehaven** (udenfor, gennem døren for enden af gangen ved vandautomaten): et overdækket område med to borde-bænkesæt, der engang var tænkt til afslapning. I dag er det mest personalets rygeområde: det gamle blomstermalede skilt »PAUSEHAVEN · Slap af« har fået et lamineret »RYGEOMRÅDE« tapet hen over sig, askebægeret er fyldt, der ligger skodder ved døren, basilikummen i plantekassen har givet op, og terrassevarmeren er løbet tør for gas.
 - **IT-lokalet** (1. sal): kursisternes computere.
 - **Kursistkantinen** (1. sal): fire kursister roser appen DanskPlus på ukrainsk, arabisk, spansk og polsk.
 - **Modultest-træningsrummet** (1. sal, før Grupperum 2): den skjulte modultest.
@@ -79,6 +89,24 @@ Rummene fordeler sig sådan:
 Rum, døre, trapper, møbler, trykplader, genstande og opgavepunkter er data øverst i scriptet i `index.html` (`ROOMS`, `DOORS`, `STAIR_ENDS`, `FURN`, `PLATES`, `ITEMS`, `NPCS`, `PZ_NPCS`, `NOTE_POS`, `SERVER` (pengeboksen), `PALLET`, `DEL_DEST`). Ledetråden "Tæl …" til pengeboksens kode tælles direkte i møbellisten, så den passer også, hvis møblerne flyttes.
 
 Storskærmen følger holdet i Akt 1: den zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles. Navneskiltene vokser, når der er zoomet ud.
+
+## Ændringer i v1.6
+- **IT-Troldmandens kontor**: Testkontoret og IT-kontoret er slået sammen til ét rum med troldmandstema. Kodeordet står ikke længere på en lap på væggen, men på en gul lap bag diplomet for gennemført IT-sikkerhedskursus.
+- **Kodeordet skal skrives**, i stedet for at man vælger mellem fire knapper. Forkerte forsøg låser computeren i stigende tid (5, 10, 20 sekunder), og efter to forkerte forsøg kommer et lille vink. Værten tjekker også kodeordet.
+- **Festen er blevet mere festlig**: diskokugle, dansegulv, lyskegler og discomusik i takt, en Dans-knap, stemningsmåler på storskærmen, kæmpeskål, fyrværkeri før rulleteksterne og »Festen i tal« i rulleteksterne. Nye GM-knapper: Fyrværkeri nu og 2 min mere discomusik.
+- **Pausehaven**: et nyt overdækket rygeområde udenfor, vest for personalegangen, med døren for enden af gangen.
+- På små telefoner er knapperne i fredagsbaren lidt mindre, og når telefonen holdes på langs, står de på en række nederst.
+
+## Ændringer i v1.5.5
+- Testlokalet bruges af kontorfolkene: to computere over for hinanden, et skab og bogreoler i venstre side.
+- Frivillige-Bentes rum (Grupperum 1) har fået to sofaer over for hinanden, et hæklet tæppe og potteplanter. Computerbordet er fjernet.
+
+## Ændringer i v1.5.4
+- Personalekøkkenet er lavet om igen: bordet med kaffekopperne er væk, køkkenbordet (med vask, kogeplader og kaffemaskine) står langs højre væg helt op til væggen i toppen, et køleskab står i forlængelse af det, og et køleskab over for langs venstre væg vender mod det. Navnet står på gulvet mellem køleskabene.
+
+## Ændringer i v1.5.3
+- Personalerummet: bordet er længere (med plads til flere i lobbyen), køleskabet er fjernet, og der står en bogreol langs venstre væg.
+- Et lille indhak ved Personalerummet, Garderoben, med jakker på knager, huer, støvler og paraplyer.
 
 ## Ændringer i v1.5.2
 - Personalekøkkenet: køkkenbordet er rykket til højre, der står et ekstra køleskab nederst til venstre, og rummets navn står på gulvet, så det kan læses. Den Gyldne Kaffekande dukker op mellem køleskabet og bordet.

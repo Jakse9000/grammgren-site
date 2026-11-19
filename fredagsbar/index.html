@@ -456,7 +456,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.7.1
+   SLAGET OM DALGASGADE · v1.7.2
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -763,7 +763,7 @@ const DFLOOR = { x: 1822, y: 384, c: 6, r: 3, w: 18, h: 14 }, DBALL = { x: 1875,
 const freshParty = () => ({ v: 0, pk: 0, big: 0, sk: 0, dn: 0, gr: 0, bs: '', bsc: 0, bd: '', bdc: 0, mu: 0, fw: 0 });
 const normParty = p => { const o = Object.assign(freshParty(), p && typeof p === 'object' ? p : {}); for (const k of Object.keys(o)) if (k !== 'bs' && k !== 'bd') o[k] = +o[k] || 0; o.bs = String(o.bs || ''); o.bd = String(o.bd || ''); return o; };
 const SKAAL = ['Skål!', 'Skål for Dalgasgade!', 'Skål for UCplus Silkeborg!', 'Skål og tak for alt, kollegaer!', 'Mere rosé til bord tre!', 'Hvem har taget den sidste Classic?',
-  'Skål for Winnie og hendes rosé!', 'Samme tid næste år – nyt sted!', 'En øl, øllen, øllene. Skål!', 'Skål for kursisterne – de var de bedste!', 'Skål for Costa Rica!',
+  'Skål for Winnie og hendes rosé!', 'Samme tid næste år – nyt sted!', 'En øl, øllen, øllene. Skål!', 'Skål for kursisterne – de var de bedste!',
   'Inversion: Nu drikker vi rosé!', 'Skål i bund – med stød!', 'Hvem rydder op i Lokale 0.1 bagefter?', 'Djævlen fik aldrig noget rosé.', 'Det står i overenskomsten: fredagsbar er obligatorisk.'];
 const BAR_SPOTS = [];
 FURN.filter(f => f.t === 'round' && (roomAt(f.x + f.w / 2, f.y + f.h / 2) || {}).id === 'l01').forEach(f => BAR_SPOTS.push([f.x - 7, f.y + 12], [f.x + f.w + 7, f.y + 12], [f.x + f.w / 2, f.y + f.h + 8], [f.x + 5, f.y + f.h + 7], [f.x + f.w - 5, f.y + f.h + 7]));
@@ -951,12 +951,12 @@ const BENTE_LINES = ['Nej, hej med dig! Har du to minutter? Det tager kun to min
 const BENTE_BACK = ['Ja ja, det skal vi alle sammen. Men lige én ting til om Troels\' plads …', 'To sekunder! Det handler om parkeringspladsen. HANS plads, helt ved døren.', 'Nåh, nå. Jamen så må du jo løbe. Hils Troels – og sig, at jeg holder øje med HANS plads!'];
 const BENTE_EXC = ['Undskyld, jeg skal lige …', 'Jeg tror, nogen kalder på mig …', 'Jeg skal VIRKELIG videre nu!'];
 const BENTE_AMB = ['Holder der stadig en bil på Troels\' plads?!', 'Hvem holder på HANS plads?!', 'Kom og sæt dig, jeg skal lige fortælle noget!', 'HELT ved døren, siger jeg jer. HELT ved døren!'];
-// kursisterne i Kursistkantinen roser appen DanskPlus – på hvert sit sprog
+// kursisterne i Kursistkantinen roser appen DanskPlus – på hvert sit sprog. Under duellen hepper de på UCplus (cheer)
 const KURS = [
-  { x: 896, y: 1204, n: 'OKSANA', d: 0, lk: { c: '#f4d06a', h: '#e3c27a', s: '#f5d2b0', hs: 'langt', g: 0 }, say: 'DanskPlus — це фантастика!' },
-  { x: 962, y: 1188, n: 'AHMAD', d: 2, lk: { c: '#2f4f9a', h: '#2a1a10', s: '#b97f57', hs: 'kort', g: 1 }, say: 'DanskPlus رائع!' },
-  { x: 896, y: 1266, n: 'MARÍA', d: 3, lk: { c: '#e0474f', h: '#5c3a1e', s: '#e6b48c', hs: 'knold', g: 0 }, say: '¡DanskPlus es fantástica!' },
-  { x: 962, y: 1258, n: 'PIOTR', d: 0, lk: { c: '#5fd38a', h: '#a8652e', s: '#f5d2b0', hs: 'kroller', g: 0 }, say: 'DanskPlus jest super!' }];
+  { x: 896, y: 1204, n: 'OKSANA', d: 0, lk: { c: '#f4d06a', h: '#e3c27a', s: '#f5d2b0', hs: 'langt', g: 0 }, say: 'DanskPlus — це фантастика!', cheer: 'Вперед, UCplus! UCplus — найкращі!' },
+  { x: 962, y: 1188, n: 'AHMAD', d: 2, lk: { c: '#2f4f9a', h: '#2a1a10', s: '#b97f57', hs: 'kort', g: 1 }, say: 'DanskPlus رائع!', cheer: 'هيا يا UCplus! أنتم الأفضل!' },
+  { x: 896, y: 1266, n: 'MARÍA', d: 3, lk: { c: '#e0474f', h: '#5c3a1e', s: '#e6b48c', hs: 'knold', g: 0 }, say: '¡DanskPlus es fantástica!', cheer: '¡Vamos, UCplus! ¡Son los mejores!' },
+  { x: 962, y: 1258, n: 'PIOTR', d: 0, lk: { c: '#5fd38a', h: '#a8652e', s: '#f5d2b0', hs: 'kroller', g: 0 }, say: 'DanskPlus jest super!', cheer: 'Dawaj, UCplus! Jesteście najlepsi!' }];
 const MT_Q = [['I går ___ jeg i Netto.', 'gik', 'går', 'gået'], ['Hun har to ___.', 'børn', 'barner', 'børner'], ['Jeg bor ___ Silkeborg.', 'i', 'på', 'til'], ['Vi ses ___ mandag!', 'på', 'i', 'til'],
   ['Jeg ved, at han ___.', 'ikke kommer', 'kommer ikke', 'ikke komme'], ['Et hus – to ___.', 'huse', 'huser', 'hus'], ['Det er ___ bil.', 'min', 'mit', 'mine'], ['I morgen ___ vi til fredagsbar.', 'skal', 'skulle', 'skullet'],
   ['Bogen ligger ___ bordet.', 'på', 'i', 'ad'], ['Om fredagen ___ vi altid kage.', 'spiser', 'spise', 'spist'], ['Jeg har boet her ___ fem år.', 'i', 'siden', 'for'], ['Hun er ___ end mig.', 'højere', 'mere høj', 'højest']];
@@ -3736,7 +3736,7 @@ function runFx(fx) {
   else if (fx.type === 'jam') { closeDlg(); if (pzKind === 'song') closePz(); titleCard('JAM-SESSION', fx.by + ' tog ' + GUITAR_NAME + ': »' + songOf(fx).title + '«. Gør jer klar…'); burst(1797, 380, 40, 'confetti'); }
   else if (fx.type === 'jamend') { if (fx.fin) banner('🎸 ' + fx.t + ' % i takt! Skål for musikken – hvem tager den næste sang?', '', 6000); else banner(fx.ok ? '🎸 ' + fx.t + ' % i takt! Guitar-bonus låst op til bosskampen!' : '🎸 ' + fx.t + ' % i takt. Lidt rusten… Prøv igen om lidt!', fx.ok ? '' : 'teal', 6000); if (fx.ok) Snd.pickup(); }
   else if (fx.type === 'hit') {
-    if (ROLE === 'screen') { const k = KURS[Math.floor(Math.random() * KURS.length)]; setTimeout(() => { if (S().phase === 'djaevel') banner('📣 ' + k.n[0] + k.n.slice(1).toLowerCase() + ' hepper fra kantinen: ' + k.say, 'teal', 2600); }, 1500); }
+    if (ROLE === 'screen') { const k = KURS[Math.floor(Math.random() * KURS.length)]; setTimeout(() => { if (S().phase === 'djaevel') banner('📣 ' + k.n[0] + k.n.slice(1).toLowerCase() + ' hepper fra kantinen: ' + k.cheer, 'teal', 2600); }, 1500); }
     devilHitT = performance.now(); Snd.right(); Snd.hit(); shake(300, 3);
     emit({ x: DEVIL.x + rand(-8, 8), y: DEVIL.y - 66, vx: 0, vy: -16, life: 1.8, fade: 0.7, s: 1, txt: '-' + fx.dmg, c: '#ffd23f', L: 'g' });
     if (fx.heal) emit({ x: DEVIL.x + 18, y: DEVIL.y - 58, vx: 0, vy: -14, life: 1.8, fade: 0.7, s: 1, txt: '+' + fx.heal, c: '#5fd38a', L: 'g' });

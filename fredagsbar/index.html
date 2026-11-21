@@ -273,6 +273,23 @@ body.gm #pzq{left:16px;right:396px;bottom:16px;max-width:none}
 .where-pick button.online b{color:var(--teal2)} .where-pick button.online[aria-pressed="true"]{border-color:var(--teal);background:#0f2a2a}
 #j-go{font-family:var(--pixel);font-size:12px;padding:16px;border:none;border-radius:999px;background:var(--gold);color:var(--ink);box-shadow:inset 0 -5px 0 rgba(0,0,0,.18)}
 #j-go:active{background:var(--gold2)}
+#j-cont{border:1px solid var(--gold);border-radius:12px;padding:14px;background:#1a2f22;display:flex;flex-direction:column;gap:10px}
+#j-cont b{font-family:var(--pixel);font-size:11px;font-weight:400;color:var(--gold);line-height:1.6}
+#j-cont span{font-size:14px;color:#d6e4df;line-height:1.5}
+.gobtn{font-family:var(--pixel);font-size:12px;padding:16px;border:none;border-radius:999px;background:var(--gold);color:var(--ink);box-shadow:inset 0 -5px 0 rgba(0,0,0,.18);cursor:pointer}
+.gobtn:active{background:var(--gold2)}
+.ghostbtn{font-size:14px;padding:13px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--cream);cursor:pointer}
+.ghostbtn.danger{color:#ff9096;border-color:rgba(255,144,150,.4)} .ghostbtn.danger.sure{background:#5a1a1f;color:#fff;border-color:#ff9096}
+#howto,#solomenu{position:fixed;inset:0;z-index:41;backdrop-filter:blur(2px);overflow:auto;display:flex;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top, 0px) + 18px) max(16px, env(safe-area-inset-right, 0px)) calc(env(safe-area-inset-bottom, 0px) + 18px) max(16px, env(safe-area-inset-left, 0px));background:rgba(5,10,12,.78)}
+#howto h2,#solomenu h2{font-family:var(--pixel);font-weight:400;font-size:clamp(15px,4.4vw,19px);line-height:1.5;color:var(--gold);margin:0}
+#howto ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:13px}
+#howto li{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start;font-size:15px;line-height:1.5;color:var(--cream)}
+#howto li i{font-style:normal;font-size:22px;line-height:1.2;text-align:center}
+#howto li b{color:var(--gold);font-weight:600}
+body.solo .conn{cursor:pointer} body.solo .conn span{font-size:11px}
+body.solo #b-greet{display:none}
+body.player #cv{cursor:pointer}
 #j-err{color:#ff9096;font-size:12.5px;margin:-6px 0 0;min-height:1em}
 .small{font-size:11px;color:#6f8a84;line-height:1.5;margin:0}
 
@@ -392,6 +409,8 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
     <p class="kick">UCplus · Sidste fredagsbar · 20.11.2026</p>
     <h1>Slaget om Dalgasgade</h1>
     <p class="lead">Det er sidste arbejdsdag på sprogcentret. Løs opgaverne og find de fem legendariske genstande sammen med dine kollegaer. Der lurer noget i personalerummet…</p>
+    <div id="j-cont" hidden><b id="j-cont-t"></b><span id="j-cont-s"></span><button type="button" class="gobtn" id="j-cont-go">Fortsæt ▶</button></div>
+    <p class="small" id="j-new-l" hidden>Eller start et nyt spil:</p>
     <div class="field">
       <label for="j-name">Dit navn</label>
       <input id="j-name" maxlength="14" placeholder="Fx Hanne" enterkeyhint="go">
@@ -420,6 +439,30 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
     <button id="j-go" type="submit">Gå ind ▶</button>
     <p class="small">Spillet virker bedst på mobilen. Træk med tommelfingeren for at gå, og tryk BRUG ved ting med et udråbstegn.</p>
   </form>
+</div>
+
+<div id="howto" hidden role="dialog" aria-labelledby="howto-h">
+  <div class="card">
+    <p class="kick">Slaget om Dalgasgade</p>
+    <h2 id="howto-h">Sådan spiller du</h2>
+    <ul>
+      <li><i aria-hidden="true">👆</i><span><b>Gå:</b> Tryk på gulvet dér, hvor du vil hen. Du kan også trække med tommelfingeren – eller bruge piletasterne og musen på en computer.</span></li>
+      <li><i aria-hidden="true">❗</i><span><b>Undersøg:</b> Personer og ting med et gult udråbstegn kan du tale med. Tryk direkte på dem – eller stil dig ved siden af og tryk BRUG.</span></li>
+      <li><i aria-hidden="true">📋</i><span><b>Opgaver:</b> Tryk på OPGAVER øverst for at se, hvad der mangler. Find de fem legendariske genstande … så sker der noget.</span></li>
+      <li><i aria-hidden="true">🪜</i><span><b>1. sal:</b> Gå op ad trappen for at komme ovenpå.</span></li>
+      <li><i aria-hidden="true">💾</i><span><b>Gemt:</b> Spillet gemmer af sig selv. Luk bare siden, og fortsæt en anden dag – på samme telefon eller computer.</span></li>
+    </ul>
+    <button type="button" class="gobtn" id="howto-go">Gå i gang ▶</button>
+  </div>
+</div>
+<div id="solomenu" hidden role="dialog" aria-labelledby="sm-h">
+  <div class="card">
+    <h2 id="sm-h">💾 Spillet er gemt</h2>
+    <p class="lead">Det gemmes af sig selv, mens du spiller. Du kan lukke siden og fortsætte en anden dag på samme telefon eller computer.</p>
+    <button type="button" class="gobtn" id="sm-close">Spil videre ▶</button>
+    <button type="button" class="ghostbtn" id="sm-help">Sådan spiller du</button>
+    <button type="button" class="ghostbtn danger" id="sm-new">Start forfra …</button>
+  </div>
 </div>
 
 <!-- storskærm -->
@@ -456,7 +499,7 @@ body.screen #boss{top:90px} body.screen #boss span{font-size:11px} body.screen.d
 <script>
 'use strict';
 /* ════════════════════════════════════════════════════════════════════
-   SLAGET OM DALGASGADE · v1.7.2
+   SLAGET OM DALGASGADE · v1.8
    Visninger:  ?skaerm (storskærm)  ·  ?gm (Game Master)  ·  ingenting = spiller
    Testspil:   ?spil=test  (adskilt fra det rigtige spil)
    ════════════════════════════════════════════════════════════════════ */
@@ -466,6 +509,9 @@ const Q = new URLSearchParams(location.search);
 const HASH = (location.hash || '').replace('#', '').toLowerCase();
 const ROLE = (Q.has('gm') || HASH === 'gm') ? 'gm' : (Q.has('skaerm') || Q.has('screen') || HASH === 'skaerm') ? 'screen' : 'player';
 const GAME = ((Q.get('spil') || 'ucplus-2026').replace(/[^a-z0-9-]/gi, '').slice(0, 32)) || 'ucplus-2026';
+// PÅ EGEN HÅND: fredagsbaren er overstået, så linket uden spil-navn er single-player (gemmes på enheden).
+// Storskærm (?skaerm), Game Master (?gm) og ?spil=navn er stadig det fælles spil over Firebase.
+const SOLO = ROLE === 'player' && (Q.has('solo') || !Q.has('spil'));
 const JOIN_URL = window.JOIN_URL || 'https://grammgren.dk/fredagsbar';
 
 const $ = s => document.querySelector(s);
@@ -486,6 +532,7 @@ function shade(hex, amt) {
 }
 
 const ID = (() => {
+  if (SOLO) { let sid = lsGet('dalgasgade_solo_id'); if (!sid) { sid = 'solo' + rid(8); lsSet('dalgasgade_solo_id', sid); } return sid; }
   let id = null; try { id = sessionStorage.getItem('fb_id'); } catch (e) {}
   if (!id) { id = rid(10); try { sessionStorage.setItem('fb_id', id); } catch (e) {} }
   return id;
@@ -1105,6 +1152,7 @@ const SHIRTS = ['#4fc3f7', '#e0474f', '#5fd38a', '#f4a63a', '#9b6be0', '#f2efe6'
 const HAIRS = ['#2a1a10', '#5c3a1e', '#a8652e', '#e3c27a', '#c9c9c9', '#7a2b2b'];
 const SKINS = ['#f5d2b0', '#e6b48c', '#b97f57', '#7a4e33'];
 const STYLES = [['kort', 'Kort'], ['langt', 'Langt'], ['knold', 'Knold'], ['kroller', 'Krøller'], ['skaldet', 'Skaldet'], ['hue', 'Hue']];
+const PARTY_GUESTS = ['Pedellen', 'Vikaren', 'Praktikanten', 'Censoren', 'Bogholderen', 'Vejlederen', 'Kantinechefen', 'Konsulenten'];
 const BOT_NAMES = ['Test-Tove', 'Test-Bent', 'Test-Hanne', 'Test-Ole', 'Test-Mette', 'Test-Søren', 'Test-Lise', 'Test-Kim', 'Test-Anne', 'Test-Lars'];
 
 function roomAt(x, y) { for (const r of ROOMS) if (x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) return r; return null; }
@@ -2444,7 +2492,7 @@ function renderPzq() {
     pzqKey = key;
     if (z.s === 'ask') {
       setHtml('#pzq-o', z.o.map(v => isP ? '<button type="button" data-pzv="' + v + '"' + (mine >= 0 ? ' disabled' : '') + ' class="' + (mine === v ? 'me' : '') + '"><em>' + esc(PZ_OPTS[v]) + '</em></button>' : '<span><em>' + esc(PZ_OPTS[v]) + '</em></span>').join(''));
-      setHtml('#pzq-f', (isP && mine >= 0 ? 'Du svarede »' + esc(PZ_OPTS[mine]) + '«. ' : isP ? 'Flertallet bestemmer – svar, før han kører igen! ' : '') + n + ' af ' + voters + ' har svaret' + (isP ? '.' : ' · svar på telefonen – flertallet bestemmer!'));
+      setHtml('#pzq-f', (isP && mine >= 0 ? 'Du svarede »' + esc(PZ_OPTS[mine]) + '«. ' : isP ? (SOLO ? 'Svar, før han kører igen!' : 'Flertallet bestemmer – svar, før han kører igen! ') : '') + (SOLO ? '' : n + ' af ' + voters + ' har svaret') + (isP ? (SOLO ? '' : '.') : ' · svar på telefonen – flertallet bestemmer!'));
     } else {
       const cnt = [0, 0, 0, 0]; for (const v of Object.values(z.v)) cnt[v]++; const tot = Math.max(1, z.n);
       setHtml('#pzq-o', z.o.map(v => '<span class="' + (v === 0 ? 'ok' : mine === v ? 'me' : '') + '"><i style="width:' + Math.round(cnt[v] / tot * 100) + '%"></i><em>' + esc(PZ_OPTS[v]) + '</em><b>' + cnt[v] + '</b></span>').join(''));
@@ -2899,7 +2947,7 @@ const Net = { mode: 'local', connected: false, err: '' };
 const Local = {
   bc: null,
   init() {
-    try { this.bc = new BroadcastChannel('fredagsbar:' + GAME); this.bc.onmessage = e => this.onMsg(e.data); } catch (e) { this.bc = null; }
+    try { this.bc = new BroadcastChannel('fredagsbar:' + (SOLO ? 'solo:' + ID : GAME)); this.bc.onmessage = e => this.onMsg(e.data); } catch (e) { this.bc = null; }
     Net.connected = true;
     setInterval(() => this.heartbeat(), 1000);
     setInterval(() => { const t = Date.now(); for (const [id, p] of players) { if (id !== ID && !bots.has(id) && t - (p.seen || 0) > 3500) players.delete(id); } }, 1000);
@@ -3003,7 +3051,7 @@ function netAction(a) {
 
 // ═════════ VÆRT: spillogik (storskærmen, ellers GM, ellers første spiller) ═════════
 let autoStartAt = 0, autoDevilAt = 0;
-function commit() { state.rev = (state.rev || 0) + 1; const c = JSON.parse(JSON.stringify(state)); netState(c); applyState(c); }
+function commit() { state.rev = (state.rev || 0) + 1; const c = JSON.parse(JSON.stringify(state)); netState(c); applyState(c); if (SOLO) soloSaveSoon(); }
 const plateNeed = () => clamp(Math.ceil(humans().length / 8), 1, 4);
 function setPhase(st, ph) {
   st.phase = ph; st.fx = { id: rid(), type: 'phase', phase: ph };
@@ -3102,7 +3150,7 @@ function talkTick(st) {
 // ═════════ LEVERINGSBILEN (værten styrer) ═════════
 function startDelivery(st, kind) {
   const n0 = participants().length;
-  const n = kind === 'paper' ? clamp(n0, 5, 12) : n0 <= 8 ? 8 : n0 <= 14 ? 10 : 20;
+  const n = SOLO ? (kind === 'paper' ? 3 : 4) : kind === 'paper' ? clamp(n0, 5, 12) : n0 <= 8 ? 8 : n0 <= 14 ? 10 : 20;
   st.del = { id: rid(), kind, stage: 'in', t0: serverNow(), t1: 0, n, left: n, got: 0, carry: {} };
   st.dl[kind] = 1;
   st.fx = { id: rid(), type: 'van', kind, n };
@@ -3140,7 +3188,7 @@ function delAuto(st) {
   return false;
 }
 // ═════════ OPGAVERNE (værten styrer) ═════════
-const retNeed = () => clamp(Math.round(humans().length * 1.25), 8, 30);
+const retNeed = () => SOLO ? 5 : clamp(Math.round(humans().length * 1.25), 8, 30);
 function solveRet(st) { st.ret.got = Math.max(st.ret.got, st.ret.need); st.doors.ret = true; st.fx = { id: rid(), type: 'retdone' }; }
 function solveOrd(st, gm) {
   const o = st.ord;
@@ -3150,9 +3198,9 @@ function solveOrd(st, gm) {
 function solveCode(st, by) { st.it.on = 1; st.fx = { id: rid(), type: 'itlogin', by: String(by || 'Nogen').slice(0, 14) }; }
 function solveIt(st) { st.it.on = 1; st.it.got = Math.max(st.it.got, st.it.need); st.doors.tr = true; st.fx = { id: rid(), type: 'itdone' }; }
 const hiddenCount = st => (st.bonus.modul ? 1 : 0) + (st.bonus.bente ? 1 : 0) + (st.bonus.troels ? 1 : 0);
-const mtNeed = () => clamp(Math.round(humans().length * 0.35), 2, 8), benteNeed = () => clamp(Math.ceil(humans().length / 8) + 1, 2, 3), pushNeed = () => clamp(Math.round(humans().length / 4), 2, 5);
+const mtNeed = () => SOLO ? 1 : clamp(Math.round(humans().length * 0.35), 2, 8), benteNeed = () => SOLO ? 1 : clamp(Math.ceil(humans().length / 8) + 1, 2, 3), pushNeed = () => SOLO ? 3 : clamp(Math.round(humans().length / 4), 2, 5);
 const pushT = {}, greetT = {};
-const itNeed = () => clamp(Math.round(humans().length * 0.5), 3, 10);
+const itNeed = () => SOLO ? 2 : clamp(Math.round(humans().length * 0.5), 3, 10);
 
 // ═════════ GUITAR-JAM (værten styrer) ═════════
 let jamBotT = 0;
@@ -3206,7 +3254,7 @@ function startQuestion(st) {
   if (q.k === 'A') { const arr = shuffle(q.o.map((t, i) => [t, i === 0])); opts = arr.map(x => x[0]); ci = arr.findIndex(x => x[1]); }
   else if (q.k === 'B') { opts = shuffle([q.to, ...shuffle(COLLEAGUES.filter(n => n !== q.to)).slice(0, 3)]); ci = opts.indexOf(q.to); }
   else { opts = ['Ægte kursist', 'Djævlens løgn']; ci = q.real ? 0 : 1; }
-  b.round++; b.stage = 'q'; b.qi = qi; b.opts = opts; b.ci = ci; b.t0 = serverNow(); b.dur = p2 ? (q.k === 'C' ? 8500 : 10500) : q.k === 'C' ? 12000 : 17000; b.ans = {}; b.rev = null; b.say = q.q;
+  b.round++; b.stage = 'q'; b.qi = qi; b.opts = opts; b.ci = ci; b.t0 = serverNow(); b.dur = Math.round((p2 ? (q.k === 'C' ? 8500 : 10500) : q.k === 'C' ? 12000 : 17000) * (SOLO ? (p2 ? 1.4 : 1.5) : 1)); b.ans = {}; b.rev = null; // alene: god tid til at læse b.say = q.q;
   if (p2) { // blækbyger: varslet bliver kortere for hver bølge
     b.wave++; b.blobs = []; b.inked = {}; b.ink1 = {}; const warn = Math.max(950, 1450 - b.wave * 90);
     b.vol = [2300, 4700, 7100, 9400].filter(h => h < b.dur - 300).map((h, i) => ({ i, hit: b.t0 + h, warn: b.t0 + h - warn, s: 0 }));
@@ -3320,7 +3368,7 @@ function rehTick(st) {
 function hostLoop() {
   hostId = computeHost();
   if (!isHost() || !playersLoaded || !stateLoaded) return;
-  if (!state) { state = freshState(); commit(); if (Net.mode === 'local' && !bots.size) addBots(6); return; }
+  if (!state) { if (SOLO) return; state = freshState(); commit(); if (Net.mode === 'local' && !bots.size) addBots(6); return; }
   const st = state; let ch = rehTick(st);
   if (st.phase === 'akt1') {
     const need = plateNeed();
@@ -3329,7 +3377,8 @@ function hostLoop() {
       let n = 0;
       for (const p of players.values()) if ((p.r === 'player' || p.r === 'bot') && Math.hypot(p.x - pl.x, p.y - pl.y) < pl.r + 4) n++;
       if (st.pcount[pl.id] !== n) { st.pcount[pl.id] = n; ch = true; }
-      if (st.plates[pl.id] !== (n >= need)) { st.plates[pl.id] = n >= need; ch = true; }
+      const on = n >= need || (SOLO && !!st.plates[pl.id]);
+      if (st.plates[pl.id] !== on) { st.plates[pl.id] = on; ch = true; if (SOLO && on && !st.doors.arkiv) st.fx = { id: rid(), type: 'plate', room: pl.room, k: PLATES.filter(q => st.plates[q.id]).length }; }
     }
     if (!st.doors.arkiv && PLATES.every(pl => st.plates[pl.id])) { st.doors.arkiv = true; st.fx = { id: rid(), type: 'door' }; ch = true; }
     if (st.del) ch = delTick(st) || ch;
@@ -3351,6 +3400,7 @@ function hostLoop() {
   if (st.phase === 'djaevel') ch = bossTick(st) || ch;
   if (st.phase === 'finale' && !st.fcr && !st.jam && st.f0 && serverNow() > st.f0 + CREDITS_AT) { st.fcr = 1; st.fx = { id: rid(), type: 'credits' }; ch = true; }
   if (st.phase === 'finale') ch = partyTick(st) || ch;
+  if (SOLO && st.phase === 'finale' && !bots.size) addBots(PARTY_GUESTS.length, PARTY_GUESTS); // alene: festgæsterne kommer til fredagsbaren
   if (st.jam) ch = jamTick(st) || ch;
   if (st.phase === 'lobby') { ch = seatTick(st) || ch; ch = talkTick(st) || ch; }
   if (ch || duelDirty) { duelDirty = false; commit(); }
@@ -3404,7 +3454,7 @@ function handleAction(a) {
   }
   if (a.type === 'push') {
     if (st.phase !== 'akt1' || st.wk || !from) return;
-    const now = Date.now(); pushT[a.from] = now;
+    const now = Date.now(); pushT[SOLO ? a.from + ':' + now : a.from] = now; // alene: tre hurtige skub
     if (Object.values(pushT).filter(v => now - v < 4000).length >= pushNeed()) { st.wk = serverNow(); st.bonus.troels = 1; st.fx = { id: rid(), type: 'hidden', k: 'troels' }; commit(); }
     return;
   }
@@ -3486,10 +3536,10 @@ function handleAction(a) {
 }
 
 // ═════════ TEST-KOLLEGAER (bots) ═════════
-function addBots(n) {
+function addBots(n, names) {
   for (let i = 0; i < n; i++) {
     const id = 'bot-' + rid(6), sp = spawnPoint();
-    const b = { id, n: BOT_NAMES[bots.size % BOT_NAMES.length], c: pick(SHIRTS), h: pick(HAIRS), s: pick(SKINS), hs: pick(STYLES)[0], g: Math.random() < 0.3 ? 1 : 0,
+    const b = { id, n: names ? names[i % names.length] : BOT_NAMES[bots.size % BOT_NAMES.length], c: pick(SHIRTS), h: pick(HAIRS), s: pick(SKINS), hs: pick(STYLES)[0], g: Math.random() < 0.3 ? 1 : 0,
       w: Math.random() < 0.5 ? 'room' : 'online', r: 'bot', x: sp.x, y: sp.y, d: 0, m: 0, j: 0, rx: sp.x, ry: sp.y, path: null, wait: 0.5 + i * 0.4, dwell: 0, lastPub: 0, seen: Date.now() };
     bots.set(id, b); players.set(id, b); netBot(b);
   }
@@ -3674,6 +3724,7 @@ function runFx(fx) {
   if (fx.type === 'pickup' && ITEMS[fx.item]) {
     const it = ITEMS[fx.item]; banner('✨ ' + fx.by + ' fandt ' + it.name + '!', '', 4200); Snd.pickup();
     burst(it.x, it.y, 46, 'confetti'); fxLights.push({ x: it.x, y: it.y - 6, r: 90, i: 0.9, c: 'gold', g: 0.5, life: 1.1, max: 1.1 });
+  } else if (fx.type === 'plate') { banner('👣 Trykpladen i ' + fx.room + ' klikker fast! (' + fx.k + '/3)', 'teal', 3800); Snd.pickup();
   } else if (fx.type === 'door') {
     banner('🔓 Det mørke kontor på 1. sal er åbent! Nøglebundtet venter derinde.', 'teal', 5000); Snd.door(); shake(450, 3);
     burst(830, 330, 30, 'dust'); fxLights.push({ x: 830, y: 330, r: 110, i: 0.9, c: 'gold', g: 0.45, life: 1.4, max: 1.4 });
@@ -3743,8 +3794,8 @@ function runFx(fx) {
     burst(DEVIL.x, DEVIL.y - 30, 22, 'ember'); fxLights.push({ x: DEVIL.x, y: DEVIL.y - 30, r: 90, i: 0.9, c: 'gold', g: 0.4, life: 0.6, max: 0.6 });
   } else if (fx.type === 'laugh') {
     Snd.wrong(); if (fx.heal) emit({ x: DEVIL.x, y: DEVIL.y - 66, vx: 0, vy: -16, life: 1.8, fade: 0.7, s: 1, txt: '+' + fx.heal, c: '#5fd38a', L: 'g' });
-  } else if (fx.type === 'rally') { if (fx.n === 1) titleCard('FÆLLES FODSLAG', 'Slå til på samme tid – alle sammen!'); lastBeep = -1; }
-  else if (fx.type === 'rallyfail') { banner('Ikke helt sammen! ' + fx.got + ' af ' + fx.need + ' nødvendige. Igen!', 'red', 4200); Snd.wrong(); lastBeep = -1; }
+  } else if (fx.type === 'rally') { if (fx.n === 1) { if (SOLO) titleCard('SIDSTE SLAG', 'Tryk »Slå til!«, når nedtællingen er færdig!'); else titleCard('FÆLLES FODSLAG', 'Slå til på samme tid – alle sammen!'); } lastBeep = -1; }
+  else if (fx.type === 'rallyfail') { banner(SOLO ? 'Lige ved og næsten! Prøv igen, når nedtællingen er færdig.' : 'Ikke helt sammen! ' + fx.got + ' af ' + fx.need + ' nødvendige. Igen!', 'red', 4200); Snd.wrong(); lastBeep = -1; }
   else if (fx.type === 'win') { banner('✈ Hjælpen kommer fra Costa Rica!', 'teal', 2600); Snd.plane(); }
   else if (fx.type === 'gather' || fx.type === 'reset') {
     const mp = players.get(ID);
@@ -3756,7 +3807,7 @@ function onPhase(from, to) {
   if (to === 'djaevel') devilT0 = from === null ? -1e9 : performance.now();
   if (from === null) return;
   if (to === 'akt1') {
-    titleCard('AKT 1', 'Oprydningen · Kig jer omkring – opgavetavlen viser, hvad der skal gøres'); Snd.start();
+    titleCard('AKT 1', SOLO ? 'Oprydningen · Kig dig omkring – opgavetavlen viser, hvad der skal gøres' : 'Oprydningen · Kig jer omkring – opgavetavlen viser, hvad der skal gøres'); Snd.start();
     if (ROLE === 'player') setTimeout(() => { if (S().phase === 'akt1' && me) openTasks(9000); }, 4300);
   }
   if (to !== 'akt1') { closePz(); $('#tasks').hidden = ROLE !== 'screen' || to !== 'akt1'; }
@@ -3968,8 +4019,9 @@ function showCredits() {
     (S().dl.paper === 2 || S().dl.books === 2 ? '<h3>Leveret i dag</h3><p>' + [S().dl.paper === 2 ? 'Printerpapir til Kopirummet' : '', S().dl.books === 2 ? '1000 eksemplarer af »Vi taler dansk«' : ''].filter(Boolean).join('<br>') + '</p>' : '') +
     (() => { const st = S(), l = []; if (st.doors.ret) l.push(st.ret.got + ' opgaver rettet'); if (st.doors.ord) l.push('3 sætninger i perfekt ordstilling'); if (st.doors.tr) l.push('Koden til pengeboksen var ' + codeOf(st)); return l.length ? '<h3>Opgaver løst</h3><p>' + l.join('<br>') + '</p>' : ''; })() +
     (() => { const P = S().party, l = []; if (P.big >= 3) l.push('Dagens kæmpeskål: ' + P.big + ' kollegaer på én gang'); if (P.sk) l.push(P.sk + ' skåler og ' + P.dn + ' danse'); if (P.bs && P.bsc >= 2) l.push('Flest skåler: ' + esc(P.bs)); if (P.bd && P.bdc >= 2) l.push('Dagens dansemester: ' + esc(P.bd)); return l.length ? '<h3>Festen i tal</h3><p>' + l.join('<br>') + '</p>' : ''; })() +
-    '<h3>Kode, idé og quiz master</h3><p>Jacob, live fra San José, Costa Rica</p>' +
+    '<h3>Kode, idé og quiz master</h3><p>' + (SOLO ? 'Jacob, fra San José, Costa Rica' : 'Jacob, live fra San José, Costa Rica') + '</p>' +
     '<h3>Dagens vin</h3><p>Winnies Rosé, årgang 2026</p>' +
+    (SOLO ? '<h3>Tak fordi du spillede</h3><p>Spillet er gemt på denne enhed.<br>Vil du starte forfra, så tryk på 💾 øverst.</p>' : '') +
     '<p class="end">Fredagsbaren er hermed åben</p>';
   const roll = $('#roll'); roll.style.animation = 'none'; void roll.offsetHeight; roll.style.animation = '';
   $('#credits').hidden = false;
@@ -4019,8 +4071,8 @@ function renderDuel() {
     let foot = '';
     if (b.stage === 'q') {
       const n = Object.keys(b.ans).length, tot = participants().length;
-      if (b.p2) foot = (ROLE === 'player' && me ? (myVoid(b) ? '<span class="bad">🔴 Ramt af rødt blæk, før du svarede! Du kan ikke svare i denne bølge.</span> ' : myHitAt(b) ? '<span class="bad">🔴 Ramt af blæk</span> – men dit svar nåede ind! ' : mine >= 0 ? '✓ Svar sikret! Hold dig stadig fra ringene – hver plet heler djævlen. ' : 'Svar, før blækket rammer dig – og hold dig fra de røde ringe! ') : 'Svar, før blækket rammer! Bliver man ramt først, tæller svaret ikke. ') + n + ' af ' + tot + ' har svaret.';
-      else foot = (mine >= 0 ? '✓ Svar låst. ' : (ROLE === 'player' && me ? 'Tryk på det rigtige svar! ' : '')) + n + ' af ' + tot + ' har svaret.';
+      if (b.p2) foot = (ROLE === 'player' && me ? (myVoid(b) ? '<span class="bad">🔴 Ramt af rødt blæk, før du svarede! Du kan ikke svare i denne bølge.</span> ' : myHitAt(b) ? '<span class="bad">🔴 Ramt af blæk</span> – men dit svar nåede ind! ' : mine >= 0 ? '✓ Svar sikret! Hold dig stadig fra ringene – hver plet heler djævlen. ' : 'Svar, før blækket rammer dig – og hold dig fra de røde ringe! ') : 'Svar, før blækket rammer! Bliver man ramt først, tæller svaret ikke. ') + (SOLO ? '' : n + ' af ' + tot + ' har svaret.');
+      else foot = (mine >= 0 ? '✓ Svar låst. ' : (ROLE === 'player' && me ? 'Tryk på det rigtige svar! ' : '')) + (SOLO ? '' : n + ' af ' + tot + ' har svaret.');
     } else if (b.rev) {
       const r = b.rev, expl = q.x || (q.k === 'B' ? 'Sagt til ' + q.to + '.' : q.k === 'C' ? (q.real ? 'Ægte! En kursist har virkelig sagt det.' : 'Opdigtet! Den har djævlen selv fundet på.') : '');
       foot = (ROLE === 'player' && me ? (mine < 0 ? 'For sent! ' : mine === b.ci ? '<strong>Rigtigt!</strong> ' : 'Desværre. ') : '') + esc(expl) + (r.hanne ? ' <strong>HANNE IGEN!</strong>' : '') +
@@ -4290,7 +4342,7 @@ function advanceDlg() {
 }
 function closeDlg() {
   dlgOpen = false; dlgNpc = null; clearInterval(typeTimer); $('#dlg').hidden = true;
-  if (bente) { bente = null; benteCd = performance.now() + 40000; $('#dlg-esc').hidden = true; $('#dlg-hint').textContent = '▼ BRUG / MELLEMRUM'; netPatch({ bn: 0 }); }
+  if (bente) { bente = null; benteCd = performance.now() + 40000; $('#dlg-esc').hidden = true; $('#dlg-hint').textContent = DLG_HINT; netPatch({ bn: 0 }); }
 }
 // Frivillige-Bente: hun fortæller om Troels' bil og HANS parkeringsplads, og man slipper først væk efter tre undskyldninger
 let bente = null, benteCd = 0;
@@ -4298,18 +4350,19 @@ function openBente(n) {
   if (!me || bente) return;
   closePz(); dlgNpc = n; dlgOpen = true; bente = { i: 0, exc: 0, pub: Date.now(), free: 0, cur: BENTE_LINES[0] };
   $('#dlg-name').textContent = n.name; $('#dlg').hidden = false; $('#dlg-esc').hidden = false; $('#dlg-esc').textContent = BENTE_EXC[0];
-  $('#dlg-hint').textContent = '▼ BENTE HOLDER DIG I ÆRMET …'; typeLine(bente.cur); Snd.blip(); netPatch({ bn: serverNow() });
+  $('#dlg-hint').textContent = '▼ BENTE HOLDER DIG I ÆRMET …'; typeLine(bente.cur); Snd.blip(); if (!SOLO) netPatch({ bn: serverNow() });
 }
 function benteNext() {
   const el = $('#dlg-text');
   if (el.textContent.length < bente.cur.length) { clearInterval(typeTimer); el.textContent = bente.cur; return; }
   if (bente.free) { closeDlg(); return; }
   bente.i = bente.i + 1 >= BENTE_LINES.length ? 1 : bente.i + 1; bente.cur = BENTE_LINES[bente.i]; typeLine(bente.cur); Snd.blip();
+  if (SOLO && !bente.heard && bente.i === BENTE_LINES.length - 1) { bente.heard = 1; netPatch({ bn: serverNow() }); } // hørt helt til ende
 }
 function benteExcuse() {
   if (!bente || bente.free) return;
   const k = Math.min(bente.exc, BENTE_BACK.length - 1); bente.exc++; bente.cur = BENTE_BACK[k]; typeLine(bente.cur); Snd.blip();
-  if (bente.exc >= BENTE_BACK.length) { bente.free = 1; $('#dlg-esc').hidden = true; $('#dlg-hint').textContent = '▼ BRUG / MELLEMRUM'; setTimeout(() => { if (bente && bente.free) closeDlg(); }, 3400); }
+  if (bente.exc >= BENTE_BACK.length) { bente.free = 1; $('#dlg-esc').hidden = true; $('#dlg-hint').textContent = DLG_HINT; setTimeout(() => { if (bente && bente.free) closeDlg(); }, 3400); }
   else $('#dlg-esc').textContent = BENTE_EXC[bente.exc];
 }
 $('#dlg-esc').addEventListener('click', e => { e.stopPropagation(); Snd.unlock(); benteExcuse(); });
@@ -4336,7 +4389,7 @@ function useAct(n) {
     if (st.wk) { sayNpc(n.name, ['Bilen er skubbet væk, og Troels\' plads er fri. Der ligger kun en oliepløre tilbage.', 'Fortæl det endelig ikke til Bente. Eller jo – gør det.'], n.x, n.y); return; }
     if (st.phase !== 'akt1') { sayNpc(n.name, ['En gammel bil med motorhjelmen oppe. Den holder på Troels\' plads. Uha.'], n.x, n.y); return; }
     const p = players.get(ID); netAction({ type: 'push' }); Snd.thunk(); emit({ x: p.x, y: p.y - 34, vx: 0, vy: -14, life: 1.2, fade: 0.5, s: 1, txt: 'HIV!', c: '#ffe08a', L: 'g' });
-    banner('🚗 Du skubber til bilen … I skal være ' + pushNeed() + ', der trykker BRUG på samme tid!', 'teal', 2600); return;
+    banner(SOLO ? '🚗 HIV! Bilen rykker sig en lille smule … Tryk BRUG tre gange hurtigt efter hinanden!' : '🚗 Du skubber til bilen … I skal være ' + pushNeed() + ', der trykker BRUG på samme tid!', 'teal', 2600); return;
   }
   if (n.act === 'mt') {
     if (!me || st.phase === 'lobby') return;
@@ -4518,12 +4571,12 @@ function taskRows(st) {
     ['📝', 'Rettebunken', st.doors.ret ? 'Rettet!' : 'Lærerværelset, 1. sal · ' + st.ret.got + '/' + st.ret.need + ' rettet', st.doors.ret, 'kande'],
     ['🔤', 'Ordstillingen', st.doors.ord ? 'Alle tre sætninger står rigtigt!' : 'Lokale 1.1 · sætning ' + (st.ord.r + 1) + '/3', st.doors.ord, 'roedpen'],
     ['🔐', 'Chefens pengeboks', st.doors.tr ? 'Åbnet!' : st.it.on ? 'Chefens kontor · slå alarmen fra ' + st.it.got + '/' + st.it.need : 'Chefens kontor, stuen · gule sedler fundet ' + seen + '/4', st.doors.tr, 'skjold'],
-    ['👣', 'Trykpladerne', st.doors.arkiv ? 'Det mørke kontor er åbent!' : 'Lokale 0.3 · Kursistkantinen · Lokale 1.4', st.doors.arkiv, 'noegler'],
+    ['👣', 'Trykpladerne', st.doors.arkiv ? 'Det mørke kontor er åbent!' : 'Lokale 0.3 · Kursistkantinen · Lokale 1.4' + (SOLO ? ' · ' + PLATES.filter(q => st.plates[q.id]).length + '/3 klikket fast' : ''), st.doors.arkiv, 'noegler'],
     ['🚚', 'Printerpapiret', st.dl.paper === 2 ? 'Båret ind!' : st.dl.paper === 1 ? delTxt('paper') : st.a1 ? 'Leveringsbilen kommer om ' + mmss(st.a1 + PAPER_AT - now) : 'Leveringsbilen kommer senere', st.dl.paper === 2, 'printer'],
     ['📚', '»Vi taler dansk«', st.dl.books === 2 ? 'Det, der lurer, starter med 85 HP' : st.dl.books === 1 ? delTxt('books') : 'Leveringsbilen kommer senere', st.dl.books === 2, null, 1],
-    ['🎸', 'Karins guitar', st.bonus.guitar ? '+25 % skade i duellen' : 'Lokale 0.1 · spil i takt sammen', !!st.bonus.guitar, null, 1],
+    ['🎸', 'Karins guitar', st.bonus.guitar ? '+25 % skade i duellen' : SOLO ? 'Lokale 0.1 · spil i takt' : 'Lokale 0.1 · spil i takt sammen', !!st.bonus.guitar, null, 1],
     ['⭐', 'Skjulte bonusser', hiddenCount(st) + '/3 fundet · hver giver +10 % skade', hiddenCount(st) === 3, null, 1],
-  ].concat(st.pz && st.pz.s ? [['🍕', st.pz.ok ? 'Christines pizzaer' : 'Pizzabuddet', st.pz.ok ? 'Personalerummet · +10 % skade i duellen' : st.pz.s === 'ask' ? 'Hvem har bestilt pizza? Svar på telefonen!' : pzBusy(st) ? 'Pizzabuddet er her!' : 'Kørte igen med alle pizzaerne …', !!st.pz.ok, null, 1]] : []);
+  ].concat(st.pz && st.pz.s ? [['🍕', st.pz.ok ? 'Christines pizzaer' : 'Pizzabuddet', st.pz.ok ? 'Personalerummet · +10 % skade i duellen' : st.pz.s === 'ask' ? (SOLO ? 'Hvem har bestilt pizza? Svar pizzabuddet!' : 'Hvem har bestilt pizza? Svar på telefonen!') : pzBusy(st) ? 'Pizzabuddet er her!' : 'Kørte igen med alle pizzaerne …', !!st.pz.ok, null, 1]] : []);
 }
 function taskHtml(st) {
   return taskRows(st).map(([ic, t, s, done, item, bonus]) => {
@@ -4571,18 +4624,48 @@ const joy = { id: null, ox: 0, oy: 0, x: 0, y: 0, vx: 0, vy: 0 };
 const cv = $('#cv'), ctx = cv.getContext('2d');
 cv.addEventListener('touchstart', e => {
   if (ROLE !== 'player' || !me) return;
-  for (const tch of e.changedTouches) if (joy.id === null) { joy.id = tch.identifier; joy.ox = joy.x = tch.clientX; joy.oy = joy.y = tch.clientY; joy.vx = joy.vy = 0; }
+  for (const tch of e.changedTouches) if (joy.id === null) { joy.id = tch.identifier; joy.ox = joy.x = tch.clientX; joy.oy = joy.y = tch.clientY; joy.vx = joy.vy = 0; joy.t0 = performance.now(); joy.max = 0; }
   e.preventDefault();
 }, { passive: false });
 cv.addEventListener('touchmove', e => {
   for (const tch of e.changedTouches) if (tch.identifier === joy.id) {
-    joy.x = tch.clientX; joy.y = tch.clientY;
+    joy.x = tch.clientX; joy.y = tch.clientY; joy.max = Math.max(joy.max || 0, Math.hypot(joy.x - joy.ox, joy.y - joy.oy));
     let dx = (joy.x - joy.ox) / 42, dy = (joy.y - joy.oy) / 42; const l = Math.hypot(dx, dy); if (l > 1) { dx /= l; dy /= l; }
     joy.vx = dx; joy.vy = dy;
   }
   e.preventDefault();
 }, { passive: false });
-const endTouch = e => { for (const tch of e.changedTouches) if (tch.identifier === joy.id) { joy.id = null; joy.vx = joy.vy = 0; } };
+// et kort tryk uden at trække er »gå derhen« (eller »brug den ting«) i stedet for joysticket
+const endTouch = e => { for (const tch of e.changedTouches) if (tch.identifier === joy.id) { const tap = e.type === 'touchend' && performance.now() - (joy.t0 || 0) < 350 && (joy.max || 0) < 12; joy.id = null; joy.vx = joy.vy = 0; if (tap) tapAt(tch.clientX, tch.clientY); } };
+let mDown = null;
+cv.addEventListener('mousedown', e => { if (e.button === 0) mDown = { x: e.clientX, y: e.clientY }; });
+cv.addEventListener('mouseup', e => { if (mDown && e.button === 0 && Math.hypot(e.clientX - mDown.x, e.clientY - mDown.y) < 8) tapAt(e.clientX, e.clientY); mDown = null; });
+// ═════════ TRYK FOR AT GÅ ═════════
+// figuren finder selv vejen (også op ad trappen). Trykker man på noget med et udråbstegn, går den derhen og bruger det
+let autoWalk = null, walkUse = null, tapMark = null;
+const xf = { ox: 0, oy: 0, z: 1 };
+function tapAt(cx, cy) {
+  if (ROLE !== 'player' || !me) return;
+  const st = S(), p = players.get(ID); if (!p || st.phase === 'lobby' || pzOpen) return;
+  if (dlgOpen) { interact(); return; } // et tryk fører samtalen videre
+  const w = { x: (cx - xf.ox) / xf.z, y: (cy - xf.oy) / xf.z }, tol = Math.max(9, 26 / xf.z), now = performance.now();
+  let npc = null, bd = tol;
+  for (const n of interactables()) { const d = Math.min(Math.hypot(n.x - w.x, n.y - w.y), Math.hypot(n.x - w.x, n.y - 14 - w.y)); if (d < bd) { bd = d; npc = n; } }
+  if (npc && nearNpc === npc) { autoWalk = null; interact(); return; }
+  const tx = npc ? npc.x : w.x, ty = npc ? npc.y : w.y, goal = boxFree(tx, ty) ? { x: tx, y: ty } : freeNear(tx, ty);
+  const path = goal && Math.hypot(goal.x - tx, goal.y - ty) <= (npc ? 44 : 26) ? findPath(p.x, p.y, goal.x, goal.y) : null;
+  if (!path || !path.length) { tapMark = { x: w.x, y: w.y, t: now, bad: 1 }; return; }
+  autoWalk = { path: path.map(q => ({ x: q.x, y: q.y })).concat([{ x: goal.x, y: goal.y }]), npc, gx: goal.x, gy: goal.y };
+  tapMark = { x: goal.x, y: goal.y, t: now };
+}
+function drawTapMark(g, t) {
+  if (autoWalk) { const b = Math.sin(t * 0.008) * 1.2; g.strokeStyle = 'rgba(244,208,106,0.9)'; g.lineWidth = 1; g.beginPath(); g.ellipse(autoWalk.gx, autoWalk.gy, 5 + b, 2.4 + b * 0.4, 0, 0, Math.PI * 2); g.stroke(); }
+  if (!tapMark) return; const a = (performance.now() - tapMark.t) / 650; if (a > 1) { tapMark = null; return; }
+  g.globalAlpha = 1 - a; g.strokeStyle = tapMark.bad ? '#ff6b72' : '#f4d06a'; g.lineWidth = 1.2;
+  if (tapMark.bad) { g.beginPath(); g.moveTo(tapMark.x - 3, tapMark.y - 3); g.lineTo(tapMark.x + 3, tapMark.y + 3); g.moveTo(tapMark.x + 3, tapMark.y - 3); g.lineTo(tapMark.x - 3, tapMark.y + 3); g.stroke(); }
+  else { g.beginPath(); g.ellipse(tapMark.x, tapMark.y, 3 + a * 9, 1.4 + a * 4, 0, 0, Math.PI * 2); g.stroke(); }
+  g.globalAlpha = 1;
+}
 cv.addEventListener('touchend', endTouch); cv.addEventListener('touchcancel', endTouch);
 $('#act').addEventListener('click', () => interact());
 
@@ -4610,23 +4693,39 @@ function updateMe(dt) {
   let vx = 0, vy = 0;
   const napping = p.np && serverNow() - p.np < NAP_MS && serverNow() >= p.np;
   if (!dlgOpen && !pzOpen && !napping && serverNow() >= inkUntil) { vx = (keys.r ? 1 : 0) - (keys.l ? 1 : 0) + joy.vx; vy = (keys.d ? 1 : 0) - (keys.u ? 1 : 0) + joy.vy; }
-  const len = Math.hypot(vx, vy); if (len > 1) { vx /= len; vy /= len; }
-  const moving = len > 0.15, sp = 95;
-  if (moving) {
+  let len = Math.hypot(vx, vy); if (len > 1) { vx /= len; vy /= len; }
+  const sp = 95, x0 = p.x, y0 = p.y; let auto = false;
+  if (len > 0.15) autoWalk = null; // styrer man selv, stopper den automatiske gang
+  else if (autoWalk && !dlgOpen && !pzOpen && !napping && serverNow() >= inkUntil) {
+    let left = sp * dt;
+    while (left > 0 && autoWalk.path.length) {
+      const q = autoWalk.path[0], dx = q.x - p.x, dy = q.y - p.y, d = Math.hypot(dx, dy);
+      if (d <= left) { p.x = q.x; p.y = q.y; left -= d; autoWalk.path.shift(); } else { p.x += dx / d * left; p.y += dy / d * left; vx = dx / d; vy = dy / d; left = 0; }
+    }
+    if (vx || vy) { len = 1; auto = true; }
+    if (!autoWalk.path.length) { walkUse = autoWalk.npc; autoWalk = null; }
+  }
+  const moving = len > 0.15;
+  if (moving && !auto) {
     const nx = p.x + vx * sp * dt, ny = p.y + vy * sp * dt;
     if (boxFree(nx, p.y)) p.x = nx;
     if (boxFree(p.x, ny)) p.y = ny;
-    p.d = Math.abs(vx) > Math.abs(vy) ? (vx > 0 ? 3 : 2) : (vy > 0 ? 0 : 1);
   }
+  if (moving) p.d = Math.abs(vx) > Math.abs(vy) ? (vx > 0 ? 3 : 2) : (vy > 0 ? 0 : 1);
   stairStep(p, moving);
+  if (autoWalk && Math.hypot(p.x - x0, p.y - y0) > 40) { // op eller ned ad trappen: fortsæt fra det nærmeste punkt på den anden etage
+    let bi = -1, bd = 48; autoWalk.path.forEach((q, i) => { const d = Math.hypot(q.x - p.x, q.y - p.y); if (d < bd) { bd = d; bi = i; } });
+    if (bi >= 0) autoWalk.path = autoWalk.path.slice(bi + 1); else autoWalk = null;
+  }
   p.m = moving ? 1 : 0; p.rx = p.x; p.ry = p.y;
   const t = Date.now();
   if ((moving && t - lastSend > 120) || (!moving && lastSentMoving)) { netMove(p); lastSend = t; lastSentMoving = moving; }
   let best = null, bd = 30;
   for (const n of interactables()) { const d = Math.hypot(n.x - p.x, n.y - p.y) * 30 / (n.rng || 30) + (n.rng ? 6 : 0); if (d < bd) { bd = d; best = n; } }
   if (best !== nearNpc) { nearNpc = best; $('#act').classList.toggle('dim', !nearNpc && !dlgOpen); }
+  if (walkUse) { const u = walkUse; walkUse = null; if (!dlgOpen && !pzOpen && (nearNpc === u || Math.hypot(u.x - p.x, u.y - p.y) < 34)) { nearNpc = u; interact(); } }
   if (dlgOpen && dlgNpc && !bente && Math.hypot(dlgNpc.x - p.x, dlgNpc.y - p.y) > 46) closeDlg();
-  if (bente && t - bente.pub > 3000) { bente.pub = t; netPatch({ bn: serverNow() }); }
+  if (bente && t - bente.pub > 3000 && (!SOLO || bente.heard)) { bente.pub = t; netPatch({ bn: serverNow() }); }
   if (!dlgOpen && !pzOpen && !napping && lst.phase !== 'lobby' && performance.now() > benteCd && Math.hypot(p.x - BENTE.x, p.y - BENTE.y) < 15) openBente(NPCS.find(q => q.bente));
   if (p.np && !napping && napWake !== p.np) { napWake = p.np; if (serverNow() - p.np < NAP_MS + 3000) banner('☀ Du vågner frisk og udhvilet. Det var tiltrængt!', 'teal', 2600); }
   { const here = roomAt(p.x, p.y), hid = here ? here.id : '';
@@ -4684,7 +4783,10 @@ function draw(t, dt) {
     // under duellen: figuren midt i det synlige stykke kort mellem toplinjen og duelpanelet
     const dEl = $('#duel'), dOn = S().phase === 'djaevel' && !dEl.hidden, dr = dOn ? dEl.getBoundingClientRect() : null, side = !!dr && dr.left > W * 0.35;
     const bEl = $('#boss'), hudB = bEl.hidden ? 0 : bEl.getBoundingClientRect().bottom, dOff = dOn && !side ? (dEl.offsetHeight + 14 - hudB) / 2 / z : 0, dOffX = side ? (W - dr.left + 8) / 2 / z : 0;
-    const fx = cine ? DEVIL.x - 90 : lobbyCam ? 1565 : mp.x + dOffX, fy = cine ? DEVIL.y - 50 : lobbyCam ? 300 : mp.y - 12 + dOff;
+    const pst = S(), pzc = SOLO && pst.phase === 'akt1' && ['drive', 'ask', 'res', 'deliver', 'drop'].includes(pst.pz.s) ? pzActor(pst, serverNow()) : null, pzf = pzc && (pzc.guy || pzc.sc);
+    const pqH = pzf && !$('#pzq').hidden ? $('#pzq').offsetHeight / 2 / z : 0;
+    if (pzf && (pst.pz.s === 'drive' || pst.pz.s === 'deliver')) camFast = serverNow() - pst.pz.t0 > 400 ? 2 : 1;
+    const fx = cine ? DEVIL.x - 90 : pzf ? pzf.x : lobbyCam ? 1565 : mp.x + dOffX, fy = cine ? DEVIL.y - 50 : pzf ? pzf.y - 22 + pqH : lobbyCam ? 300 : mp.y - 12 + dOff;
     tx = WW > hw * 2 ? clamp(fx, hw, WW - hw) : WW / 2; ty = WH > hh * 2 ? clamp(fy, hh - 70, WH - hh) : WH / 2; // lidt luft over kortet, så toget kan ses under menuen
     if (lobbyCam) { z = clamp(Math.min(W / 270, H / 340), 2.2, 3.4); tx = 1565; ty = 300; }
   } else if (ROLE === 'player') {
@@ -4726,7 +4828,7 @@ function draw(t, dt) {
   z = cam.z;
   let sx = 0, sy = 0;
   if (t < shakeUntil && !reduceMotion) { sx = (Math.random() - 0.5) * shakeMag; sy = (Math.random() - 0.5) * shakeMag; }
-  const ox = vr.x + vr.w / 2 - cam.x * z + sx, oy = vr.y + vr.h / 2 - cam.y * z + sy;
+  const ox = vr.x + vr.w / 2 - cam.x * z + sx, oy = vr.y + vr.h / 2 - cam.y * z + sy; xf.ox = ox; xf.oy = oy; xf.z = z;
   const view = { x: cam.x - vr.w / 2 / z - 8, y: cam.y - vr.h / 2 / z - 8, w: vr.w / z + 16, h: vr.h / z + 16 };
   curView = view;
   stepParticles(dt, t, view); stepWeather(dt, t, view); stepFireworks(dt);
@@ -4856,6 +4958,7 @@ function drawWorld(t, mp, view) {
   drawParticles(g, 'w', t);
   drawLighting(g, t, view.x, view.y, view.w, view.h, mp);
   drawDiscoTop(g, t, st);
+  if (ROLE === 'player') drawTapMark(g, t);
   drawSnow(g, view);
   drawParticles(g, 'g', t);
   // glimt over genstande
@@ -4980,11 +5083,11 @@ function renderHud(force) {
       const ready = ITEM_ORDER.filter(k => !st.items[k] && st.doors[ITEMS[k].locked]);
       s = found === 5 ? 'Alle genstande fundet! Noget rører sig i personalerummet …'
         : ready.length ? ITEMS[ready[0]].short + ' er dukket op i ' + roomLabel(ITEMS[ready[0]].x, ITEMS[ready[0]].y) + '. Hent den!'
-        : 'Kig jer omkring. Tryk på OPGAVER for at se, hvad der mangler.';
+        : (SOLO ? 'Kig dig omkring.' : 'Kig jer omkring.') + ' Tryk på OPGAVER for at se, hvad der mangler.';
     } else if (st.phase === 'djaevel') {
       const b = st.boss; t = b.p2 ? 'Djævlen er RASENDE!' : 'Djævlen er vågnet!';
       s = b.stage === 'intro' ? 'Han samler kræfter… Gør jer klar!' : b.stage === 'pre' ? 'Grammatikduellen begynder!' : b.stage === 'rage' ? 'Fase 2! Svar, før det røde blæk rammer jer!' : b.p2 && (b.stage === 'q' || b.stage === 'rev') ? 'Raseri · bølge ' + b.wave + '/' + P2_WAVES + ' · undgå de røde pletter!' : (b.stage === 'q' || b.stage === 'rev') ? 'Grammatikduellen · runde ' + b.round + '/' + b.order.length
-        : b.stage === 'rally' ? 'Fælles fodslag! Slå til samtidig!' : 'Hjælpen kommer fra Costa Rica!';
+        : b.stage === 'rally' ? (SOLO ? 'Sidste slag! Slå til!' : 'Fælles fodslag! Slå til samtidig!') : 'Hjælpen kommer fra Costa Rica!';
     }
     else if (st.phase === 'finale') { t = 'Fredagsbar!'; s = finT(st) < DISCO_AT ? 'Vælg øl eller rosé, og skål med kollegaerne.' : 'Stemning ' + Math.round(st.party.v) + ' % · Skål og dans!'; }
     $('#obj-t').textContent = t; $('#obj-s').textContent = s;
@@ -5028,7 +5131,7 @@ function updateConn() {
   for (const el of document.querySelectorAll('.conn')) {
     const span = el.querySelector('span');
     el.classList.remove('on', 'wait', 'local');
-    if (Net.mode === 'local') { el.classList.add('local'); span.textContent = Net.err ? 'Offline test' : 'Lokal test'; }
+    if (Net.mode === 'local') { el.classList.add('local'); span.textContent = SOLO ? '💾 Gemt' : Net.err ? 'Offline test' : 'Lokal test'; }
     else if (Net.err) { el.classList.add('wait'); span.textContent = Net.err; }
     else if (Net.connected) { el.classList.add('on'); span.textContent = 'Live'; }
     else { el.classList.add('wait'); span.textContent = 'Forbinder…'; }
@@ -5140,34 +5243,105 @@ function showJoin() {
   $('#j-room').addEventListener('click', () => setWhere('room'));
   $('#j-online').addEventListener('click', () => setWhere('online'));
   requestAnimationFrame(previewLoop);
+  function enterGame(n, lk, sp) {
+    lsSet('fredagsbar_profil', JSON.stringify({ n, c: lk.c, h: lk.h, s: lk.s, hs: lk.hs, g: lk.g, w: lk.w }));
+    Snd.unlock(); Snd.start();
+    try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {}); } catch (err) {}
+    me = { n }; cam.snap = true;
+    netRegister({ n, c: lk.c, h: lk.h, s: lk.s, hs: lk.hs, g: lk.g, w: SOLO ? 'online' : lk.w, r: 'player', x: sp.x, y: sp.y, d: 1, m: 0 });
+    $('#join').hidden = true;
+    if (!SOLO || state) showHud();
+    const h = $('#hint');
+    h.textContent = isTouch ? 'Tryk dér, hvor du vil gå hen – eller træk med tommelfingeren · Tryk på ting med et udråbstegn' : 'Klik dér, hvor du vil gå hen – eller brug piletasterne · Klik på ting med et udråbstegn';
+    h.hidden = false; setTimeout(() => { h.hidden = true; }, 7500);
+    renderHud(true);
+  }
   $('#j-form').addEventListener('submit', e => {
     e.preventDefault();
     const n = $('#j-name').value.replace(/\s+/g, ' ').trim().slice(0, 14);
-    if (!n) { $('#j-err').textContent = 'Skriv dit navn, så kollegaerne kan se, hvem du er.'; $('#j-name').focus(); return; }
-    lsSet('fredagsbar_profil', JSON.stringify({ n, c: look.c, h: look.h, s: look.s, hs: look.hs, g: look.g, w: look.w }));
-    Snd.unlock(); Snd.start();
-    try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {}); } catch (err) {}
-    const sp = S().phase === 'djaevel' ? arenaSpot(ID) : spawnPoint();
-    me = { n }; cam.snap = true;
-    netRegister({ n, c: look.c, h: look.h, s: look.s, hs: look.hs, g: look.g, w: look.w, r: 'player', x: sp.x, y: sp.y, d: 1, m: 0 });
-    $('#join').hidden = true;
-    for (const id of ['#top', '#where', '#act']) $(id).hidden = false;
-    if (Net.mode === 'local') $('#testbtn').hidden = false;
-    const h = $('#hint');
-    h.textContent = isTouch ? 'Træk med tommelfingeren for at gå · Tryk BRUG ved et udråbstegn' : 'Piletaster eller WASD for at gå · Mellemrum ved et udråbstegn';
-    h.hidden = false; setTimeout(() => { h.hidden = true; }, 6500);
-    renderHud(true);
+    if (!n) { $('#j-err').textContent = SOLO ? 'Skriv dit navn, før du går ind.' : 'Skriv dit navn, så kollegaerne kan se, hvem du er.'; $('#j-name').focus(); return; }
+    if (SOLO) {
+      if (soloLoad() && !$('#j-go').classList.contains('sure')) { $('#j-go').classList.add('sure'); $('#j-go').textContent = 'Ja, slet mit gemte spil ▶'; $('#j-err').textContent = 'Er du sikker? Dit gemte spil bliver slettet. Vil du hellere fortsætte, så tryk »Fortsæt« ovenfor.'; return; }
+      try { localStorage.removeItem(SOLO_KEY); } catch (err) {} enterGame(n, look, spawnPoint()); showHowto(true); return;
+    }
+    enterGame(n, look, S().phase === 'djaevel' ? arenaSpot(ID) : spawnPoint());
   });
+  if (SOLO) {
+    $('#j-form .kick').textContent = 'UCplus · Slaget om Dalgasgade · på egen hånd';
+    $('#j-form .lead').textContent = 'Festen er slut – men sprogcentret står der endnu. Gå på opdagelse i dit eget tempo, løs opgaverne, og find de fem legendariske genstande. Der lurer stadig noget i personalerummet …';
+    $('.where-pick').closest('.field').hidden = true;
+    $('#j-go').textContent = 'Start spillet ▶';
+    $('#j-form .small:last-child').textContent = 'Virker på både telefon og computer. Tryk dér, hvor du vil gå hen. Spillet gemmer af sig selv.';
+    const sv = soloLoad();
+    if (sv) {
+      const found = ITEM_ORDER.filter(k => sv.st.items && sv.st.items[k]).length;
+      $('#j-cont').hidden = false; $('#j-new-l').hidden = false;
+      $('#j-cont-t').textContent = 'Velkommen tilbage, ' + sv.p.n + '!';
+      $('#j-cont-s').textContent = SOLO_WHERE[sv.st.phase] || 'Du er i gang med Akt 1 og har fundet ' + found + ' af 5 genstande.';
+      $('#j-go').textContent = 'Start forfra ▶';
+      $('#j-cont-go').addEventListener('click', () => {
+        const q = sv.p, lk = { c: q.c, h: q.h, s: q.s, hs: STYLES.some(x => x[0] === q.hs) ? q.hs : 'kort', g: q.g ? 1 : 0, w: 'online' };
+        const ph2 = sv.st.phase, sp = ph2 === 'djaevel' ? arenaSpot(ID) : ph2 === 'finale' ? barSpot(ID) : boxFree(q.x, q.y) ? { x: q.x, y: q.y } : spawnPoint();
+        enterGame(q.n, lk, sp); soloStart(sv);
+      });
+    }
+  }
 }
+
+// ═════════ PÅ EGEN HÅND: start, gem og fortsæt ═════════
+const SOLO_KEY = 'dalgasgade_solo_v1';
+const DLG_HINT = isTouch ? '▼ TRYK FOR AT FORTSÆTTE' : '▼ KLIK / MELLEMRUM';
+$('#dlg-hint').textContent = DLG_HINT;
+let soloSaveTimer = 0, soloWiped = false;
+function soloLoad() { try { const d = JSON.parse(lsGet(SOLO_KEY) || 'null'); return d && d.v === 1 && d.st && d.p ? d : null; } catch (e) { return null; } }
+function soloSave() {
+  if (!SOLO || soloWiped || !state || !me) return; const p = players.get(ID); if (!p) return;
+  lsSet(SOLO_KEY, JSON.stringify({ v: 1, t: Date.now(), st: state, p: { n: p.n, c: p.c, h: p.h, s: p.s, hs: p.hs, g: p.g ? 1 : 0, x: Math.round(p.x), y: Math.round(p.y), d: p.d || 0, dk: p.dk | 0 } }));
+}
+function soloSaveSoon() { if (!SOLO || soloSaveTimer) return; soloSaveTimer = setTimeout(() => { soloSaveTimer = 0; soloSave(); }, 1500); }
+if (SOLO) { setInterval(soloSave, 8000); addEventListener('pagehide', soloSave); document.addEventListener('visibilitychange', () => { if (document.hidden) soloSave(); }); }
+const SOLO_WHERE = { djaevel: 'Du er nået til Akt 2 – den store duel. Duellen starter forfra, når du fortsætter.', finale: 'Du har vundet duellen! Fredagsbaren venter på dig.' };
+// starter et nyt spil eller fortsætter et gemt. Kampen og festen starter forfra, hvis man lukkede midt i dem
+function soloStart(sv) {
+  let st;
+  if (sv) {
+    st = normState(sv.st); st.fx = null; st.msg = null; st.talk = []; st.seats = {}; st.jam = null;
+    if (st.del) { if (st.dl[st.del.kind] === 1) st.dl[st.del.kind] = 0; st.del = null; }
+    if (st.pz && st.pz.s && st.pz.s !== 'done') { if (st.pz.s === 'drive' || st.pz.s === 'ask') st.pz = freshPz(); else st.pz.s = 'done'; }
+    if (st.phase === 'lobby') st.phase = 'akt1';
+    const ph = st.phase; if (ph === 'djaevel' || ph === 'finale') setPhase(st, ph);
+    prevPhase = ph === 'finale' ? 'djaevel' : 'akt1';
+  } else { st = freshState(); setPhase(st, 'akt1'); prevPhase = 'lobby'; }
+  state = st; commit(); showHud();
+  if (sv && state.phase === 'akt1') setTimeout(() => { banner('Velkommen tilbage! Du har fundet ' + foundCount(state) + ' af 5 genstande.', 'teal', 5000); openTasks(9000); }, 700);
+}
+function showHud() { for (const id of ['#top', '#where', '#act']) $(id).hidden = false; if (Net.mode === 'local' && (!SOLO || Q.has('test'))) $('#testbtn').hidden = false; }
+function showHowto(first) {
+  $('#howto').hidden = false; $('#howto-go').textContent = first ? 'Gå i gang ▶' : 'Spil videre ▶';
+  $('#howto-go').onclick = () => { $('#howto').hidden = true; Snd.unlock(); if (first && !state) soloStart(null); };
+}
+function openSoloMenu() {
+  if (!SOLO || !me) return; soloSave();
+  const nb = $('#sm-new'); nb.classList.remove('sure'); nb.textContent = 'Start forfra …';
+  $('#solomenu').hidden = false;
+}
+$('#sm-close').addEventListener('click', () => { $('#solomenu').hidden = true; });
+$('#sm-help').addEventListener('click', () => { $('#solomenu').hidden = true; showHowto(false); });
+$('#sm-new').addEventListener('click', () => {
+  const nb = $('#sm-new');
+  if (!nb.classList.contains('sure')) { nb.classList.add('sure'); nb.textContent = 'Ja, slet mit spil og start forfra'; return; }
+  soloWiped = true; try { localStorage.removeItem(SOLO_KEY); } catch (e) {} location.reload();
+});
+for (const el of document.querySelectorAll('.conn')) el.addEventListener('click', () => { if (SOLO) openSoloMenu(); });
 
 // ═════════ OPSTART ═════════
 async function boot() {
-  document.body.classList.add(ROLE);
+  document.body.classList.add(ROLE); if (SOLO) document.body.classList.add('solo');
   buildGrid(freshState().doors);
   renderMap(); buildSprites(); buildMargins();
   if (document.fonts && document.fonts.load) document.fonts.load('8px "Press Start 2P"').then(() => { flagTex = null; renderMap(); buildSprites(); renderHud(true); }).catch(() => {});
   const cfg = window.FIREBASE_CONFIG;
-  if (cfg && cfg.databaseURL) {
+  if (cfg && cfg.databaseURL && !SOLO) {
     Net.mode = 'fb';
     try { await FB.init(cfg); }
     catch (e) { console.warn('Firebase fejlede, kører lokalt:', e); Net.mode = 'local'; Net.err = 'Kunne ikke forbinde'; Local.init(); setTimeout(() => banner('Kunne ikke forbinde til spillet. Tjek internettet, og genindlæs siden.', 'red', 9000), 600); }
@@ -5177,7 +5351,7 @@ async function boot() {
   else if (ROLE === 'screen') {
     $('#scr').hidden = false; $('#qr').hidden = false; $('#sound').hidden = false;
     initSlots($('#scr-items'), true);
-    const url = JOIN_URL + (GAME !== 'ucplus-2026' ? '?spil=' + GAME : '');
+    const url = JOIN_URL + '/?spil=' + GAME; // uden spil-navn ville man lande i single-player
     $('#qr-url').textContent = url.replace(/^https?:\/\//, '');
     try { new QRCode($('#qr-code'), { text: url, width: 156, height: 156, colorDark: '#0a1413', colorLight: '#f4d06a', correctLevel: QRCode.CorrectLevel.M }); } catch (e) {}
     $('#sound').addEventListener('click', () => { Snd.unlock(); Snd.msg(); $('#sound').hidden = true; });

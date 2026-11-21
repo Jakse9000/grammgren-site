@@ -1,12 +1,25 @@
-# Slaget om Dalgasgade · v1.7.2
+# Slaget om Dalgasgade · v1.8
 
-Multiplayer-pixelspil til UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026.
+Pixelspil fra UCplus Sprogcenter Silkeborgs sidste fredagsbar, fredag d. 20. november 2026. Fra v1.8 kan det også spilles alene i sit eget tempo.
+
+## Spil alene (single-player)
+`grammgren.dk/fredagsbar/` uden noget efter starter nu spillet **på egen hånd**. Der er ingen lobby og ingen Game Master: man laver sin figur, får en kort vejledning og går direkte i gang med Akt 1.
+- **Tryk for at gå**: tryk (eller klik) på gulvet, så går figuren selv derhen, også op ad trappen. Trykker man på en person eller ting med et udråbstegn, går figuren derhen og åbner den. Et tryk fører samtaler videre. Joystick og piletaster virker stadig.
+- **Opgaverne er lavet til én person**: trykpladerne klikker fast én ad gangen, Rettebunken kræver 5 sætninger, lampespillet 2 sekvenser, leveringerne 3 og 4 kasser, og bilen på Troels' plads skubbes med tre hurtige tryk. Modultesten og Bente kræver kun én person.
+- **Duellen giver bedre tid**: spørgsmålene står 40–50 % længere end til festen.
+- **Pizzabuddet**: kameraet følger ham som en lille film, og man svarer selv.
+- **Fredagsbaren** fyldes af festgæster (Pedellen, Vikaren, Praktikanten, Censoren, Bogholderen, Vejlederen, Kantinechefen og Konsulenten), så man ikke skåler alene.
+- **Gemmer af sig selv** i browseren (`localStorage`) ved hver ændring og hvert 8. sekund. Kommer man tilbage, står der »Velkommen tilbage, NAVN!« med knappen **Fortsæt**. Lukker man midt i duellen eller festen, starter den del forfra. Knappen **💾 Gemt** øverst åbner en menu med vejledningen og **Start forfra** (spørger én gang til først).
+- Single-player bruger hverken Firebase eller netværk. Alt kører på telefonen eller computeren.
+
+Tryk-for-at-gå virker også i multiplayer-spillet.
 
 ## Udgivelse på grammgren.dk
 Læg mappen `fredagsbar/` i roden af repoet `grammgren-site`. Spillet ligger så på `grammgren.dk/fredagsbar/` efter næste deploy på statichost.
 
-## De tre visninger
-- `grammgren.dk/fredagsbar/` er spillervisningen til telefoner. QR-koden på storskærmen peger hertil.
+## Multiplayer: de tre visninger
+Multiplayer kræver et spil-navn i adressen (`?spil=…`). Uden spil-navn lander spillerne i single-player.
+- `grammgren.dk/fredagsbar/?spil=ucplus-2026` er spillervisningen til telefoner. QR-koden på storskærmen peger selv på den rigtige adresse med spil-navn.
 - `grammgren.dk/fredagsbar/?skaerm` er storskærmen i lokalet. Den styrer spillet, så den skal være åben hele tiden. Klik én gang på "Slå lyd til".
 - `grammgren.dk/fredagsbar/?gm` er Game Master-panelet til Jacob i Costa Rica: faser, opgaver, leveringsbilen, beskeder til alle skærme, test-kollegaer og nulstilling. Panelet viser også koden til chefens pengeboks og har knappen **🎬 Generalprøve**.
 
@@ -95,6 +108,12 @@ Rummene fordeler sig sådan:
 Rum, døre, trapper, møbler, trykplader, genstande og opgavepunkter er data øverst i scriptet i `index.html` (`ROOMS`, `DOORS`, `STAIR_ENDS`, `FURN`, `PLATES`, `ITEMS`, `NPCS`, `PZ_NPCS`, `NOTE_POS`, `SERVER` (pengeboksen), `PALLET`, `DEL_DEST`). Ledetråden "Tæl …" til pengeboksens kode tælles direkte i møbellisten, så den passer også, hvis møblerne flyttes.
 
 Storskærmen følger holdet i Akt 1: den zoomer ud, når kollegaerne er spredt på begge etager, og ind, når de samles. Navneskiltene vokser, når der er zoomet ud.
+
+## Ændringer i v1.8
+- **Single-player**: den almindelige adresse starter spillet på egen hånd med opgaver tilpasset én person, længere tid i duellen, festgæster i fredagsbaren, vejledningen »Sådan spiller du« og automatisk gem og fortsæt.
+- **Tryk for at gå** (alle versioner): tryk på gulvet eller på en ting, så finder figuren selv vejen, også mellem etagerne.
+- Samtaler viser »Tryk for at fortsætte« på telefoner.
+- QR-koden på storskærmen indeholder nu altid spil-navnet.
 
 ## Ændringer i v1.7.2
 - Skåltalen »Skål for Costa Rica!« er taget ud af fredagsbaren.
